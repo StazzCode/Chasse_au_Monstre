@@ -3,6 +3,7 @@ import java.util.Random;
 public class Maze {
     Integer[][] maze;
     int rows, cols;
+    int compteur;
 
     public Maze(int rows, int cols) {
         this.rows = rows;
@@ -59,3 +60,4 @@ public class Maze {
         //
     }
 }
+    
