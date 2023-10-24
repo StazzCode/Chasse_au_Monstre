@@ -1,3 +1,5 @@
+package game;
+
 import utils.Subject;
 
 public abstract class Player extends Subject {

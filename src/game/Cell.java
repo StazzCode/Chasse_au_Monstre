@@ -1,3 +1,5 @@
+package game;
+
 public class Cell {
 
     private int lastMonsterAppearance;

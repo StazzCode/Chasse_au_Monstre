@@ -1,3 +1,5 @@
+package game;
+
 public class Hunter extends Player{
 
     protected Maze maze;
