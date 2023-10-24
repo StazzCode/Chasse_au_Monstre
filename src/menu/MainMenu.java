@@ -7,10 +7,12 @@ import java.util.Map.Entry;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,6 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import game.*;
 
 public class MainMenu extends Application{
 
@@ -32,6 +36,7 @@ public class MainMenu extends Application{
         VBox.setMargin(play, new Insets(80, 0, 20, 0));
         play.setPrefSize(360, 60);
         play.getStyleClass().add("playButton");
+        play.setOnAction(e->{playMenu(primaryStage);});
         
         // Definition du bouton pour les options
         Button settings = new Button("Options");
@@ -122,7 +127,60 @@ public class MainMenu extends Application{
     }
 
     public void playMenu(Stage baseStage){
-
+        Scene oldScene = baseStage.getScene();
+        VBox root = new VBox();
+        HBox bottom=new HBox();
+        HBox top=new HBox(50);
+        top.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
+        top.getStyleClass().add("top");
+        HBox localBox=new HBox();
+        HBox iaBox=new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+        HBox onlineBox=new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
+        Button localOnglet = new Button("Local 1V1");
+        localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
+        localBox.getStyleClass().add("center");
+        iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
+        iaBox.getStyleClass().add("center");
+        onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
+        onlineBox.getStyleClass().add("center");
+        localOnglet.setOnAction(e->{
+            root.getChildren().clear();
+            root.getChildren().addAll(top,localBox,bottom);
+        });
+        Button iaOnglet = new Button("IA");
+        iaOnglet.setOnAction(e->{
+            root.getChildren().clear();
+            root.getChildren().addAll(top,iaBox,bottom);
+        });
+        Button onlineOnglet = new Button("En ligne");
+        onlineOnglet.setOnAction(e->{
+            root.getChildren().clear();
+            root.getChildren().addAll(top,onlineBox,bottom);
+        });
+        top.getChildren().addAll(localOnglet,onlineOnglet,iaOnglet);
+        for(Node n : top.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(top.getChildren().size()+1));
+        Button back = new Button("Menu");
+        back.setOnAction(e->{baseStage.setScene(oldScene);});
+        Button play = new Button("Lancer");
+        play.setOnAction(e->{
+            IHM ihm = new IHM();
+            baseStage.close();
+            ihm.start(new Stage());
+        });
+        bottom.getChildren().addAll(back, play);
+        bottom.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
+        bottom.getStyleClass().add("bottom");
+        for(Node n : bottom.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(bottom.getChildren().size()+2));
+        HBox.setMargin(back, new Insets(0, oldScene.getWidth()-2*200-40, 0, 0));
+        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
+        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
+        localBox.getChildren().addAll(firstPlayerLabel,new Label("VS"),secondPlayerLabel);
+        HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
+        HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
+        root.getChildren().addAll(top,localBox,bottom);
+        Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
+        newScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        baseStage.setScene(newScene);
     }
     
     

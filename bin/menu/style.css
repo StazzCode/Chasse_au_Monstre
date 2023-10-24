@@ -39,3 +39,17 @@
     -fx-font-size: 21px;
     -fx-alignment : center;
 }
+
+.top{
+    -fx-alignment : center;
+    -fx-background-color: rgba(201, 154, 154, 0.85);
+}
+
+.bottom{
+    -fx-alignment : center;
+    -fx-background-color: rgba(209, 189, 189, 0.85);
+}
+
+.center{
+    -fx-alignment : center;
+}

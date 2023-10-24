@@ -1,3 +1,4 @@
+package game;
 public enum CellInfo {
     EMPTY(1),
     WALL(2),
