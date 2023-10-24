@@ -1,0 +1,29 @@
+.root{
+    -fx-alignment : top-center;
+    -fx-background-color:transparent;
+}
+
+.button{
+    -fx-padding: 10px;
+    -fx-font-weight: 800;
+    -fx-font-size: 20px;
+    -fx-border-width:3px;
+    -fx-background-color: rgba(202, 101, 101, 0.85);
+    -fx-border-color: rgba(202, 101, 101, 0.85)
+}
+
+.button:hover{
+    -fx-text-fill: rgba(218, 86, 86, 0.85);
+    -fx-background-color: white;
+    -fx-cursor : hand;
+}
+
+.playButton{
+    -fx-background-color: rgb(221, 83, 83);
+    -fx-text-fill: white;
+    -fx-border-color: rgb(202, 89, 89);
+}
+
+.playButton:hover{
+    -fx-text-fill: rgb(221, 83, 83);
+}

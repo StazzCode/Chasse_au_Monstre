@@ -2,14 +2,14 @@ package game;
 import java.util.Random;
 
 public class Maze {
-    Integer[][] maze;
+    Cell[][] maze;
     int rows, cols;
     int compteur;
 
     public Maze(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
-        maze = new Integer[rows][cols];
+        maze = new Cell[rows][cols];
     }
 
     public void updateMaze(int rows, int cols) {
@@ -33,7 +33,7 @@ public class Maze {
         for (int i = 0; i < obstacles; i++) {
             int x = new Random().nextInt(rows);
             int y = new Random().nextInt(cols);
-            maze[x][y] = 0;
+            maze[x][y] = new Cell(new Coordinate(x,y), CellInfo.WALL);
         }
     }
 
