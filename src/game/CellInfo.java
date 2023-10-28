@@ -3,7 +3,8 @@ public enum CellInfo {
     EMPTY(1),
     WALL(2),
     ENTER(3),
-    EXIT(4);
+    EXIT(4),
+	MONSTER(5);
 
     private int valeur;
 

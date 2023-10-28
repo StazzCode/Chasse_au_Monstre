@@ -9,6 +9,7 @@ public class Monster extends Player {
 
     public Monster(Coordinate c, Maze m){
         this.coordinate = c;
+        this.attach(m);
         this.maze = m;
     }
 
@@ -22,8 +23,9 @@ public class Monster extends Player {
     }
 
     public void move(Coordinate c){
+    	Coordinate cordinateBefore = this.coordinate;
         this.coordinate = c;
-        notifyObservers();
+        this.notifyObservers(cordinateBefore);
     }
 
     

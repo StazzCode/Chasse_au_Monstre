@@ -1,7 +1,10 @@
 package game;
 import java.util.Random;
 
-public class Maze {
+import utils.Observer;
+import utils.Subject;
+
+public class Maze implements Observer{
     Cell[][] maze;
     int rows, cols;
     int compteur;
@@ -60,5 +63,19 @@ public class Maze {
     public void updateLastAppearance() {
         //
     }
+
+	@Override
+	public void update(Subject subject) {
+	}
+
+	@Override
+	public void update(Subject subject, Object lastCoordinate) {
+		 	Monster monster = (Monster) subject;
+		 	Coordinate c = (Coordinate) lastCoordinate;
+	        this.maze[monster.coordinate.row][monster.coordinate.col] = new Cell(monster.coordinate, CellInfo.MONSTER);
+	        this.maze[c.row][c.col] = null;
+	        System.out.println("Le joueur s'est déplacé en " + monster.coordinate);
+	        this.displayMaze();
+	}
 }
     
