@@ -7,8 +7,8 @@ public class Monster extends Player {
     protected Maze maze;
     ArrayList<Coordinate> deplacementPossible = new ArrayList<Coordinate>();
 
-    public Monster(Coordinate c, Maze m){
-        this.coordinate = c;
+    public Monster(Maze m){
+        this.coordinate = new Coordinate(0, 0);
         this.attach(m);
         this.maze = m;
     }
