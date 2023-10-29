@@ -1,5 +1,6 @@
 package game;
 import java.util.Random;
+import java.util.Scanner;
 
 import utils.Observer;
 import utils.Subject;
@@ -8,7 +9,7 @@ public class Maze implements Observer{
     Cell[][] maze;
     int rows, cols;
     int compteur;
-    Monster monster;
+    static Monster monster;
 
     public Maze(int rows, int cols) {
         this.rows = rows;
@@ -63,6 +64,25 @@ public class Maze implements Observer{
         maze.resetMap();
         maze.generateObstacles();        
         maze.displayMaze();
+        Scanner sc = new Scanner(System.in);
+        int i = 0;
+        while(i < 10) {
+        	System.out.println("bouge:");
+        	int chiffre = sc.nextInt();
+        	if(chiffre == 1) {
+        		monster.move(new Coordinate(monster.getCoordinate().row-1, monster.getCoordinate().col));
+        	}
+        	if(chiffre == 2) {
+        		monster.move(new Coordinate(monster.getCoordinate().row, monster.getCoordinate().col+1));
+        	}
+        	if(chiffre == 3) {
+        		monster.move(new Coordinate(monster.getCoordinate().row+1, monster.getCoordinate().col));
+        	}
+        	if(chiffre == 4) {
+        		monster.move(new Coordinate(monster.getCoordinate().row, monster.getCoordinate().col));
+        	}
+        	i += 1;
+        }
     }
 
     public void updateLastAppearance() {
@@ -79,8 +99,9 @@ public class Maze implements Observer{
 		 	Coordinate c = (Coordinate) lastCoordinate;
 	        this.maze[monster.coordinate.row][monster.coordinate.col] = new Cell(monster.coordinate, CellInfo.MONSTER);
 	        this.maze[c.row][c.col] =  new Cell(monster.coordinate, CellInfo.EMPTY);
-	        System.out.println("Le joueur s'est déplacé en " + monster.coordinate);
+	        System.out.println("Le joueur s'est déplacé en " + monster.getCoordinate().row + ", " + monster.getCoordinate().col);
 	        this.displayMaze();
+	        
 	}
 }
     

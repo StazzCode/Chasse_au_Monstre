@@ -23,9 +23,11 @@ public class Monster extends Player {
     }
 
     public void move(Coordinate c){
-    	Coordinate cordinateBefore = this.coordinate;
-        this.coordinate = c;
-        this.notifyObservers(cordinateBefore);
+    	if(canMove(c)) {
+    		Coordinate cordinateBefore = this.coordinate;
+            this.coordinate = c;
+            this.notifyObservers(cordinateBefore);
+    	}
     }
 
     
