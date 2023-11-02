@@ -9,3 +9,7 @@
 lib
 
 bin
+
+.classpath
+
+.project
