@@ -10,6 +10,10 @@ public abstract class Player extends Subject {
     	return this.coordinate;
     }
 
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
     /*
     public boolean canPlay(){
 
