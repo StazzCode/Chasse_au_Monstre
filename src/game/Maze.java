@@ -1,10 +1,18 @@
 package game;
+
+/**
+ * import
+ */
 import java.util.Random;
 import java.util.Scanner;
-
 import utils.Observer;
 import utils.Subject;
 
+
+/**
+ * Cette classe représente un labyrinthe dans un jeu. Elle implémente l'interface Observer pour recevoir des mises à jour de la classe Monster.
+ * Le labyrinthe est représenté comme un tableau 2D de cellules. Il contient des méthodes pour générer des obstacles, réinitialiser la carte, mettre à jour le labyrinthe, afficher le labyrinthe, et obtenir le labyrinthe, les colonnes, les lignes, le compteur et le monstre. Il contient également une méthode de mise à jour pour mettre à jour le labyrinthe lorsque le monstre se déplace.
+ */
 public class Maze implements Observer{
     Cell[][] maze;
     int columns;
@@ -68,7 +76,6 @@ public class Maze implements Observer{
         }
     }
 
-    // affichage plateau
     public void displayMaze() {
         for (int i = 0; i < columns; i++) {
             System.out.print("|");
