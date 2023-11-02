@@ -2,18 +2,19 @@ package game;
 
 
 public class Coordinate {
-    int row,col;
+    int column;
+    int row;
 
-    public Coordinate(int row,int col){
+    public Coordinate(int column,int row){
+        this.column = column;
         this.row = row;
-        this.col = col;
+    }
+    
+    public int getColumn(){
+        return this.column;
     }
 
-    public int getRow(int row){
-        return row;
-    }
-
-    public int getCol(int col){
-        return col;
+    public int getRow(){
+        return this.row;
     }
 }

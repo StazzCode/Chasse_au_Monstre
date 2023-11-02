@@ -14,7 +14,10 @@ public class Monster extends Player {
     }
 
     public boolean canMove(Coordinate c){
-        return maze.maze[c.row][c.col].getState() != CellInfo.WALL;
+        if (c.getColumn()<0 || c.getColumn()>= maze.getColumns() || c.getRow()<0 || c.getRow()>= maze.getRows()) {
+            return false;
+        }
+        return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
     }
 
     public void deplacement(ArrayList<Coordinate> deplacementPossible){
@@ -24,9 +27,9 @@ public class Monster extends Player {
 
     public void move(Coordinate c){
     	if(canMove(c)) {
-    		Coordinate cordinateBefore = this.coordinate;
+    		Coordinate previousCoordinate = this.coordinate;
             this.coordinate = c;
-            this.notifyObservers(cordinateBefore);
+            this.notifyObservers(previousCoordinate);
     	}
     }
 

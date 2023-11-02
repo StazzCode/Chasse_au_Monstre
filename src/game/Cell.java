@@ -13,15 +13,15 @@ public class Cell {
     }
 
     public int getLastMonsterAppearance() {
-        return lastMonsterAppearance;
+        return this.lastMonsterAppearance;
     }
 
     public boolean isDiscovered() {
-        return discovered;
+        return this.discovered;
     }
 
     public Coordinate getCoordinate() {
-        return coordinate;
+        return this.coordinate;
     }
 
     public CellInfo getState(){

@@ -1,10 +1,10 @@
 package game;
 public enum CellInfo {
     EMPTY(1, ' '),
-    WALL(2, 'M'),
+    WALL(2, 'W'),
     ENTER(3, '_'),
     EXIT(4, '_'),
-	MONSTER(5, 'O');
+	MONSTER(5, 'M');
 
     private int valeur;
     private char car;
