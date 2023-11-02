@@ -37,7 +37,7 @@ public class IHM extends Application {
         int columns = 10; int rows = 10;
 
         this.maze = new Maze(columns, rows);
-        maze.resetMap();
+        maze.resetMaze();
         maze.generateObstacles();        
         
         this.grid = new GridPane();
