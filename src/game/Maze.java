@@ -1,4 +1,5 @@
 package game;
+
 /**
  * import
  */
@@ -7,8 +8,10 @@ import java.util.Scanner;
 import utils.Observer;
 import utils.Subject;
 
+
 /**
- * Cette classe représente un labyrinthe dans le jeu. Elle contient des méthodes pour générer des obstacles, réinitialiser la carte, mettre à jour le labyrinthe et afficher le labyrinthe. Elle implémente également l'interface Observer pour mettre à jour le labyrinthe lorsque le monstre se déplace.
+ * Cette classe représente un labyrinthe dans un jeu. Elle implémente l'interface Observer pour recevoir des mises à jour de la classe Monster.
+ * Le labyrinthe est représenté comme un tableau 2D de cellules. Il contient des méthodes pour générer des obstacles, réinitialiser la carte, mettre à jour le labyrinthe, afficher le labyrinthe, et obtenir le labyrinthe, les colonnes, les lignes, le compteur et le monstre. Il contient également une méthode de mise à jour pour mettre à jour le labyrinthe lorsque le monstre se déplace.
  */
 public class Maze implements Observer{
     Cell[][] maze;
@@ -24,63 +27,39 @@ public class Maze implements Observer{
         this.monster = new Monster(this);
     }
 
-    /**
-     * Retourne le labyrinthe.
-     * @return le labyrinthe
-     */
     public Cell[][] getMaze() {
         return maze;
     }
     
-    /**
-     * Retourne le nombre de colonnes du labyrinthe.
-     * @return le nombre de colonnes
-     */
     public int getColumns() {
         return columns;
     }
     
-    /**
-     * Retourne le nombre de lignes du labyrinthe.
-     * @return le nombre de lignes
-     */
     public int getRows() {
         return rows;
     }
     
-    /**
-     * Retourne la valeur du compteur.
-     * @return la valeur du compteur
-     */
     public int getCompteur() {
         return compteur;
     }
     
-    /**
-     * Retourne le monstre.
-     * @return le monstre
-     */
     public Monster getMonster() {
         return monster;
     }
     
     /**
      * Méthode qui met à jour le labyrinthe.
-     * @param columns le nombre de colonnes
-     * @param rows le nombre de lignes
+     * @param newMaze la nouvelle grille remplaçant celle du labyrinthe actuel.
      */
-    public void updateMaze(int columns, int rows) {
+    public void updateMaze(Cell[][] newMaze) {
         for (int i = 0; i < this.columns; i++) {
             for (int j = 0; j < this.rows; j++) {
-                this.maze[i][j] = maze[i][j];
+                this.maze[i][j] = newMaze[i][j];
             }
         }
     }
 
-    /**
-     * Méthode qui réinitialise le labyrinthe.
-     */
-    public void resetMaze() {
+    public void resetMap() {
         for (int i = 0; i < this.columns; i++) {
             for (int j = 0; j < this.rows; j++) {
                 maze[i][j] = new Cell(new Coordinate(i,j), CellInfo.EMPTY);
@@ -90,9 +69,6 @@ public class Maze implements Observer{
     			new Cell(new Coordinate(this.monster.getCoordinate().getColumn(),this.monster.getCoordinate().getRow()), CellInfo.MONSTER);
     }
 
-    /**
-     * Méthode qui génère des obstacles dans le labyrinthe.
-     */
     public void generateObstacles() {
         int obstacles = 10;
         for (int i = 0; i < obstacles; i++) {
@@ -104,9 +80,6 @@ public class Maze implements Observer{
         }
     }
 
-    /**
-     * Méthode qui affiche le labyrinthe.
-     */
     public void displayMaze() {
         for (int i = 0; i < columns; i++) {
             System.out.print("|");
@@ -145,9 +118,6 @@ public class Maze implements Observer{
     //     sc.close();
     // }
 
-    /**
-     * Méthode qui met à jour la dernière apparition du monstre.
-     */
     public void updateLastAppearance() {
         //
     }
