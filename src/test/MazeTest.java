@@ -11,15 +11,15 @@ import static org.junit.Assert.*;
 public class MazeTest {
     
     @Test
-    public void testResetMap() {
+    public void testResetMaze() {
         Maze maze = new Maze(5, 5);
-        maze.resetMap();
-        for (int i = 0; i < maze.rows; i++) {
-            for (int j = 0; j < maze.cols; j++) {
-                if (i == maze.monster.getCoordinate().row && j == maze.monster.getCoordinate().col) {
-                    assertEquals(CellInfo.MONSTER, maze.maze[i][j].getState());
+        maze.resetMaze();
+        for (int i = 0; i < maze.getRows(); i++) {
+            for (int j = 0; j < maze.getColumns(); j++) {
+                if (i == maze.getMonster().getCoordinate().getRow() && j == maze.getMonster().getCoordinate().getColumn()) {
+                    assertEquals(CellInfo.MONSTER, maze.getMaze()[i][j].getState());
                 } else {
-                    assertEquals(CellInfo.EMPTY, maze.maze[i][j].getState());
+                    assertEquals(CellInfo.EMPTY, maze.getMaze()[i][j].getState());
                 }
             }
         }
@@ -28,12 +28,12 @@ public class MazeTest {
     @Test
     public void testGenerateObstacles() {
         Maze maze = new Maze(5, 5);
-        maze.resetMap();
+        maze.resetMaze();
         maze.generateObstacles();
         int obstacleCount = 0;
-        for (int i = 0; i < maze.rows; i++) {
-            for (int j = 0; j < maze.cols; j++) {
-                if (maze.maze[i][j].getState() == CellInfo.WALL) {
+        for (int i = 0; i < maze.getRows(); i++) {
+            for (int j = 0; j < maze.getColumns(); j++) {
+                if (maze.getMaze()[i][j].getState() == CellInfo.WALL) {
                     obstacleCount++;
                 }
             }
@@ -44,26 +44,26 @@ public class MazeTest {
     @Test
     public void testMoveMonster() {
         Maze maze = new Maze(5, 5);
-        maze.resetMap();
-        maze.monster.move(new Coordinate(2, 2));
-        assertEquals(2, maze.monster.getCoordinate().row);
-        assertEquals(2, maze.monster.getCoordinate().col);
+        maze.resetMaze();
+        maze.getMonster().move(new Coordinate(2, 2));
+        assertEquals(2, maze.getMonster().getCoordinate().getRow());
+        assertEquals(2, maze.getMonster().getCoordinate().getColumn());
     }
     
     @Test
     public void testUpdateMaze() {
         Maze maze = new Maze(5, 5);
-        maze.resetMap();
+        maze.resetMaze();
         Cell[][] newMaze = new Cell[5][5];
-        for (int i = 0; i < maze.rows; i++) {
-            for (int j = 0; j < maze.cols; j++) {
+        for (int i = 0; i < maze.getRows(); i++) {
+            for (int j = 0; j < maze.getColumns(); j++) {
                 newMaze[i][j] = new Cell(new Coordinate(i, j), CellInfo.WALL);
             }
         }
         maze.updateMaze(newMaze);
-        for (int i = 0; i < maze.rows; i++) {
-            for (int j = 0; j < maze.cols; j++) {
-                assertEquals(CellInfo.WALL, maze.maze[i][j].getState());
+        for (int i = 0; i < maze.getRows(); i++) {
+            for (int j = 0; j < maze.getColumns(); j++) {
+                assertEquals(CellInfo.WALL, maze.getMaze()[i][j].getState());
             }
         }
     }
