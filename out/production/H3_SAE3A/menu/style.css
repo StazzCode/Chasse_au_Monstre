@@ -27,3 +27,29 @@
 .playButton:hover{
     -fx-text-fill: rgb(221, 83, 83);
 }
+
+.mainTitre{
+    -fx-font-weight: 800;
+    -fx-font-size: 24px;
+    -fx-alignment : center;
+}
+
+.secondTitre{
+    -fx-font-weight: 600;
+    -fx-font-size: 21px;
+    -fx-alignment : center;
+}
+
+.top{
+    -fx-alignment : center;
+    -fx-background-color: rgba(201, 154, 154, 0.85);
+}
+
+.bottom{
+    -fx-alignment : center;
+    -fx-background-color: rgba(209, 189, 189, 0.85);
+}
+
+.center{
+    -fx-alignment : center;
+}

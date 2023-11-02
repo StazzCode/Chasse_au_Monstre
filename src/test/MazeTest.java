@@ -49,7 +49,7 @@ public class MazeTest {
         assertEquals(2, maze.getMonster().getCoordinate().getRow());
         assertEquals(2, maze.getMonster().getCoordinate().getColumn());
     }
-    
+
     @Test
     public void testUpdateMaze() {
         Maze maze = new Maze(5, 5);
