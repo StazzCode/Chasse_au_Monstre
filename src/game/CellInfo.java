@@ -6,8 +6,8 @@ package game;
 public enum CellInfo {
     EMPTY(1, ' '),
     WALL(2, 'W'),
-    ENTER(3, '_'),
-    EXIT(4, '_'),
+    ENTER(3, 'E'),
+    EXIT(4, 'X'),
 	MONSTER(5, 'M');
 
     private int valeur;
