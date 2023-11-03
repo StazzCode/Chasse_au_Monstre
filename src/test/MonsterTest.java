@@ -1,19 +1,18 @@
 package test;
 
 import game.*;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MonsterTest {
 
     private Monster monster;
     private Maze maze = new Maze(5,5);
 
+
     @BeforeEach
-    public void setup(){
+    public void init(){
         maze.resetMaze();
     }
 
@@ -99,12 +98,51 @@ public class MonsterTest {
 
     @Test
     public void monsterCannotMoveDiagonally(){
-        maze.resetMaze();
         monster = new Monster(maze);
         monster.setCoordinate(new Coordinate(1, 1));
         assertFalse(monster.canMove(new Coordinate(0,0)));
         assertFalse(monster.canMove(new Coordinate(2,0)));
         assertFalse(monster.canMove(new Coordinate(0,2)));
         assertFalse(monster.canMove(new Coordinate(2,2)));
+    }
+
+    @Test
+    public void monsterMoveLeft(){
+        monster = new Monster(maze);
+        monster.setCoordinate(new Coordinate(1, 1));
+        Coordinate c = new Coordinate(0,1);
+        monster.move(c);
+        assertEquals(c.getColumn(), monster.getCoordinate().getColumn());
+        assertEquals(c.getRow(), monster.getCoordinate().getRow());
+    }
+
+    @Test
+    public void monsterMoveRight(){
+        monster = new Monster(maze);
+        monster.setCoordinate(new Coordinate(1, 1));
+        Coordinate c = new Coordinate(2,1);
+        monster.move(c);
+        assertEquals(c.getColumn(), monster.getCoordinate().getColumn());
+        assertEquals(c.getRow(), monster.getCoordinate().getRow());
+    }
+
+    @Test
+    public void monsterMoveUp(){
+        monster = new Monster(maze);
+        monster.setCoordinate(new Coordinate(1, 1));
+        Coordinate c = new Coordinate(1,0);
+        monster.move(c);
+        assertEquals(c.getColumn(), monster.getCoordinate().getColumn());
+        assertEquals(c.getRow(), monster.getCoordinate().getRow());
+    }
+
+    @Test
+    public void monsterMoveDown(){
+        monster = new Monster(maze);
+        monster.setCoordinate(new Coordinate(1, 1));
+        Coordinate c = new Coordinate(1,2);
+        monster.move(c);
+        assertEquals(c.getColumn(), monster.getCoordinate().getColumn());
+        assertEquals(c.getRow(), monster.getCoordinate().getRow());
     }
 }
