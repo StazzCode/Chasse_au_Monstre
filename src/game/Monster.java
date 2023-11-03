@@ -26,10 +26,46 @@ public class Monster extends Player {
      * @return true si le monstre peut se déplacer à la coordonnée donnée, false sinon.
      */
     public boolean canMove(Coordinate c){
-        if (c.getColumn()<0 || c.getColumn()>= maze.getColumns() || c.getRow()<0 || c.getRow()>= maze.getRows()) {
-            return false;
-        }
+        if (isCoordinateWrong(c) || isCoordinateDiagonally(c)) return false;
         return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
+    }
+
+
+    /**
+     * Méthode qui vérifie si la coordonnée donnée en paramètre n'est pas hors limite.
+     * @param c la coordonnée à vérifier.
+     * @return true si la coordonnée est inférieur à zéro ou si elle ne se situe pas dans le labyrinthe, false sinon.
+     */
+    private boolean isCoordinateWrong(Coordinate c) {
+        if (
+                c.getColumn()<0
+                || c.getColumn()>= maze.getColumns()
+                || c.getRow()<0
+                || c.getRow()>= maze.getRows()
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Méthode qui vérifie si la coordonnée donnée en paramètre est en diagonal au monstre.
+     * @param c
+     * @return true si la coordonnée se trouve en diagonale, false sinon.
+     */
+    private boolean isCoordinateDiagonally(Coordinate c){
+        int column = this.getCoordinate().getColumn();
+        int row = this.getCoordinate().getRow();
+
+        if (
+                c.getColumn() == column - 1 && c.getRow() == row - 1
+                || c.getColumn() == column + 1 && c.getRow() == row - 1
+                || c.getColumn() == column - 1 && c.getRow() == row + 1
+                || c.getColumn() == column + 1 && c.getRow() == row + 1
+        ){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -52,6 +88,4 @@ public class Monster extends Player {
             this.notifyObservers(previousCoordinate);
     	}
     }
-
-    
 }

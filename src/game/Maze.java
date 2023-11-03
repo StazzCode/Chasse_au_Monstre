@@ -59,7 +59,7 @@ public class Maze implements Observer{
         }
     }
 
-    public void resetMap() {
+    public void resetMaze() {
         for (int i = 0; i < this.columns; i++) {
             for (int j = 0; j < this.rows; j++) {
                 maze[i][j] = new Cell(new Coordinate(i,j), CellInfo.EMPTY);
