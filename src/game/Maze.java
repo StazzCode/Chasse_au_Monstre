@@ -99,16 +99,26 @@ public class Maze implements Observer{
 
     /**
      * Méthode qui génère un nombre d'obstacles spécifié
+     * @param nbObstacles nombre d'obstacles à générer.
      */
-    public void generateObstacles() {
-        int obstacles = 10;
-        for (int i = 0; i < obstacles; i++) {
-            int x = new Random().nextInt(columns);
-            int y = new Random().nextInt(rows);
-            if(this.maze[x][y].getState() != CellInfo.MONSTER) {
+    public void generateObstacles(int nbObstacles) {
+        Random random = new Random();
+        int countObstacles = 0;
+        while (countObstacles != nbObstacles) {
+            int x = random.nextInt(columns);
+            int y = random.nextInt(rows);
+            if(this.maze[x][y].getState() == CellInfo.EMPTY) {
             	this.maze[x][y] = new Cell(new Coordinate(x,y), CellInfo.WALL);
+                countObstacles++;
             }
         }
+    }
+
+    /**
+     * Méthode qui génère dix obstacles par défaut.
+     */
+    public void generateObstacles(){
+        generateObstacles(10);
     }
 
     /**

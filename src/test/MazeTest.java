@@ -27,13 +27,13 @@ public class MazeTest {
     
     @Test
     public void testGenerateObstacles() {
-        Maze maze = new Maze(5, 5);
+        Maze maze = new Maze(10, 10);
         maze.resetMaze();
         maze.generateObstacles();
         int obstacleCount = 0;
         for (int i = 0; i < maze.getRows(); i++) {
             for (int j = 0; j < maze.getColumns(); j++) {
-                if (maze.getMaze()[i][j].getState() == CellInfo.WALL) {
+                if (maze.getMaze()[j][i].getState() == CellInfo.WALL) {
                     obstacleCount++;
                 }
             }
