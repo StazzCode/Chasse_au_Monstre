@@ -10,7 +10,7 @@ import utils.Subject;
 
 
 /**
- * Cette classe représente un labyrinthe dans un jeu. Elle implémente l'interface Observer pour recevoir des mises à jour de la classe Monster.
+ * La classe Maze représente un labyrinthe dans un jeu de chasse au monstre. Elle implémente l'interface Observer pour recevoir des mises à jour de la classe Monster.
  * Le labyrinthe est représenté comme un tableau 2D de cellules. Il contient des méthodes pour générer des obstacles, réinitialiser la carte, mettre à jour le labyrinthe, afficher le labyrinthe, et obtenir le labyrinthe, les colonnes, les lignes, le compteur et le monstre. Il contient également une méthode de mise à jour pour mettre à jour le labyrinthe lorsque le monstre se déplace.
  */
 public class Maze implements Observer{
@@ -19,7 +19,12 @@ public class Maze implements Observer{
     int rows;
     int compteur;
     Monster monster;
-    
+
+    /**
+     * Constructeur d'un labyrinthe avec un nombre de lignes et de colonnes spécifié.
+     * @param columns le nombre de colonnes du labyrithe
+     * @param rows le nombre de lignes du labyrinthe
+     */
     public Maze(int columns, int rows) {
         this.columns = columns;
         this.rows = rows;
@@ -27,29 +32,49 @@ public class Maze implements Observer{
         this.monster = new Monster(this);
     }
 
+    /**
+     * Returns the 2D array of cells representing the maze.
+     * @return the maze
+     */
     public Cell[][] getMaze() {
         return maze;
     }
     
+    /**
+     * Retourne le nombre de colonnes du labyrinthe
+     * @return le nombre de colonnes du labyrinthe
+     */
     public int getColumns() {
         return columns;
     }
     
+    /**
+     * Retourne le nombre de lignes du labyrinthe
+     * @return le nombre de lignes du labyrinthe
+     */
     public int getRows() {
         return rows;
     }
     
+    /**
+     * Retourne le compteur du labyrinthe
+     * @return le compteur du labyrinthe
+     */
     public int getCompteur() {
         return compteur;
     }
     
+    /**
+     * Retourne le monstre du labyrinthe
+     * @return le monstre du labyrinthe
+     */
     public Monster getMonster() {
         return monster;
     }
     
     /**
-     * Méthode qui met à jour le labyrinthe.
-     * @param newMaze la nouvelle grille remplaçant celle du labyrinthe actuel.
+     * Méthode qui mets à jour le labyrinthe avec un nouveau labyrinthe
+     * @param newMaze le nouveau labyrinthe 
      */
     public void updateMaze(Cell[][] newMaze) {
         for (int i = 0; i < this.columns; i++) {
@@ -59,6 +84,9 @@ public class Maze implements Observer{
         }
     }
 
+    /**
+     * Méthode qui remet toutes les cases du labyrinthe à vide, sauf celle du monstre.
+     */
     public void resetMaze() {
         for (int i = 0; i < this.columns; i++) {
             for (int j = 0; j < this.rows; j++) {
@@ -69,6 +97,9 @@ public class Maze implements Observer{
     			new Cell(new Coordinate(this.monster.getCoordinate().getColumn(),this.monster.getCoordinate().getRow()), CellInfo.MONSTER);
     }
 
+    /**
+     * Méthode qui génère un nombre d'obstacles spécifié
+     */
     public void generateObstacles() {
         int obstacles = 10;
         for (int i = 0; i < obstacles; i++) {
@@ -80,6 +111,9 @@ public class Maze implements Observer{
         }
     }
 
+    /**
+     * Méthode qui affiche le labyrinthe dans la console
+     */
     public void displayMaze() {
         for (int i = 0; i < columns; i++) {
             System.out.print("|");
@@ -91,33 +125,9 @@ public class Maze implements Observer{
         }
     }
 
-    // public static void main(String[] args) {
-    //     Maze maze = new Maze(10, 10);
-    //     maze.resetMap();
-    //     maze.generateObstacles();        
-    //     maze.displayMaze();
-    //     Scanner sc = new Scanner(System.in);
-    //     int i = 0;
-    //     while(i < 10) {
-    //     	System.out.println("bouge:");
-    //     	int chiffre = sc.nextInt();
-    //     	if(chiffre == 1) {
-    //     		monster.move(new Coordinate(monster.getCoordinate().row-1, monster.getCoordinate().col));
-    //     	}
-    //     	if(chiffre == 2) {
-    //     		monster.move(new Coordinate(monster.getCoordinate().row, monster.getCoordinate().col+1));
-    //     	}
-    //     	if(chiffre == 3) {
-    //     		monster.move(new Coordinate(monster.getCoordinate().row+1, monster.getCoordinate().col));
-    //     	}
-    //     	if(chiffre == 4) {
-    //     		monster.move(new Coordinate(monster.getCoordinate().row, monster.getCoordinate().col));
-    //     	}
-    //     	i += 1;
-    //     }
-    //     sc.close();
-    // }
-
+    /**
+     * Méthode qui met à jour la dernière apparition du monstre
+     */
     public void updateLastAppearance() {
         //
     }
