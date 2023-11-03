@@ -98,7 +98,8 @@ public class IHM extends Application {
 
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
-        maze.generateObstacles();        
+        maze.generateObstacles();
+        maze.generateEnterExit();
         
         this.grid = new GridPane();
         Button example = new Button("M");

@@ -73,7 +73,7 @@ public class Maze implements Observer{
     }
     
     /**
-     * Méthode qui mets à jour le labyrinthe avec un nouveau labyrinthe
+     * Méthode qui met à jour le labyrinthe avec un nouveau labyrinthe
      * @param newMaze le nouveau labyrinthe 
      */
     public void updateMaze(Cell[][] newMaze) {
@@ -119,6 +119,18 @@ public class Maze implements Observer{
      */
     public void generateObstacles(){
         generateObstacles(10);
+    }
+
+    /**
+     * Méthode qui génère l'entrée et la sortie du labyrinthe.
+     */
+    public void generateEnterExit(){
+        int col = 0;
+        int row = 0;
+        this.maze[col][row] = new Cell(new Coordinate(col,row), CellInfo.ENTER);
+        int maxCol = this.getColumns()-1;
+        int maxRow = this.getRows()-1;
+        this.maze[maxCol][maxRow] = new Cell(new Coordinate(maxCol,maxRow), CellInfo.EXIT);
     }
 
     /**
