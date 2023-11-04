@@ -72,7 +72,15 @@ public class Maze implements Observer{
      * @return le monstre du labyrinthe
      */
     public Monster getMonster() {
-        return monster;
+        return this.monster;
+    }
+    
+    public Hunter getHunter() {
+        return this.hunter;
+    }
+    
+    public boolean getEnd() {
+    	return this.end;
     }
     
     /**

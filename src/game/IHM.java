@@ -55,6 +55,13 @@ public class IHM extends Application {
                 this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
                 this.selected = b;
                 b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                Integer col = GridPane.getColumnIndex(b);
+                Integer row = GridPane.getRowIndex(b);
+                if (col != null && row != null) {
+                    int column = col.intValue();
+                    int rowValue = row.intValue();
+                    maze.getHunter().hit(new Coordinate(column, rowValue));
+                }
             });
         }
     }
@@ -126,7 +133,12 @@ public class IHM extends Application {
         StackPane.setAlignment(shoot, Pos.TOP_CENTER);
         shoot.setVisible(false);
         shoot.setOnMouseClicked(e -> {
-            hunterPlay();
+        	if(!maze.getEnd()) {
+        		hunterPlay();
+        	}else {
+        		play.setText("fin du jeu");
+        	}
+            
         });
 
         
