@@ -4,7 +4,7 @@ package game;
  * import
  */
 import java.util.Random;
-import java.util.Scanner;
+// import java.util.Scanner;
 import utils.Observer;
 import utils.Subject;
 
