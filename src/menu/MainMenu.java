@@ -22,9 +22,19 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import game.*;
-
+/**
+ * La classe MainMenu représente le menu principal du jeu.
+ * Il hérite de la classe Application de JavaFX.
+ * Il contient les boutons pour jouer, accéder aux options, aux règles du jeu et pour quitter le jeu.
+ * Il contient également le logo du jeu et un fond animé.
+ */
 public class MainMenu extends Application{
 
+    /**
+     * La méthode start permet d'initialiser le début du jeu.
+     * @param primaryStage le stage principal du jeu.
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Logo du jeu
@@ -90,7 +100,11 @@ public class MainMenu extends Application{
         primaryStage.setTitle("Menu");
         primaryStage.show();
     }
-
+    /**
+     * Méthode qui permet d'expliquer comment jouer au jeu de la chasse au monstre.
+     * @param baseStage le stage de base.
+     * @param paragraphes les règles du jeu.
+     */
     public void howToPlayMenu(Stage baseStage, Map<String,String> paragraphes){
         Scene oldScene = baseStage.getScene();
         Label titre = new Label("Comment jouer ?");
@@ -126,6 +140,10 @@ public class MainMenu extends Application{
         baseStage.setScene(newScene);
     }
 
+    /**
+     * Méthode qui permet de lancer le menu de jeu.
+     * @param baseStage le stage de base.
+     */
     public void playMenu(Stage baseStage){
         Scene oldScene = baseStage.getScene();
         VBox root = new VBox();
@@ -183,7 +201,10 @@ public class MainMenu extends Application{
         baseStage.setScene(newScene);
     }
     
-    
+    /**
+     * Méthode qui permet de lancer le jeu.
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
