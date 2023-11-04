@@ -19,6 +19,8 @@ public class Maze implements Observer{
     int rows;
     int compteur;
     Monster monster;
+    Hunter hunter;
+    boolean end = false;
 
     /**
      * Constructeur d'un labyrinthe avec un nombre de lignes et de colonnes spécifié.
@@ -30,6 +32,7 @@ public class Maze implements Observer{
         this.rows = rows;
         maze = new Cell[columns][rows];
         this.monster = new Monster(this);
+        this.hunter = new Hunter(this);
     }
 
     /**
@@ -154,8 +157,15 @@ public class Maze implements Observer{
         //
     }
 
-	@Override
+    @Override
 	public void update(Subject subject) {
+		Hunter hunter = (Hunter) subject;
+		this.hunter = hunter;
+		int row = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getRow();
+        int col = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getColumn();
+		if(this.maze[col][row].getState().getCar() == CellInfo.MONSTER.getCar()) {
+			end = true;
+		}
 	}
 
 	@Override
