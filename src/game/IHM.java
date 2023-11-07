@@ -80,7 +80,8 @@ public class IHM extends Application {
     	this.displayMaze();
     	if(maze.getEnd()) {
     		play.setText("Partie terminée. Le Monstre a gagné.");
-    		return;
+    		setMonsterInteractions(false);
+            return;
     	}
         
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
