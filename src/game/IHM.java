@@ -78,26 +78,10 @@ public class IHM extends Application {
     public void monsterPlay() {
         this.displayMaze();
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
-        shoot.setVisible(true);
+        
+        setMonsterInteractions(false);
 
-        scene.setOnKeyPressed(null);
-
-        for (int i = 0; i < grid.getChildren().size(); i++) {
-            Button b = (Button) grid.getChildren().get(i);
-            b.setOnMouseClicked(e -> {
-                this.selected.setBackground(
-                        new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                this.selected = b;
-                b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-                Integer col = GridPane.getColumnIndex(b);
-                Integer row = GridPane.getRowIndex(b);
-                if (col != null && row != null) {
-                    int column = col.intValue();
-                    int rowValue = row.intValue();
-                    maze.getHunter().hit(new Coordinate(column, rowValue));
-                }
-            });
-        }
+        setHunterInteractions(true);
     }
 
     /**
@@ -107,36 +91,69 @@ public class IHM extends Application {
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         turn++;
-        shoot.setVisible(false);
+        
         play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
 
-        for (int i = 0; i < grid.getChildren().size(); i++) {
-            Button b = (Button) grid.getChildren().get(i);
-            b.setOnMouseClicked(null);
-        }
+        setHunterInteractions(false);
 
-        scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.Z) {
-                maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
-                        maze.getMonster().getCoordinate().getRow() - 1));
-                monsterPlay();
+        setMonsterInteractions(true);
+    }
+
+    public void setMonsterInteractions(boolean active) {
+        if (active) {
+            scene.setOnKeyPressed(e -> {
+                if (e.getCode() == KeyCode.Z) {
+                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
+                            maze.getMonster().getCoordinate().getRow() - 1));
+                    monsterPlay();
+                }
+                if (e.getCode() == KeyCode.Q) {
+                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() - 1,
+                            maze.getMonster().getCoordinate().getRow()));
+                    monsterPlay();
+                }
+                if (e.getCode() == KeyCode.S) {
+                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
+                            maze.getMonster().getCoordinate().getRow() + 1));
+                    monsterPlay();
+                }
+                if (e.getCode() == KeyCode.D) {
+                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + 1,
+                            maze.getMonster().getCoordinate().getRow()));
+                    monsterPlay();
+                }
+            });
+        } else {
+            scene.setOnKeyPressed(null);
+        }
+    }
+
+    public void setHunterInteractions(boolean active) {
+        if (active) {
+            shoot.setVisible(true);
+            for (int i = 0; i < grid.getChildren().size(); i++) {
+                Button b = (Button) grid.getChildren().get(i);
+                b.setOnMouseClicked(e -> {
+                    this.selected.setBackground(
+                            new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                    this.selected = b;
+                    b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                    Integer col = GridPane.getColumnIndex(b);
+                    Integer row = GridPane.getRowIndex(b);
+                    if (col != null && row != null) {
+                        int column = col.intValue();
+                        int rowValue = row.intValue();
+                        maze.getHunter().hit(new Coordinate(column, rowValue));
+                    }
+                });
             }
-            if (e.getCode() == KeyCode.Q) {
-                maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() - 1,
-                        maze.getMonster().getCoordinate().getRow()));
-                monsterPlay();
+        } else {
+            shoot.setVisible(false);
+            for (int i = 0; i < grid.getChildren().size(); i++) {
+                Button b = (Button) grid.getChildren().get(i);
+                b.setOnMouseClicked(null);
             }
-            if (e.getCode() == KeyCode.S) {
-                maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
-                        maze.getMonster().getCoordinate().getRow() + 1));
-                monsterPlay();
-            }
-            if (e.getCode() == KeyCode.D) {
-                maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + 1,
-                        maze.getMonster().getCoordinate().getRow()));
-                monsterPlay();
-            }
-        });
+        }
     }
 
     /**
@@ -185,7 +202,14 @@ public class IHM extends Application {
             if (!maze.getEnd()) {
                 hunterPlay();
             } else {
-                play.setText("fin du jeu");
+                play.setText("Partie terminée. Le chasseur a gagné.");
+                shoot.setVisible(false);
+                this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                this.selected = new Button("");
+                for (int i = 0; i < grid.getChildren().size(); i++) {
+                    Button b = (Button) grid.getChildren().get(i);
+                    b.setOnMouseClicked(null);
+                }
             }
 
         });
