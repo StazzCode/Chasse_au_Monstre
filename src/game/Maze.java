@@ -180,7 +180,14 @@ public class Maze implements Observer{
 	public void update(Subject subject, Object lastCoordinate) {
 		 	Monster monster = (Monster) subject;
 		 	Coordinate c = (Coordinate) lastCoordinate;
-	        this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
+		 	int row = monster.getCoordinate().getRow();
+		 	int col = monster.getCoordinate().getColumn();
+		 	if(this.maze[col][row].getState().getCar() == CellInfo.EXIT.getCar()) {
+		 		this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
+			    this.maze[c.getColumn()][c.getRow()] =  new Cell(c, CellInfo.EMPTY);
+				end = true;
+			}
+	        this.maze[col][row] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
 	        this.maze[c.getColumn()][c.getRow()] =  new Cell(c, CellInfo.EMPTY);
 	        //System.out.println("Le joueur s'est déplacé en " + monster.getCoordinate().getColumn() + ", " + monster.getCoordinate().getRow());
 	        //this.displayMaze();

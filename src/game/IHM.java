@@ -77,7 +77,12 @@ public class IHM extends Application {
      * Méthode qui gère le tour du monstre.
      */
     public void monsterPlay() {
-        this.displayMaze();
+    	this.displayMaze();
+    	if(maze.getEnd()) {
+    		play.setText("Partie terminée. Le Monstre a gagné.");
+    		return;
+    	}
+        
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
         
         setMonsterInteractions(false);
