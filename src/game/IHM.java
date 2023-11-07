@@ -67,11 +67,7 @@ public class IHM extends Application {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
-                if (maze.getMaze()[i][j].getState().equals(CellInfo.EMPTY)) {
-                    b.setText("    ");
-                } else {
-                    b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
-                }
+                b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
             }
         }
     }
@@ -160,12 +156,14 @@ public class IHM extends Application {
         maze.generateEnterExit();
 
         this.grid = new GridPane();
-        Button example = new Button("M");
+        int elementSize = 40;
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
                 Button b = new Button(i + ":" + j);
-                b.setMinWidth(example.getWidth());
-                b.setMinHeight(example.getHeight());
+                b.setMinWidth(elementSize);
+                b.setMaxWidth(elementSize);
+                b.setMinHeight(elementSize);
+                b.setMaxHeight(elementSize);
                 b.setBackground(Background.EMPTY);
                 b.setBorder(new Border(new BorderStroke(Color.BLACK,
                         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -192,7 +190,7 @@ public class IHM extends Application {
 
         });
 
-        scene = new Scene(stackPane, 400, 400);
+        scene = new Scene(stackPane, 500, 500);
         this.displayMaze();
         hunterPlay();
 
