@@ -7,6 +7,7 @@ import java.util.Random;
 // import java.util.Scanner;
 import utils.Observer;
 import utils.Subject;
+import java.lang.Math;
 
 
 /**
@@ -133,6 +134,18 @@ public class Maze implements Observer{
     }
 
     /**
+     * Méthode qui permet de générer un nombre d'obstacles en fonction de la taille du labyrinthe
+     * @param columns le nombre de colonnes du labyrinthe
+     * @param rows le nombre de lignes du labyrinthe
+     * @return nbObstacles le nombre d'obstacles générés
+     */
+    public double generateMazeObstacles(int columns, int rows){
+        double percent = Math.sqrt(this.columns * this.rows);
+        double nbObstacles = Math.abs(percent) * Math.abs(percent);
+        return nbObstacles;
+    }
+
+    /**
      * Méthode qui génère l'entrée et la sortie du labyrinthe.
      */
     public void generateEnterExit(){
@@ -164,6 +177,8 @@ public class Maze implements Observer{
     public void updateLastAppearance() {
         //
     }
+
+
 
     @Override
 	public void update(Subject subject) {
