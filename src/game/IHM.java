@@ -1,5 +1,6 @@
 package game;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -76,7 +77,12 @@ public class IHM extends Application {
      * Méthode qui gère le tour du monstre.
      */
     public void monsterPlay() {
-        this.displayMaze();
+    	this.displayMaze();
+    	if(maze.getEnd()) {
+    		play.setText("Partie terminée. Le Monstre a gagné.");
+    		return;
+    	}
+        
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
         
         setMonsterInteractions(false);
@@ -88,6 +94,7 @@ public class IHM extends Application {
      * Méthode qui gère le tour du chasseur.
      */
     public void hunterPlay() {
+        this.displayMaze();
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         turn++;
@@ -103,24 +110,28 @@ public class IHM extends Application {
         if (active) {
             scene.setOnKeyPressed(e -> {
                 if (e.getCode() == KeyCode.Z) {
-                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
-                            maze.getMonster().getCoordinate().getRow() - 1));
-                    monsterPlay();
+                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
+                            maze.getMonster().getCoordinate().getRow() - 1))) {
+                                monsterPlay();
+                            }
                 }
                 if (e.getCode() == KeyCode.Q) {
-                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() - 1,
-                            maze.getMonster().getCoordinate().getRow()));
-                    monsterPlay();
+                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() - 1,
+                            maze.getMonster().getCoordinate().getRow()))) {
+                                monsterPlay();
+                            }
                 }
                 if (e.getCode() == KeyCode.S) {
-                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
-                            maze.getMonster().getCoordinate().getRow() + 1));
-                    monsterPlay();
+                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
+                            maze.getMonster().getCoordinate().getRow() + 1))) {
+                                monsterPlay();
+                            }
                 }
                 if (e.getCode() == KeyCode.D) {
-                    maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + 1,
-                            maze.getMonster().getCoordinate().getRow()));
-                    monsterPlay();
+                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + 1,
+                            maze.getMonster().getCoordinate().getRow()))) {
+                                monsterPlay();
+                            }
                 }
             });
         } else {
@@ -147,6 +158,9 @@ public class IHM extends Application {
                     }
                 });
             }
+
+            Button monsterButton = (Button) grid.getChildren().get(maze.getMonster().getCoordinate().getColumn() * maze.getColumns() + maze.getMonster().getCoordinate().getRow());
+            monsterButton.setText(" ");
         } else {
             shoot.setVisible(false);
             for (int i = 0; i < grid.getChildren().size(); i++) {
