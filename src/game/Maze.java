@@ -187,7 +187,7 @@ public class Maze implements Observer{
 			    this.maze[c.getColumn()][c.getRow()] =  new Cell(c, CellInfo.EMPTY);
 				end = true;
 			}
-	        this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
+	        this.maze[col][row] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
 	        this.maze[c.getColumn()][c.getRow()] =  new Cell(c, CellInfo.EMPTY);
 	        //System.out.println("Le joueur s'est déplacé en " + monster.getCoordinate().getColumn() + ", " + monster.getCoordinate().getRow());
 	        //this.displayMaze();
