@@ -71,11 +71,13 @@ public class Monster extends Player {
      * Méthode qui déplace le monstre à la coordonnée donnée si c'est possible.
      * @param c la coordonnée à laquelle le monstre doit se déplacer.
      */
-    public void move(Coordinate c){
+    public boolean move(Coordinate c){
     	if(canMove(c)) {
     		Coordinate previousCoordinate = this.coordinate;
             this.coordinate = c;
             this.notifyObservers(previousCoordinate);
+            return true;
     	}
+        return false;
     }
 }
