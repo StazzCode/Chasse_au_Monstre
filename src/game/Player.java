@@ -29,19 +29,4 @@ public abstract class Player extends Subject {
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
-
-    /*
-     * public boolean canPlay(){
-     * 
-     * }
-     * 
-     * public void play(){
-     * 
-     * }
-     * }
-     * 
-     * public void update(ICellEvent);
-     * 
-     * 
-     */
 }
