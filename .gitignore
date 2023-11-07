@@ -6,6 +6,8 @@
 
 .idea
 
-lib
-
 bin
+
+.classpath
+
+.project

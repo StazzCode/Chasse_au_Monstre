@@ -1,0 +1,1 @@
+Pour exécuter notre application, il faut lancer le fichier IHM.java.
