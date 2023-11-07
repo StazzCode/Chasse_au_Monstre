@@ -76,7 +76,12 @@ public class IHM extends Application {
      * Méthode qui gère le tour du monstre.
      */
     public void monsterPlay() {
-        this.displayMaze();
+    	this.displayMaze();
+    	if(maze.getEnd()) {
+    		play.setText("Fin du jeu : Victoire du Monstre");
+    		return;
+    	}
+        
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
         shoot.setVisible(true);
 
@@ -185,7 +190,7 @@ public class IHM extends Application {
             if (!maze.getEnd()) {
                 hunterPlay();
             } else {
-                play.setText("fin du jeu");
+                play.setText("fin du jeu : Victoire du Chasseur");
             }
 
         });
