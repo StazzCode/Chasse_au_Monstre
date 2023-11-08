@@ -209,25 +209,8 @@ public class IHM extends Application {
             }
         }
     }
-
-    /**
-     * Méthode qui initialise l'interface graphique.
-     * 
-     * @param stage la scène principale de l'interface graphique.
-     */
-    @Override
-    public void start(Stage stage) {
-        int columns = 10;
-        int rows = 10;
-        turn = 0;
-
-        this.maze = new Maze(columns, rows);
-        maze.resetMaze();
-        maze.generateObstacles();
-        maze.generateEnterExit();
-
-        this.grid = new GridPane();
-        int elementSize = 40;
+    
+    private void initializeGrid(int columns, int rows, int elementSize) {
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
                 Button b = new Button(i + ":" + j);
@@ -237,23 +220,16 @@ public class IHM extends Application {
                 b.setMaxHeight(elementSize);
                 b.setBackground(Background.EMPTY);
                 b.setBorder(new Border(new BorderStroke(Color.BLACK,
-                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 grid.add(b, i, j);
             }
         }
-        grid.setAlignment(Pos.CENTER);
-
-        StackPane stackPane = new StackPane(grid);
-        play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
-        stackPane.getChildren().add(play);
-        StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
-
+    }
+    
+    private void initializeShootButton() {
         shoot = new Button("Shoot !");
-        stackPane.getChildren().add(shoot);
-        StackPane.setAlignment(shoot, Pos.TOP_CENTER);
-        shoot.setVisible(false);
         shoot.setOnMouseClicked(e -> {
-        	this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
+            this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
             if (!maze.getEnd()) {
                 Integer col = GridPane.getColumnIndex(this.selected);
                 Integer row = GridPane.getRowIndex(this.selected);
@@ -274,8 +250,39 @@ public class IHM extends Application {
                     b.setOnMouseClicked(null);
                 }
             }
-
         });
+    }
+    
+    /**
+     * Méthode qui initialise l'interface graphique.
+     * 
+     * @param stage la scène principale de l'interface graphique.
+     */
+    @Override
+    public void start(Stage stage) {
+        int columns = 10;
+        int rows = 10;
+        turn = 0;
+
+        this.maze = new Maze(columns, rows);
+        maze.resetMaze();
+        maze.generateObstacles();
+        maze.generateEnterExit();
+
+        this.grid = new GridPane();
+        int elementSize = 40;
+        initializeGrid(columns, rows, elementSize);
+        grid.setAlignment(Pos.CENTER);
+
+        StackPane stackPane = new StackPane(grid);
+        play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
+        stackPane.getChildren().add(play);
+        StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
+
+        initializeShootButton();
+        stackPane.getChildren().add(shoot);
+        StackPane.setAlignment(shoot, Pos.TOP_CENTER);
+        shoot.setVisible(false);
 
         scene = new Scene(stackPane, 500, 500);
         //this.displayMonsterView();
@@ -284,6 +291,8 @@ public class IHM extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
 
     /**
      * Méthode main qui lance l'application.
