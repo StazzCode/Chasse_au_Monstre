@@ -76,13 +76,20 @@ public class IHM extends Application {
         }
     }
 
+    public String displayCell(Cell c){
+        if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0){
+            return String.valueOf(c.getLastMonsterAppearance());
+        }
+        return Character.toString(c.getState().getCar());
+    }
+
     public void displayHunterView() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
                 b.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
                 if (maze.getMaze()[i][j].isDiscovered()) {
-                    b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
+                    b.setText(displayCell(maze.getMaze()[i][j]));
                 } else {
                     b.setText(" ");
                 }
@@ -137,6 +144,7 @@ public class IHM extends Application {
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         turn++;
+        maze.setCompteur(turn);
         this.displayMonsterView();
         
         play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
