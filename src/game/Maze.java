@@ -26,7 +26,7 @@ public class Maze implements Observer {
     Monster monster;
     Hunter hunter;
     boolean end = false;
-    String difficulty;
+    Difficulty difficulty;
 
     /**
      * Constructeur d'un labyrinthe avec un nombre de lignes et de colonnes
@@ -175,33 +175,33 @@ public class Maze implements Observer {
     }
 
 
-    public int generateColumnsDifficulty(String difficulty) {
+    public int generateColumnsDifficulty(Difficulty d) {
 
-        if (difficulty == "Très facile") {
+        if (d.equals(Difficulty.TRES_FACILE)) {
             columns = 6;
-        } else if (difficulty == "Facile") {
+        } else if (d.equals(Difficulty.FACILE)) {
             columns = 8;
-        } else if (difficulty == "Moyen") {
+        } else if (d.equals(Difficulty.MOYEN)) {
             columns = 10;
-        } else if (difficulty == "Difficile") {
+        } else if (d.equals(Difficulty.DIFFICILE)) {
             columns = 12;
-        } else if (difficulty == "Très difficile") {
+        } else if (d.equals(Difficulty.TRES_DIFFICILE)) {
             columns = 14;
         }
         return columns;
     }
 
-    public int generateRowsDifficulty(String difficulty) {
+    public int generateRowsDifficulty(Difficulty d) {
 
-        if (difficulty == "Très facile") {
+        if (d.equals(Difficulty.TRES_FACILE)) {
             rows = 6;
-        } else if (difficulty == "Facile") {
+        } else if (d.equals(Difficulty.FACILE)) {
             rows = 8;
-        } else if (difficulty == "Moyen") {
+        } else if (d.equals(Difficulty.MOYEN)) {
             rows = 10;
-        } else if (difficulty == "Difficile") {
+        } else if (d.equals(Difficulty.DIFFICILE)) {
             rows = 12;
-        } else if (difficulty == "Très difficile") {
+        } else if (d.equals(Difficulty.TRES_DIFFICILE)) {
             rows = 14;
         }
         return rows;
