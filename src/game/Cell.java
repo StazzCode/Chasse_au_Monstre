@@ -23,6 +23,11 @@ public class Cell {
         this.state = state;
     }
 
+    public Cell(Coordinate c, CellInfo state, int lastMonsterAppearance){
+        this(c,state);
+        this.lastMonsterAppearance = lastMonsterAppearance;
+    }
+
     /**
      * Retourne l'indice de la dernière apparence du monstre sur cette case.
      * @return l'indice de la dernière apparence du monstre sur cette case
@@ -32,14 +37,30 @@ public class Cell {
     }
 
     /**
-     * Retourne si la cellule a été découverte, c'est à dire visible par le chasseur.
-     * @return si la cellule a été découverte, c'est à dire visible par le chasseur
+     * Redéfinie l'indice de la dernière apparence du monstre sur cette case.
+     * @param lastMonsterAppearance L'indice de la dernière apparence du monstre sur cette case.
+     */
+    public void setLastMonsterAppearance(int lastMonsterAppearance) {
+        this.lastMonsterAppearance = lastMonsterAppearance;
+    }
+
+    /**
+     * Retourne si la cellule a été découverte, c'est-à-dire visible par le chasseur.
+     * @return si la cellule a été découverte, c'est-à-dire visible par le chasseur
      */
     public boolean isDiscovered() {
         return this.discovered;
     }
     public void discover() {
         this.discovered = true;
+    }
+
+    /**
+     * Redéfinie l'attribut discovered de la cellule.
+     * @param discovered L'attribut discovered de la cellule.
+     */
+    public void setDiscovered(boolean discovered) {
+        this.discovered = discovered;
     }
 
     /**
@@ -56,5 +77,9 @@ public class Cell {
      */
     public CellInfo getState(){
         return this.state;
+    }
+
+    public void setState(CellInfo state) {
+        this.state = state;
     }
 }

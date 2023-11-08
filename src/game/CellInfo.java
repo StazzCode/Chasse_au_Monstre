@@ -8,7 +8,8 @@ public enum CellInfo {
     WALL(2, 'W'),
     ENTER(3, 'E'),
     EXIT(4, 'X'),
-	MONSTER(5, 'M');
+	MONSTER(5, 'M'),
+    HOLE(6, 'H');
 
     private int valeur;
     private char car;
