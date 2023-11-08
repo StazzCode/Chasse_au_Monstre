@@ -142,7 +142,6 @@ public class IHM extends Application {
         play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
 
         setHunterInteractions(false);
-
         setMonsterInteractions(true);
     }
 
@@ -193,9 +192,9 @@ public class IHM extends Application {
                     Integer row = GridPane.getRowIndex(b);
                     if (col != null && row != null) {
                     	shootColumn = col.intValue();
-                        shootRow = row.intValue();
-                        //maze.getHunter().hit(new Coordinate(column, rowValue));
+                    	shootRow = row.intValue();
                     }
+                    
                 });
             }
 
@@ -254,16 +253,9 @@ public class IHM extends Application {
         shoot.setVisible(false);
         shoot.setOnMouseClicked(e -> {
         	this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
+        	maze.getMaze()[shootColumn][shootRow].discover();
             if (!maze.getEnd()) {
-                Integer col = GridPane.getColumnIndex(this.selected);
-                Integer row = GridPane.getRowIndex(this.selected);
-                if (col != null && row != null) {
-                    int column = col.intValue();
-                    int rowValue = row.intValue();
-                    maze.getMaze()[column][rowValue].discover();
-                }
                 hunterPlay();
-                System.out.println(this.maze.getHunter().getHitsList());
             } else {
                 play.setText("Partie terminée. Le chasseur a gagné.");
                 shoot.setVisible(false);
