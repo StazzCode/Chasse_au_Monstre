@@ -78,4 +78,8 @@ public class Cell {
     public CellInfo getState(){
         return this.state;
     }
+
+    public void setState(CellInfo state) {
+        this.state = state;
+    }
 }

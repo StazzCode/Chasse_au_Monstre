@@ -206,9 +206,6 @@ public class IHM extends Application {
                     }
                 });
             }
-
-            Button monsterButton = (Button) grid.getChildren().get(maze.getMonster().getCoordinate().getColumn() * maze.getColumns() + maze.getMonster().getCoordinate().getRow());
-            monsterButton.setText(" ");
         } else {
             shoot.setVisible(false);
             for (int i = 0; i < grid.getChildren().size(); i++) {
