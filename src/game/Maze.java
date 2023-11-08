@@ -26,7 +26,7 @@ public class Maze implements Observer {
     Monster monster;
     Hunter hunter;
     boolean end = false;
-    String difficulty;
+    Difficulty difficulty;
 
     /**
      * Constructeur d'un labyrinthe avec un nombre de lignes et de colonnes
@@ -119,7 +119,7 @@ public class Maze implements Observer {
                 maze[i][j] = new Cell(new Coordinate(i, j), CellInfo.EMPTY);
             }
         }
-        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);;
+        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);
     }
 
     /**
@@ -175,33 +175,33 @@ public class Maze implements Observer {
     }
 
 
-    public int generateColumnsDifficulty(String difficulty) {
+    public int generateColumnsDifficulty(Difficulty d) {
 
-        if (difficulty == "Très facile") {
+        if (d.equals(Difficulty.TRES_FACILE)) {
             columns = 6;
-        } else if (difficulty == "Facile") {
+        } else if (d.equals(Difficulty.FACILE)) {
             columns = 8;
-        } else if (difficulty == "Moyen") {
+        } else if (d.equals(Difficulty.MOYEN)) {
             columns = 10;
-        } else if (difficulty == "Difficile") {
+        } else if (d.equals(Difficulty.DIFFICILE)) {
             columns = 12;
-        } else if (difficulty == "Très difficile") {
+        } else if (d.equals(Difficulty.TRES_DIFFICILE)) {
             columns = 14;
         }
         return columns;
     }
 
-    public int generateRowsDifficulty(String difficulty) {
+    public int generateRowsDifficulty(Difficulty d) {
 
-        if (difficulty == "Très facile") {
+        if (d.equals(Difficulty.TRES_FACILE)) {
             rows = 6;
-        } else if (difficulty == "Facile") {
+        } else if (d.equals(Difficulty.FACILE)) {
             rows = 8;
-        } else if (difficulty == "Moyen") {
+        } else if (d.equals(Difficulty.MOYEN)) {
             rows = 10;
-        } else if (difficulty == "Difficile") {
+        } else if (d.equals(Difficulty.DIFFICILE)) {
             rows = 12;
-        } else if (difficulty == "Très difficile") {
+        } else if (d.equals(Difficulty.TRES_DIFFICILE)) {
             rows = 14;
         }
         return rows;
@@ -210,13 +210,61 @@ public class Maze implements Observer {
     /**
      * Méthode qui génère l'entrée et la sortie du labyrinthe.
      */
-    public void generateEnterExit() {
-        int col = 0;
-        int row = 0;
-        this.maze[col][row].setState(CellInfo.ENTER);
-        int maxCol = this.getColumns()-1;
-        int maxRow = this.getRows()-1;
-        this.maze[maxCol][maxRow].setState(CellInfo.EXIT);
+    public void generateEnterExit(){
+    	Random random = new Random();
+    	
+    	int rand = random.nextInt(4);
+    	System.out.println(rand);
+    	
+    	if(rand == 0) {// TOP
+    		int col = random.nextInt(this.columns);
+    		this.maze[col][0] = new Cell(new Coordinate(col,0), CellInfo.ENTER);
+    		this.monster.move(new Coordinate(col,0));
+    		col = random.nextInt(this.columns);
+    		this.maze[col][this.rows-1] = new Cell(new Coordinate(col,this.rows-1), CellInfo.EXIT);
+    	}else if(rand == 1) { // RIGHT
+    		int row = random.nextInt(this.rows);
+    		this.maze[this.columns-1][row] = new Cell(new Coordinate(this.columns-1,row), CellInfo.ENTER);
+    		this.monster.move(new Coordinate(this.columns-1 ,row));
+    		row = random.nextInt(this.columns);
+    		this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.EXIT);
+    	}else if(rand == 2) { // BOTTOM
+    		int col = random.nextInt(this.columns);
+    		this.maze[col][this.rows-1] = new Cell(new Coordinate(col, this.rows-1), CellInfo.ENTER);
+    		this.monster.move(new Coordinate(col, this.rows-1));
+    		col = random.nextInt(this.rows);
+    		this.maze[col][0] = new Cell(new Coordinate(col, 0), CellInfo.EXIT);
+    	}else if(rand == 3) { // LEFT
+    		int row = random.nextInt(this.rows);
+    		this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.ENTER);
+    		this.monster.move(new Coordinate(0, row));
+    		row = random.nextInt(this.columns);
+    		this.maze[this.columns-1][row] = new Cell(new Coordinate(this.columns-1,row), CellInfo.ENTER);
+    	}
+    }
+    
+    public Coordinate getEnter() {
+    	Coordinate enter = null;
+    	for(int i = 0; i < this.columns; i++) {
+    		for(int j = 0; j < this.rows; i++) {
+    			if(this.maze[i][j].getState().getCar() == CellInfo.ENTER.getCar()) {
+    				enter = new Coordinate(i, j);
+    			}
+    		}
+    	}
+    	return enter;
+    }
+    
+    public Coordinate getExit() {
+    	Coordinate exit = null;
+    	for(int i = 0; i < this.columns; i++) {
+    		for(int j = 0; j < this.rows; i++) {
+    			if(this.maze[i][j].getState().getCar() == CellInfo.EXIT.getCar()) {
+    				exit = new Coordinate(i, j);
+    			}
+    		}
+    	}
+    	return exit;
     }
 
     /**

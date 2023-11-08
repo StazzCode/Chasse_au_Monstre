@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MonsterTest {
 
     private Monster monster;
-    private Maze maze = new Maze(5,5);
+    private final Maze maze = new Maze(5,5);
 
 
     @BeforeEach

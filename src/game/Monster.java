@@ -26,7 +26,12 @@ public class Monster extends Player {
      * @return true si le monstre peut se déplacer à la coordonnée donnée, false sinon.
      */
     public boolean canMove(Coordinate c){
-        if (isCoordinateWrong(c) || isCoordinateDiagonally(c)) return false;
+        if (isCoordinateWrong(c) || isCoordinateDiagonally(c) || isDistanceMoreThan1(c)) return false;
+        return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
+    }
+
+    public boolean canMoveWithDiagonals(Coordinate c){
+        if (isCoordinateWrong(c) || isDistanceMoreThan1(c)) return false;
         return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
     }
 
@@ -41,6 +46,7 @@ public class Monster extends Player {
                 || c.getColumn() >= maze.getColumns()
                 || c.getRow() < 0
                 || c.getRow() >= maze.getRows();
+
     }
 
     /**
@@ -56,6 +62,19 @@ public class Monster extends Player {
                 || c.getColumn() == column + 1 && c.getRow() == row - 1
                 || c.getColumn() == column - 1 && c.getRow() == row + 1
                 || c.getColumn() == column + 1 && c.getRow() == row + 1;
+    }
+
+    /**
+     * Méthode qui retourne true si la distance entre les coordonnées du monstre et la coordonnée 'c' est supérieure à 1.
+     * @param c La coordonnée c.
+     * @return true si la distance est supérieure à 1, false sinon.
+     */
+    private boolean isDistanceMoreThan1(Coordinate c){
+        double x1 = coordinate.getColumn();
+        double x2 = c.getColumn();
+        double y1 = coordinate.getColumn();
+        double y2 = c.getColumn();
+        return Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2 - y1,2)) > 1;
     }
 
     /**
@@ -78,6 +97,16 @@ public class Monster extends Player {
             this.notifyObservers(previousCoordinate);
             return true;
     	}
+        return false;
+    }
+
+    public boolean moveWithDiagonals(Coordinate c){
+        if(canMoveWithDiagonals(c)) {
+            Coordinate previousCoordinate = this.coordinate;
+            this.coordinate = c;
+            this.notifyObservers(previousCoordinate);
+            return true;
+        }
         return false;
     }
 
