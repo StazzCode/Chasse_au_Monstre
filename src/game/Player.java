@@ -1,8 +1,5 @@
 package game;
-<<<<<<< HEAD
-=======
 
->>>>>>> b4f53993cf02a6d4b008c09f1c25d0c8ec016238
 import utils.Subject;
 
 /**

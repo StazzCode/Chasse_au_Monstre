@@ -1,6 +1,4 @@
 package game;
-<<<<<<< HEAD
-=======
 
 import java.util.ArrayList;
 
@@ -10,7 +8,6 @@ import java.util.ArrayList;
  */
 
 
->>>>>>> b4f53993cf02a6d4b008c09f1c25d0c8ec016238
 public class Hunter extends Player{
 
     protected Maze maze;
