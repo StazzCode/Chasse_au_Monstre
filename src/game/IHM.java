@@ -73,11 +73,46 @@ public class IHM extends Application {
         }
     }
 
+    public void displayHunterView() {
+        for (int i = 0; i < maze.getColumns(); i++) {
+            for (int j = 0; j < maze.getRows(); j++) {
+                Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
+                b.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                if (maze.getMaze()[i][j].isDiscovered()) {
+                    b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
+                } else {
+                    b.setText(" ");
+                }
+            }
+        }
+    }
+
+    public void displayMonsterView() {
+        for (int i = 0; i < maze.getColumns(); i++) {
+            for (int j = 0; j < maze.getRows(); j++) {
+                Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
+                if (maze.getMonster().near(i, j)) {
+                    b.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, CornerRadii.EMPTY, Insets.EMPTY)));
+                    b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
+                } else {
+                    b.setText(" ");
+                }
+            }
+        }
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {}
+    }
+
     /**
      * Méthode qui gère le tour du monstre.
      */
     public void monsterPlay() {
-    	this.displayMaze();
+        IHM.sleep();
+    	this.displayHunterView();
     	if(maze.getEnd()) {
     		play.setText("Partie terminée. Le Monstre a gagné.");
     		setMonsterInteractions(false);
@@ -95,10 +130,11 @@ public class IHM extends Application {
      * Méthode qui gère le tour du chasseur.
      */
     public void hunterPlay() {
-        this.displayMaze();
+        IHM.sleep();
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         turn++;
+        this.displayMonsterView();
         
         play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
 
@@ -215,6 +251,13 @@ public class IHM extends Application {
         shoot.setVisible(false);
         shoot.setOnMouseClicked(e -> {
             if (!maze.getEnd()) {
+                Integer col = GridPane.getColumnIndex(this.selected);
+                Integer row = GridPane.getRowIndex(this.selected);
+                if (col != null && row != null) {
+                    int column = col.intValue();
+                    int rowValue = row.intValue();
+                    maze.getMaze()[column][rowValue].discover();
+                }
                 hunterPlay();
             } else {
                 play.setText("Partie terminée. Le chasseur a gagné.");
@@ -230,7 +273,7 @@ public class IHM extends Application {
         });
 
         scene = new Scene(stackPane, 500, 500);
-        this.displayMaze();
+        //this.displayMonsterView();
         hunterPlay();
 
         stage.setScene(scene);

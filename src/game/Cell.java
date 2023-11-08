@@ -17,6 +17,8 @@ public class Cell {
      * @param state l'état de la cellule
      */
     public Cell(Coordinate c, CellInfo state){
+        this.lastMonsterAppearance = -1;
+        this.discovered = false;
         this.coordinate = c;
         this.state = state;
     }
@@ -35,6 +37,9 @@ public class Cell {
      */
     public boolean isDiscovered() {
         return this.discovered;
+    }
+    public void discover() {
+        this.discovered = true;
     }
 
     /**
