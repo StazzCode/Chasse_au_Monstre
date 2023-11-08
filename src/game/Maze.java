@@ -176,6 +176,7 @@ public class Maze implements Observer{
 		}else {
             end = false;
         }
+        this.maze[col][row].setDiscovered(true);
 	}
 
 	@Override
@@ -190,10 +191,17 @@ public class Maze implements Observer{
 				end = true;
 			}
 	        this.maze[col][row] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
-	        this.maze[c.getColumn()][c.getRow()] =  new Cell(c, CellInfo.EMPTY);
+	        this.maze[c.getColumn()][c.getRow()] =  new Cell(c, CellInfo.EMPTY, compteur);
 	        //System.out.println("Le joueur s'est déplacé en " + monster.getCoordinate().getColumn() + ", " + monster.getCoordinate().getRow());
 	        //this.displayMaze();
     }
 
+    /**
+     * Redéfinie l'attribut compteur représentant le nombre de tours de la partie.
+     * @param compteur Le compteur représentant le nombre de tours de la partie.
+     */
+    public void setCompteur(int compteur) {
+        this.compteur = compteur;
+    }
 }
     
