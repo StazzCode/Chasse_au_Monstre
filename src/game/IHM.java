@@ -52,6 +52,11 @@ public class IHM extends Application {
     Label play;
 
     /**
+     * Le label affichant des retours en fonction des actions des joueurs.
+     */
+    Label response;
+
+    /**
      * Le bouton permettant au joueur de tirer sur le monstre.
      */
     Button shoot;
@@ -111,9 +116,9 @@ public class IHM extends Application {
         }
     }
 
-    private static void sleep() {
+    private static void sleep(int time) {
         try {
-            Thread.sleep(50);
+            Thread.sleep(time);
         } catch (InterruptedException e) {}
     }
 
@@ -121,7 +126,7 @@ public class IHM extends Application {
      * Méthode qui gère le tour du monstre.
      */
     public void monsterPlay() {
-        IHM.sleep();
+        IHM.sleep(500);
     	this.displayHunterView();
     	if(maze.getEnd()) {
     		play.setText("Partie terminée. Le Monstre a gagné.");
@@ -140,7 +145,7 @@ public class IHM extends Application {
      * Méthode qui gère le tour du chasseur.
      */
     public void hunterPlay() {
-        IHM.sleep();
+        IHM.sleep(500);
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         turn++;
@@ -158,28 +163,16 @@ public class IHM extends Application {
         if (active) {
             scene.setOnKeyPressed(e -> {
                 if (e.getCode() == KeyCode.Z) {
-                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
-                            maze.getMonster().getCoordinate().getRow() - 1))) {
-                                monsterPlay();
-                            }
+                    setMonsterMovementKeybind(0, -1);
                 }
                 if (e.getCode() == KeyCode.Q) {
-                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() - 1,
-                            maze.getMonster().getCoordinate().getRow()))) {
-                                monsterPlay();
-                            }
+                    setMonsterMovementKeybind(-1, 0);
                 }
                 if (e.getCode() == KeyCode.S) {
-                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn(),
-                            maze.getMonster().getCoordinate().getRow() + 1))) {
-                                monsterPlay();
-                            }
+                    setMonsterMovementKeybind(0, 1);
                 }
                 if (e.getCode() == KeyCode.D) {
-                    if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + 1,
-                            maze.getMonster().getCoordinate().getRow()))) {
-                                monsterPlay();
-                            }
+                    setMonsterMovementKeybind(1, 0);
                 }
             });
         } else {
@@ -187,8 +180,18 @@ public class IHM extends Application {
         }
     }
 
+    private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
+        if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
+                maze.getMonster().getCoordinate().getRow() + rowMovement))) {
+                    monsterPlay();
+                } else {
+                    response.setText("Mouvement impossible ! Réessayez.");
+                }
+    }
+
     public void setHunterInteractions(boolean active) {
         if (active) {
+            response.setText("");
             shoot.setVisible(true);
             for (int i = 0; i < grid.getChildren().size(); i++) {
                 Button b = (Button) grid.getChildren().get(i);
@@ -242,9 +245,9 @@ public class IHM extends Application {
                     int column = col.intValue();
                     int rowValue = row.intValue();
                     maze.getMaze()[column][rowValue].discover();
+                    this.response.setText("Vous avez tiré sur " + maze.getMaze()[column][rowValue].getState().toString() + "!");
                 }
                 hunterPlay();
-                System.out.println(this.maze.getHunter().getHitsList());
             } else {
                 play.setText("Partie terminée. Le chasseur a gagné.");
                 shoot.setVisible(false);
@@ -283,6 +286,10 @@ public class IHM extends Application {
         play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
         stackPane.getChildren().add(play);
         StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
+
+        response = new Label("");
+        stackPane.getChildren().add(response);
+        StackPane.setAlignment(response, Pos.TOP_CENTER);
 
         initializeShootButton();
         stackPane.getChildren().add(shoot);
