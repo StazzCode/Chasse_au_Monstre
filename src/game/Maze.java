@@ -173,7 +173,9 @@ public class Maze implements Observer{
         int col = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getColumn();
 		if(this.maze[col][row].getState().getCar() == CellInfo.MONSTER.getCar()) {
 			end = true;
-		}
+		}else {
+            end = false;
+        }
 	}
 
 	@Override
