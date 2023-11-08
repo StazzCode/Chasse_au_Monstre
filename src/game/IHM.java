@@ -60,6 +60,9 @@ public class IHM extends Application {
      * La scène principale de l'interface graphique.
      */
     Scene scene;
+    
+    int shootColumn;
+    int shootRow;
 
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
@@ -153,9 +156,9 @@ public class IHM extends Application {
                     Integer col = GridPane.getColumnIndex(b);
                     Integer row = GridPane.getRowIndex(b);
                     if (col != null && row != null) {
-                        int column = col.intValue();
-                        int rowValue = row.intValue();
-                        maze.getHunter().hit(new Coordinate(column, rowValue));
+                    	shootColumn = col.intValue();
+                        shootRow = row.intValue();
+                        //maze.getHunter().hit(new Coordinate(column, rowValue));
                     }
                 });
             }
@@ -214,8 +217,10 @@ public class IHM extends Application {
         StackPane.setAlignment(shoot, Pos.TOP_CENTER);
         shoot.setVisible(false);
         shoot.setOnMouseClicked(e -> {
+        	this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
             if (!maze.getEnd()) {
                 hunterPlay();
+                System.out.println(this.maze.getHunter().getHitsList());
             } else {
                 play.setText("Partie terminée. Le chasseur a gagné.");
                 shoot.setVisible(false);
