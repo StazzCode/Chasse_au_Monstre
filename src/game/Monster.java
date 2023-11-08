@@ -80,4 +80,10 @@ public class Monster extends Player {
     	}
         return false;
     }
+
+    public boolean near(int i, int j) {
+        Coordinate c = this.getCoordinate();
+        if (i<c.getColumn()-2 || i>c.getColumn()+2 || j<c.getRow()-2 || j>c.getRow()+2) return false;
+        return true;
+    }
 }

@@ -119,9 +119,7 @@ public class Maze implements Observer {
                 maze[i][j] = new Cell(new Coordinate(i, j), CellInfo.EMPTY);
             }
         }
-        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()] = new Cell(
-                new Coordinate(this.monster.getCoordinate().getColumn(), this.monster.getCoordinate().getRow()),
-                CellInfo.MONSTER);
+        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);;
     }
 
     /**
@@ -135,8 +133,8 @@ public class Maze implements Observer {
         while (countObstacles != nbObstacles) {
             int x = random.nextInt(columns);
             int y = random.nextInt(rows);
-            if (this.maze[x][y].getState() == CellInfo.EMPTY) {
-                this.maze[x][y] = new Cell(new Coordinate(x, y), CellInfo.WALL);
+            if(this.maze[x][y].getState() == CellInfo.EMPTY) {
+            	this.maze[x][y].setState(CellInfo.WALL);
                 countObstacles++;
             }
         }
@@ -215,10 +213,10 @@ public class Maze implements Observer {
     public void generateEnterExit() {
         int col = 0;
         int row = 0;
-        this.maze[col][row] = new Cell(new Coordinate(col, row), CellInfo.ENTER);
-        int maxCol = this.getColumns() - 1;
-        int maxRow = this.getRows() - 1;
-        this.maze[maxCol][maxRow] = new Cell(new Coordinate(maxCol, maxRow), CellInfo.EXIT);
+        this.maze[col][row].setState(CellInfo.ENTER);
+        int maxCol = this.getColumns()-1;
+        int maxRow = this.getRows()-1;
+        this.maze[maxCol][maxRow].setState(CellInfo.EXIT);
     }
 
     /**
@@ -243,34 +241,41 @@ public class Maze implements Observer {
     }
 
     @Override
-    public void update(Subject subject) {
-        Hunter hunter = (Hunter) subject;
-        this.hunter = hunter;
-        int row = this.hunter.getHitsList().get(this.hunter.getHitsList().size() - 1).getRow();
-        int col = this.hunter.getHitsList().get(this.hunter.getHitsList().size() - 1).getColumn();
-        if (this.maze[col][row].getState().getCar() == CellInfo.MONSTER.getCar()) {
-            end = true;
+	public void update(Subject subject) {
+		Hunter hunter = (Hunter) subject;
+		this.hunter = hunter;
+		int row = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getRow();
+        int col = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getColumn();
+		if(this.maze[col][row].getState().getCar() == CellInfo.MONSTER.getCar()) {
+			end = true;
+		}else {
+            end = false;
         }
+        this.maze[col][row].setDiscovered(true);
+	}
+
+	@Override
+	public void update(Subject subject, Object lastCoordinate) {
+		 	Monster monster = (Monster) subject;
+		 	Coordinate c = (Coordinate) lastCoordinate;
+		 	int row = monster.getCoordinate().getRow();
+		 	int col = monster.getCoordinate().getColumn();
+		 	if(this.maze[col][row].getState().getCar() == CellInfo.EXIT.getCar()) {
+		 		this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);
+				end = true;
+			}
+	        this.maze[col][row].setState(CellInfo.MONSTER);
+	        this.maze[c.getColumn()][c.getRow()].setState(CellInfo.EMPTY);
+            this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
+	        //System.out.println("Le joueur s'est déplacé en " + monster.getCoordinate().getColumn() + ", " + monster.getCoordinate().getRow());
+	        //this.displayMaze();
     }
 
-    @Override
-    public void update(Subject subject, Object lastCoordinate) {
-        Monster monster = (Monster) subject;
-        Coordinate c = (Coordinate) lastCoordinate;
-        int row = monster.getCoordinate().getRow();
-        int col = monster.getCoordinate().getColumn();
-        if (this.maze[col][row].getState().getCar() == CellInfo.EXIT.getCar()) {
-            this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()] = new Cell(
-                    monster.getCoordinate(), CellInfo.MONSTER);
-            this.maze[c.getColumn()][c.getRow()] = new Cell(c, CellInfo.EMPTY);
-            end = true;
-        }
-        this.maze[col][row] = new Cell(monster.getCoordinate(), CellInfo.MONSTER);
-        this.maze[c.getColumn()][c.getRow()] = new Cell(c, CellInfo.EMPTY);
-        // System.out.println("Le joueur s'est déplacé en " +
-        // monster.getCoordinate().getColumn() + ", " +
-        // monster.getCoordinate().getRow());
-        // this.displayMaze();
+    /**
+     * Redéfinie l'attribut compteur représentant le nombre de tours de la partie.
+     * @param compteur Le compteur représentant le nombre de tours de la partie.
+     */
+    public void setCompteur(int compteur) {
+        this.compteur = compteur;
     }
-
 }
