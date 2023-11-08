@@ -119,7 +119,7 @@ public class Maze implements Observer {
                 maze[i][j] = new Cell(new Coordinate(i, j), CellInfo.EMPTY);
             }
         }
-        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);;
+        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);
     }
 
     /**
