@@ -309,7 +309,7 @@ public class IHM extends Application {
      * Méthode main qui lance l'application.
      */
     public static void main(String[] args) {
-        launch();
+        Application.launch(args);
     }
 
 }
