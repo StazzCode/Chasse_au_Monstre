@@ -72,8 +72,8 @@ public class Monster extends Player {
     private boolean isDistanceMoreThan1(Coordinate c){
         double x1 = coordinate.getColumn();
         double x2 = c.getColumn();
-        double y1 = coordinate.getColumn();
-        double y2 = c.getColumn();
+        double y1 = coordinate.getRow();
+        double y2 = c.getRow();
         return Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2 - y1,2)) > 1;
     }
 

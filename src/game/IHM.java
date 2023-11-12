@@ -88,13 +88,22 @@ public class IHM extends Application {
         return Character.toString(c.getState().getCar());
     }
 
+    public String displayCellExceptMonster(Cell c){
+        if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0){
+            return String.valueOf(c.getLastMonsterAppearance());
+        } else if (c.getState() != CellInfo.MONSTER) {
+            return Character.toString(c.getState().getCar());
+        }
+        return " ";
+    }
+
     public void displayHunterView() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
                 b.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
                 if (maze.getMaze()[i][j].isDiscovered()) {
-                    b.setText(displayCell(maze.getMaze()[i][j]));
+                    b.setText(displayCellExceptMonster(maze.getMaze()[i][j]));
                 } else {
                     b.setText(" ");
                 }
