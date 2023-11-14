@@ -34,6 +34,12 @@ public class Monster extends Player {
         if (isCoordinateWrong(c) || isDistanceMoreThan1(c)) return false;
         return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
     }
+    
+    public void setMonsterPosition(Coordinate c) {
+    	Coordinate previousCoordinate = this.coordinate;
+        this.coordinate = c;
+        this.notifyObservers(previousCoordinate);
+    }
 
 
     /**

@@ -219,25 +219,25 @@ public class Maze implements Observer {
     	if(rand == 0) {// TOP
     		int col = random.nextInt(this.columns);
     		this.maze[col][0] = new Cell(new Coordinate(col,0), CellInfo.ENTER);
-    		this.monster.move(new Coordinate(col,0));
+    		this.monster.setMonsterPosition(new Coordinate(col,0));
     		col = random.nextInt(this.columns);
     		this.maze[col][this.rows-1] = new Cell(new Coordinate(col,this.rows-1), CellInfo.EXIT);
     	}else if(rand == 1) { // RIGHT
     		int row = random.nextInt(this.rows);
     		this.maze[this.columns-1][row] = new Cell(new Coordinate(this.columns-1,row), CellInfo.ENTER);
-    		this.monster.move(new Coordinate(this.columns-1 ,row));
+    		this.monster.setMonsterPosition(new Coordinate(this.columns-1 ,row));
     		row = random.nextInt(this.columns);
     		this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.EXIT);
     	}else if(rand == 2) { // BOTTOM
     		int col = random.nextInt(this.columns);
     		this.maze[col][this.rows-1] = new Cell(new Coordinate(col, this.rows-1), CellInfo.ENTER);
-    		this.monster.move(new Coordinate(col, this.rows-1));
+    		this.monster.setMonsterPosition(new Coordinate(col, this.rows-1));
     		col = random.nextInt(this.rows);
     		this.maze[col][0] = new Cell(new Coordinate(col, 0), CellInfo.EXIT);
     	}else if(rand == 3) { // LEFT
     		int row = random.nextInt(this.rows);
     		this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.ENTER);
-    		this.monster.move(new Coordinate(0, row));
+    		this.monster.setMonsterPosition(new Coordinate(0, row));
     		row = random.nextInt(this.columns);
     		this.maze[this.columns-1][row] = new Cell(new Coordinate(this.columns-1,row), CellInfo.ENTER);
     	}
@@ -315,8 +315,6 @@ public class Maze implements Observer {
 	        this.maze[col][row].setState(CellInfo.MONSTER);
 	        this.maze[c.getColumn()][c.getRow()].setState(CellInfo.EMPTY);
             this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
-	        //System.out.println("Le joueur s'est déplacé en " + monster.getCoordinate().getColumn() + ", " + monster.getCoordinate().getRow());
-	        //this.displayMaze();
     }
 
     /**
