@@ -213,7 +213,7 @@ public class Maze implements Observer {
     public void generateEnterExit(){
     	Random random = new Random();
     	
-    	int rand = random.nextInt(4);
+    	int rand =3;
     	System.out.println(rand);
     	
     	if(rand == 0) {// TOP
@@ -239,7 +239,7 @@ public class Maze implements Observer {
     		this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.ENTER);
     		this.monster.setMonsterPosition(new Coordinate(0, row));
     		row = random.nextInt(this.columns);
-    		this.maze[this.columns-1][row] = new Cell(new Coordinate(this.columns-1,row), CellInfo.ENTER);
+    		this.maze[this.columns-1][row] = new Cell(new Coordinate(this.columns-1,row), CellInfo.EXIT);
     	}
     }
     
