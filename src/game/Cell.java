@@ -7,6 +7,7 @@ package game;
 public class Cell {
 
     private int lastMonsterAppearance;
+    private int previousLastMonsterAppearance;
     private boolean discovered;
     private Coordinate coordinate;
     private CellInfo state;
@@ -18,6 +19,7 @@ public class Cell {
      */
     public Cell(Coordinate c, CellInfo state){
         this.lastMonsterAppearance = -1;
+        this.previousLastMonsterAppearance = lastMonsterAppearance;
         this.discovered = false;
         this.coordinate = c;
         this.state = state;
@@ -48,6 +50,22 @@ public class Cell {
      */
     public void setLastMonsterAppearance(int lastMonsterAppearance) {
         this.lastMonsterAppearance = lastMonsterAppearance;
+    }
+
+    /**
+     * Retourne l'indice de l'avant-dernière apparence du monstre sur cette case.
+     * @return l'indice de l'avant-dernière apparence du monstre sur cette case
+     */
+    public int getPreviousLastMonsterAppearance() {
+        return previousLastMonsterAppearance;
+    }
+
+    /**
+     * Redéfinie l'indice de l'avant-dernière apparence du monstre sur cette case.
+     * @param previousLastMonsterAppearance L'indice de l'avant-dernière apparence du monstre sur cette case.
+     */
+    public void setPreviousLastMonsterAppearance(int previousLastMonsterAppearance) {
+        this.previousLastMonsterAppearance = previousLastMonsterAppearance;
     }
 
     /**

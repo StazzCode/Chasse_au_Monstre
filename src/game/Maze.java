@@ -346,7 +346,15 @@ public class Maze implements Observer {
 			}
 	        this.maze[col][row].setState(CellInfo.MONSTER);
 	        this.maze[c.getColumn()][c.getRow()].setState(CellInfo.EMPTY);
-            this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
+
+            int lastAppearance = this.maze[c.getColumn()][c.getRow()].getLastMonsterAppearance();
+            if (lastAppearance == -1){
+                this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
+                this.maze[c.getColumn()][c.getRow()].setPreviousLastMonsterAppearance(compteur);
+            }else {
+                this.maze[c.getColumn()][c.getRow()].setPreviousLastMonsterAppearance(lastAppearance);
+                this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
+            }
     }
 
     /**

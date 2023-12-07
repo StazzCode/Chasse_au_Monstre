@@ -103,6 +103,12 @@ public class IHM extends Application {
             return String.valueOf(c.getLastMonsterAppearance());
         } else if (c.getState() != CellInfo.MONSTER) {
             return Character.toString(c.getState().getCar());
+        } else if (c.getState() == CellInfo.MONSTER){
+            if (c.getPreviousLastMonsterAppearance() < 0){
+                return " ";
+            }else {
+                return String.valueOf(c.getPreviousLastMonsterAppearance());
+            }
         }
         return " ";
     }
@@ -157,9 +163,7 @@ public class IHM extends Application {
         IHM.sleep(500);
     	this.displayHunterView();
     	if(maze.getEnd()) {
-    		play.setText("Partie terminée. Le Monstre a gagné.");
-    		setMonsterInteractions(false);
-            return;
+    		endGame(false);
     	}
         
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
@@ -286,28 +290,38 @@ public class IHM extends Application {
     private void initializeShootButton() {
         shoot = new Button("Shoot !");
         shoot.setOnMouseClicked(e -> {
-        	this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
-            if (!maze.getEnd()) {
-                Integer col = GridPane.getColumnIndex(this.selected);
-                Integer row = GridPane.getRowIndex(this.selected);
-                if (col != null && row != null) {
-                    int column = col.intValue();
-                    int rowValue = row.intValue();
-                    maze.getMaze()[column][rowValue].discover();
-                    this.response.setText("Vous avez tiré sur " + maze.getMaze()[column][rowValue].getState().toString() + "!");
-                }
-                hunterPlay();
+        	if (selected.getText().equals("")) {
+                response.setText("Veuillez sélectionner une case.");
             } else {
-                play.setText("Partie terminée. Le chasseur a gagné.");
-                shoot.setVisible(false);
-                this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                this.selected = new Button("");
-                for (int i = 0; i < grid.getChildren().size(); i++) {
-                    Button b = (Button) grid.getChildren().get(i);
-                    b.setOnMouseClicked(null);
+                this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
+                if (!maze.getEnd()) {
+                    Integer col = GridPane.getColumnIndex(this.selected);
+                    Integer row = GridPane.getRowIndex(this.selected);
+                    if (col != null && row != null) {
+                        int column = col.intValue();
+                        int rowValue = row.intValue();
+                        maze.getMaze()[column][rowValue].discover();
+                        this.response.setText("Vous avez tiré sur " + maze.getMaze()[column][rowValue].getState().toString() + "!");
+                    }
+                    hunterPlay();
+                } else {
+                    endGame(true);
                 }
             }
         });
+    }
+
+    private void endGame(boolean hunterWon) {
+        if (hunterWon) {
+            play.setText("Partie terminée. Le chasseur a gagné.");
+            this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            this.selected = new Button("");
+            setHunterInteractions(false);
+        } else {
+            play.setText("Partie terminée. Le Monstre a gagné.");
+    		setMonsterInteractions(false);
+            return;
+        }
     }
     
     /**
