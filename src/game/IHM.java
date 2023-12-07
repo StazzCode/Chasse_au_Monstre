@@ -360,7 +360,6 @@ public class IHM extends Application {
         shoot.setVisible(false);
 
         scene = new Scene(stackPane, 500, 500);
-        //this.displayMonsterView();
         hunterPlay();
 
         stage.setScene(scene);
