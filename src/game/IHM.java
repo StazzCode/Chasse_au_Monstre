@@ -16,9 +16,11 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import menu.MainMenu;
 
 /**
  * Cette classe représente l'interface graphique du jeu. Elle hérite de la
@@ -62,9 +64,19 @@ public class IHM extends Application {
     Button shoot;
 
     /**
+     * La StackPane principale contenant l'affichage du labyrinthe et des informations de jeu.
+     */
+    StackPane stackPane;
+
+    /**
      * La scène principale de l'interface graphique.
      */
     Scene scene;
+
+    /**
+     * Le Stage principal de l'interface graphique.
+     */
+    Stage mainStage;
     
     int shootColumn;
     int shootRow;
@@ -190,6 +202,41 @@ public class IHM extends Application {
         setMonsterInteractions(true);
     }
 
+    private void endGame(boolean hunterWon) {
+        if (hunterWon) {
+            play.setText("Partie terminée. Le chasseur a gagné.");
+            this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            this.selected = new Button("");
+            setHunterInteractions(false);
+        } else {
+            play.setText("Partie terminée. Le Monstre a gagné.");
+            setMonsterInteractions(false);
+            return;
+        }
+        Button replay = new Button("Recommencer");
+        replay.setOnMouseClicked(e -> {
+            this.start(mainStage);
+        });
+        Button backToMenu = new Button("Retour au menu");
+        backToMenu.setOnMouseClicked(e -> {
+            MainMenu main = new MainMenu();
+            mainStage.close();
+            try {
+                main.start(mainStage);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
+        Button quit = new Button("Quitter");
+        quit.setOnMouseClicked(e -> {
+            System.exit(0);
+        });
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.TOP_CENTER);
+        hbox.getChildren().addAll(replay, backToMenu, quit);
+        stackPane.getChildren().add(hbox);
+    }
+
     /**
      * Méthode qui gère les interactions du monstre avec le clavier.
      * @param active l'intéraction utilisée
@@ -310,19 +357,6 @@ public class IHM extends Application {
             }
         });
     }
-
-    private void endGame(boolean hunterWon) {
-        if (hunterWon) {
-            play.setText("Partie terminée. Le chasseur a gagné.");
-            this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-            this.selected = new Button("");
-            setHunterInteractions(false);
-        } else {
-            play.setText("Partie terminée. Le Monstre a gagné.");
-    		setMonsterInteractions(false);
-            return;
-        }
-    }
     
     /**
      * Méthode qui initialise l'interface graphique.
@@ -331,6 +365,8 @@ public class IHM extends Application {
      */
     @Override
     public void start(Stage stage) {
+        mainStage = stage;
+
         int columns = 10;
         int rows = 10;
         turn = 0;
@@ -345,7 +381,7 @@ public class IHM extends Application {
         initializeGrid(columns, rows, elementSize);
         grid.setAlignment(Pos.CENTER);
 
-        StackPane stackPane = new StackPane(grid);
+        stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
         stackPane.getChildren().add(play);
         StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
