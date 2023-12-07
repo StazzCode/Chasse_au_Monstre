@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * Elle est utilisée pour suivre les coups réussis du chasseur et pour notifier les observateurs lorsqu'un coup est réussi.
  */
 
-
 public class Hunter extends Player{
 
     protected Maze maze;

@@ -23,6 +23,12 @@ public class Cell {
         this.state = state;
     }
 
+    /**
+     * Constructeur d'une cellule avec les coordonnées de la cellule, l'état de la cellule et l'indice de la dernière apparence du monstre sur cette case.
+     * @param c les coordonnées de la cellule
+     * @param state l'état de la cellule
+     * @param lastMonsterAppearance la dernière apparence du monstre sur cette case
+     */
     public Cell(Coordinate c, CellInfo state, int lastMonsterAppearance){
         this(c,state);
         this.lastMonsterAppearance = lastMonsterAppearance;
@@ -79,6 +85,10 @@ public class Cell {
         return this.state;
     }
 
+    /**
+     * Met à jour l'état de la cellule.
+     * @param state l'état de la cellule
+     */
     public void setState(CellInfo state) {
         this.state = state;
     }

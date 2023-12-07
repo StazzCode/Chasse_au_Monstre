@@ -88,10 +88,18 @@ public class Maze implements Observer {
         return this.monster;
     }
 
+    /**
+     * Retourne le chasseur du labyrinthe
+     * @return le chasseur du labyrinthe
+     */
     public Hunter getHunter() {
         return this.hunter;
     }
 
+    /**
+     * Retourne l'arrivée du labyrinthe
+     * @return l'arrivée du labyrinthe
+     */
     public boolean getEnd() {
         return this.end;
     }
@@ -175,6 +183,11 @@ public class Maze implements Observer {
     }
 
 
+    /**
+     * Méthode qui génère le nombre de colonnes du labyrinthe en fonction de la difficulté
+     * @param d le niveau de difficulté choisi
+     * @return le nombre de colonnes du labyrinthe en fonction de la difficulté
+     */
     public int generateColumnsDifficulty(Difficulty d) {
 
         if (d.equals(Difficulty.TRES_FACILE)) {
@@ -191,6 +204,11 @@ public class Maze implements Observer {
         return columns;
     }
 
+    /**
+     * Méthode qui génère le nombre de lignes du labyrinthe en fonction de la difficulté
+     * @param d le niveau de difficulté choisi
+     * @return le nombre de lignes du labyrinthe en fonction de la difficulté
+     */
     public int generateRowsDifficulty(Difficulty d) {
 
         if (d.equals(Difficulty.TRES_FACILE)) {
@@ -243,6 +261,10 @@ public class Maze implements Observer {
     	}
     }
     
+    /**
+     * Méthode qui retourne les coordonnées de l'entrée du labyrinthe
+     * @return les coordonnées de l'entrée du labyrinthe
+     */
     public Coordinate getEnter() {
     	Coordinate enter = null;
     	for(int i = 0; i < this.columns; i++) {
@@ -255,6 +277,10 @@ public class Maze implements Observer {
     	return enter;
     }
     
+    /**
+     * Méthode qui retourne les coordonnées de la sortie du labyrinthe
+     * @return les coordonnées de la sortie du labyrinthe
+     */
     public Coordinate getExit() {
     	Coordinate exit = null;
     	for(int i = 0; i < this.columns; i++) {
@@ -288,6 +314,9 @@ public class Maze implements Observer {
         //
     }
 
+    /**
+     * Méthode qui met à jour 
+     */
     @Override
 	public void update(Subject subject) {
 		Hunter hunter = (Hunter) subject;
@@ -302,6 +331,9 @@ public class Maze implements Observer {
         this.maze[col][row].setDiscovered(true);
 	}
 
+    /**
+     * Méthode qui met à jour le labyrinthe 
+     */
 	@Override
 	public void update(Subject subject, Object lastCoordinate) {
 		 	Monster monster = (Monster) subject;

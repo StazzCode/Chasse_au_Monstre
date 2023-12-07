@@ -81,6 +81,11 @@ public class IHM extends Application {
         }
     }
 
+    /**
+     * Méthode qui retourne la dernière apparition du monstre si c'est une cellule vide, sinon le caractère correspondant au type de cellule
+     * @param c la cellule choisie
+     * @return la dernière apparition du monstre si c'est une cellule vide, sinon le caractère correspondant au type de cellule
+     */
     public String displayCell(Cell c){
         if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0){
             return String.valueOf(c.getLastMonsterAppearance());
@@ -88,6 +93,11 @@ public class IHM extends Application {
         return Character.toString(c.getState().getCar());
     }
 
+    /**
+     * Méthode qui retourne le caractère correspondant au type de cellule sauf si c'est une cellule vide avec une dernière apparition du monstre
+     * @param c la cellule choisie
+     * @return le caractère correspondant au type de cellule sauf si c'est une cellule vide avec une dernière apparition du monstre
+     */
     public String displayCellExceptMonster(Cell c){
         if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0){
             return String.valueOf(c.getLastMonsterAppearance());
@@ -97,6 +107,9 @@ public class IHM extends Application {
         return " ";
     }
 
+    /**
+     * Méthode qui affiche le labyrinthe vu par le chasseur 
+     */
     public void displayHunterView() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
@@ -111,6 +124,9 @@ public class IHM extends Application {
         }
     }
 
+    /**
+     * Méthode qui affiche le labyrinthe vu par le monstre
+     */
     public void displayMonsterView() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
@@ -124,7 +140,10 @@ public class IHM extends Application {
             }
         }
     }
-
+    /**
+     * Méthode qui permet de mettre en pause le programme pendant un certain temps.
+     * @param time la durée choisie d'arrêt
+     */
     private static void sleep(int time) {
         try {
             Thread.sleep(time);
@@ -167,6 +186,10 @@ public class IHM extends Application {
         setMonsterInteractions(true);
     }
 
+    /**
+     * Méthode qui gère les interactions du monstre avec le clavier.
+     * @param active l'intéraction utilisée
+     */
     public void setMonsterInteractions(boolean active) {
         if (active) {
             scene.setOnKeyPressed(e -> {
@@ -188,6 +211,11 @@ public class IHM extends Application {
         }
     }
 
+    /**
+     * Méthode qui affiche sur le jeu affiche "Mouvement impossible ! Réessayer" si le déplacement choisi pour le monstre est impossible
+     * @param columnMovement le mouvement en ordonnée
+     * @param rowMovement le mouvement en abscisse
+     */
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
@@ -197,6 +225,10 @@ public class IHM extends Application {
                 }
     }
 
+    /**
+     * Méthode qui gère les interactions du chasseur avec le clavier.
+     * @param active l'intéraction utilisée
+     */
     public void setHunterInteractions(boolean active) {
         if (active) {
             response.setText("");
@@ -226,6 +258,12 @@ public class IHM extends Application {
         }
     }
     
+    /**
+     * Méthode qui initialise la grille du jeu.
+     * @param columns le nombre de colonnes
+     * @param rows le nombre de lignes
+     * @param elementSize la taille des boutons dans chaque case
+     */
     private void initializeGrid(int columns, int rows, int elementSize) {
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
@@ -242,6 +280,9 @@ public class IHM extends Application {
         }
     }
     
+    /**
+     * Méthode qui permet d'initialiser le bouton shoot pour que le chasseur puisse tirer dans le labyrinthe
+     */
     private void initializeShootButton() {
         shoot = new Button("Shoot !");
         shoot.setOnMouseClicked(e -> {

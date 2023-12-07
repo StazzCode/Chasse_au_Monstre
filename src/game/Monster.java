@@ -30,11 +30,20 @@ public class Monster extends Player {
         return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
     }
 
+    /**
+     * Méthode qui vérifie si le monstre peut se déplacer à la coordonnée donnée en diagonale.
+     * @param c la coordonnée à vérifier
+     * @return si le déplacement est possible en diagonale
+     */
     public boolean canMoveWithDiagonals(Coordinate c){
         if (isCoordinateWrong(c) || isDistanceMoreThan1(c)) return false;
         return maze.maze[c.getColumn()][c.getRow()].getState() != CellInfo.WALL;
     }
     
+    /**
+     * Méthode qui mets à jour la position du monstre
+     * @param c la nouvelle position du monstre
+     */
     public void setMonsterPosition(Coordinate c) {
     	Coordinate previousCoordinate = this.coordinate;
         this.coordinate = c;
@@ -106,6 +115,11 @@ public class Monster extends Player {
         return false;
     }
 
+    /**
+     * Méthode qui déplace le monstre en diagonale à la coordonnée donnée si c'est possible
+     * @param c la coordonnée à laquelle le monstre doit se déplacer
+     * @return si le déplacement est possible
+     */
     public boolean moveWithDiagonals(Coordinate c){
         if(canMoveWithDiagonals(c)) {
             Coordinate previousCoordinate = this.coordinate;
@@ -116,6 +130,10 @@ public class Monster extends Player {
         return false;
     }
 
+    /**
+     * Méthode qui retourne si le monstre est à proximité de la coordonnée donnée
+     * @return si le monstre est à proximité de la coordonnée donnée
+     */
     public boolean near(int i, int j) {
         Coordinate c = this.getCoordinate();
         if (i<c.getColumn()-2 || i>c.getColumn()+2 || j<c.getRow()-2 || j>c.getRow()+2) return false;

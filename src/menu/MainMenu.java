@@ -40,6 +40,10 @@ import game.*;
  */
 public class MainMenu extends Application{
 
+    /**
+     * La classe MenuAnimation représente l'animation du menu principal.
+     * Elle contient les briques lego et les figurines qui bougent.
+     */
     private class MenuAnimation{
         private StackPane pane;
         private List<Transition> animations;
