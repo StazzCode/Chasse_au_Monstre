@@ -176,6 +176,7 @@ public class IHM extends Application {
     	this.displayHunterView();
     	if(maze.getEnd()) {
     		endGame(false);
+            return;
     	}
         
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
