@@ -1,5 +1,8 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /**
  * import
  */
@@ -231,8 +234,7 @@ public class Maze implements Observer {
     public void generateEnterExit(){
     	Random random = new Random();
     	
-    	int rand =3;
-    	System.out.println(rand);
+    	int rand = random.nextInt(4);
     	
     	if(rand == 0) {// TOP
     		int col = random.nextInt(this.columns);
@@ -266,9 +268,9 @@ public class Maze implements Observer {
      * @return les coordonnées de l'entrée du labyrinthe
      */
     public Coordinate getEnter() {
-    	Coordinate enter = null;
+    	Coordinate enter = new Coordinate(0,0);
     	for(int i = 0; i < this.columns; i++) {
-    		for(int j = 0; j < this.rows; i++) {
+    		for(int j = 0; j < this.rows; j++) {
     			if(this.maze[i][j].getState().getCar() == CellInfo.ENTER.getCar()) {
     				enter = new Coordinate(i, j);
     			}
@@ -282,9 +284,9 @@ public class Maze implements Observer {
      * @return les coordonnées de la sortie du labyrinthe
      */
     public Coordinate getExit() {
-    	Coordinate exit = null;
+    	Coordinate exit = new Coordinate(0,0);
     	for(int i = 0; i < this.columns; i++) {
-    		for(int j = 0; j < this.rows; i++) {
+    		for(int j = 0; j < this.rows; j++) {
     			if(this.maze[i][j].getState().getCar() == CellInfo.EXIT.getCar()) {
     				exit = new Coordinate(i, j);
     			}

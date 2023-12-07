@@ -374,8 +374,8 @@ public class IHM extends Application {
 
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
-        maze.generateObstacles();
         maze.generateEnterExit();
+        maze.generateObstacles();
 
         this.grid = new GridPane();
         int elementSize = 40;
