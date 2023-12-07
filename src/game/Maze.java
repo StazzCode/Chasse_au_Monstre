@@ -366,4 +366,47 @@ public class Maze implements Observer {
     public void setCompteur(int compteur) {
         this.compteur = compteur;
     }
+    
+    public void genererLabyrinthe(int x, int y) {
+        this.maze[y][x].setState(CellInfo.HOLE);
+        int[] directions = {0, 1, 2, 3}; // 0: haut, 1: droite, 2: bas, 3: gauche
+        shuffleArray(directions);
+
+        for (int direction : directions) {
+            int newX = x;
+            int newY = y;
+
+            switch (direction) {
+                case 0: // Haut
+                    newY -= 2;
+                    break;
+                case 1: // Droite
+                    newX += 2;
+                    break;
+                case 2: // Bas
+                    newY += 2;
+                    break;
+                case 3: // Gauche
+                    newX -= 2;
+                    break;
+            }
+
+            if (newX > 0 && newX < this.columns - 1 && newY > 0 && newY < this.rows - 1 && this.maze[newY][newX].getState().getCar() == CellInfo.WALL.getCar()) {
+                this.maze[newY][newX].setState(CellInfo.HOLE);
+                this.maze[y + (newY - y) / 2][x + (newX - x) / 2].setState(CellInfo.HOLE);
+                genererLabyrinthe(newX, newY);
+            }
+        }
+    }
+
+    private void shuffleArray(int[] array) {
+        Random random = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            int temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
+    }
+    
 }
