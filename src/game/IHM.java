@@ -93,6 +93,8 @@ public class IHM extends Application {
             return String.valueOf(c.getLastMonsterAppearance());
         } else if (c.getState() != CellInfo.MONSTER) {
             return Character.toString(c.getState().getCar());
+        } else if (c.getState() == CellInfo.MONSTER){
+            return String.valueOf(c.getPreviousLastMonsterAppearance());
         }
         return " ";
     }
