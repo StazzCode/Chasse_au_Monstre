@@ -310,10 +310,11 @@ public class IHM extends Application {
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
-            monsterPlay();
-        } else {
-            response.setText("Mouvement impossible ! Réessayez.");
-        }
+                    System.out.println(maze.hasNeighbors(maze.getMonster().coordinate));
+                    monsterPlay();
+                } else {
+                    response.setText("Mouvement impossible ! Réessayez.");
+                }
     }
 
     /**
@@ -448,10 +449,8 @@ public class IHM extends Application {
 
         int columns = 10;
         int rows = 10;
+        turn = 0;
         // version fonctionnelle classique:
-        // int columns = 10;
-        // int rows = 10;
-        // turn = 0;
 
         // this.maze = new Maze(columns, rows);
         // maze.resetMaze();
@@ -460,16 +459,14 @@ public class IHM extends Application {
         // maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
 
         // version de test avec difficultés:
-        turn = 0;
-        difficulty = Difficulty.TRES_DIFFICILE;
-        int columns = getColumnsDifficulty();
-        int rows = getRowsDifficulty();
-        System.out.println("Columns : " + columns + " Rows : " + rows);
+
+        // difficulty = Difficulty.TRES_DIFFICILE;
+        // int columns = getColumnsDifficulty();
+        // int rows = getRowsDifficulty();
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
         maze.generateEnterExit();
         maze.generateObstacles(40);
-        //maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
 
         this.grid = new GridPane();
         int elementSize = 40;

@@ -66,8 +66,12 @@ public enum Difficulty {
     public int getNbObstaclesDifficulty() {
         return nbObstaclesDifficulty;
     }
-    TRES_FACILE, FACILE, MOYEN, DIFFICILE, TRES_DIFFICILE;
     
+    /**
+     * Retourne le niveau de difficulté du labyrinthe en fonction de l'entier
+     * @param i l'entier
+     * @return le niveau de difficulté du labyrinthe
+     */
 	public static Difficulty fromInt(int i){
 		return Difficulty.values()[i];
 	}
