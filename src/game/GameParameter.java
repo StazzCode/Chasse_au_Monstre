@@ -23,6 +23,11 @@ public class GameParameter {
     public void setSecondPlayerName(String secondPlayerName) {
         this.secondPlayerName = secondPlayerName;
     }
+    @Override
+    public String toString() {
+        return "GameParameter [difficulty=" + difficulty + ", firstPlayerName=" + firstPlayerName
+                + ", secondPlayerName=" + secondPlayerName + "]";
+    }
 
     
 }

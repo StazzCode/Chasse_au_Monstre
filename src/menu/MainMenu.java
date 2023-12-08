@@ -114,6 +114,8 @@ public class MainMenu extends Application{
         primaryStage.setTitle("Menu");
         primaryStage.show();
     }
+
+
     /**
      * Méthode qui permet d'expliquer comment jouer au jeu de la chasse au monstre.
      * @param baseStage le stage de base.
@@ -167,14 +169,24 @@ public class MainMenu extends Application{
      */
     public void playMenu(Stage baseStage, MenuAnimation menuAnimation){
         Scene oldScene = baseStage.getScene();
+
+        DifficultySlider difficulty = new DifficultySlider();
+        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
+        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
+
         VBox root = new VBox();
         HBox bottom=new HBox();
+
         HBox top=new HBox(50);
         top.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
         top.getStyleClass().add("top");
+
         HBox localBox=new HBox();
+
         HBox iaBox=new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+
         HBox onlineBox=new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
+
         Button joueurVsJoueurOnglet = new Button("Local 1V1");
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         localBox.getStyleClass().add("center");
@@ -198,31 +210,37 @@ public class MainMenu extends Application{
         });
         top.getChildren().addAll(joueurVsJoueurOnglet,joueurVsIaOnglet,iaVsIaOnglet);
         for(Node n : top.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(top.getChildren().size()+1));
+
         Button back = new Button("Menu");
         back.setOnAction(e->{
             baseStage.setScene(oldScene);
             menuAnimation.play();
         });
+
         Button play = new Button("Lancer");
         play.setOnAction(e->{
+            GameParameter parameters = new GameParameter();
+            parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
+            parameters.setFirstPlayerName(firstPlayerLabel.getText());
+            parameters.setSecondPlayerName(secondPlayerLabel.getText());
+            System.out.println(parameters.toString());
             IHM ihm = new IHM();
             baseStage.close();
             ihm.start(baseStage);
         });
+
         bottom.getChildren().addAll(back, play);
         bottom.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
         bottom.getStyleClass().add("bottom");
         for(Node n : bottom.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(bottom.getChildren().size()+2));
         HBox.setMargin(back, new Insets(0, oldScene.getWidth()-2*200-140, 0, 0));
-        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
-        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
-        DifficultySlider difficulty = new DifficultySlider();
+
         difficulty.setPrefWidth(350);
         localBox.getChildren().add(new HBox(firstPlayerLabel,new Label("VS"),secondPlayerLabel));
         localBox.getChildren().add(difficulty);
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
-        
+
         root.getChildren().addAll(top,localBox,bottom);
         Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
         newScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
