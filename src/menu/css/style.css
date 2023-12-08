@@ -7,24 +7,24 @@
     -fx-font-weight: 800;
     -fx-font-size: 20px;
     -fx-border-width:3px;
-    -fx-background-image: url('otherButton.png');
+    -fx-background-image: url('../img/otherButton.png');
     -fx-border-color: rgba(254, 89, 0)
 }
 
 .button:hover{
     -fx-text-fill: rgba(254, 89, 0);
-    -fx-background-image: url('otherButtonHover.png');
+    -fx-background-image: url('../img/otherButtonHover.png');
 }
 
 .playButton{
-    -fx-background-image: url('playButton.png');
+    -fx-background-image: url('../img/playButton.png');
     -fx-text-fill: white;
     -fx-border-color: rgb(253, 217, 0);
 }
 
 .playButton:hover{
     -fx-text-fill: rgb(253, 217, 0);
-    -fx-background-image: url('playButtonHover.png');
+    -fx-background-image: url('../img/playButtonHover.png');
 }
 
 .mainTitre{

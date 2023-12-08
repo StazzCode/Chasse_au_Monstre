@@ -95,6 +95,15 @@ public class IHM extends Application {
     boolean AIHunter;
     boolean AIMonster;
 
+    String firstPlayerName;
+    String secondPlayerName;
+
+    public IHM(GameParameter parameter){
+        difficulty = parameter.getDifficulty();
+        firstPlayerName = parameter.getFirstPlayerName();
+        firstPlayerName = parameter.getSecondPlayerName();
+    }
+
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
      */
