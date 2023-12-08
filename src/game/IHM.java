@@ -352,7 +352,7 @@ public class IHM extends Application {
     private void initializeShootButton() {
         shoot = new Button("Shoot !");
         shoot.setOnMouseClicked(e -> {
-        	if (selected.getText().equals("")) {
+            if (selected.getText().equals("")) {
                 response.setText("Veuillez sélectionner une case.");
             } else {
                 this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
@@ -373,6 +373,35 @@ public class IHM extends Application {
         });
     }
     
+    private void stackPaneConfiguration() {
+        stackPane = new StackPane(grid);
+        play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
+        play.setFont(new Font(15));
+        stackPane.getChildren().add(play);
+        StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
+
+        response = new Label("");
+        response.setPadding(new Insets(40, 0, 0, 0));
+        response.setFont(new Font(18));
+        stackPane.getChildren().add(response);
+        StackPane.setAlignment(response, Pos.TOP_CENTER);
+
+        stackPane.getChildren().add(shoot);
+        StackPane.setAlignment(shoot, Pos.TOP_CENTER);
+    }
+
+    /**
+     * Gestion des touches pour Macos.
+     */
+    private void macOSInputs() {
+        InputContext context = InputContext.getInstance();
+        String loc = context.getLocale().toString();
+        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+                keyCodeUp = KeyCode.W;
+                keyCodeLeft = KeyCode.A;
+        }
+    }
+    
     /**
      * Méthode qui initialise l'interface graphique.
      * 
@@ -386,17 +415,7 @@ public class IHM extends Application {
         AIHunter = false;
         AIMonster = false;
 
-
-        ////////////////////////////////////////////////////////////
-        // Gestion des touches pour Macos.
-        ////////////////////////////////////////////////////////////
-        InputContext context = InputContext.getInstance();
-        String loc = context.getLocale().toString();
-        if (OS.current() == OS.MAC && (loc.equals("fr"))){
-                keyCodeUp = KeyCode.W;
-                keyCodeLeft = KeyCode.A;
-        }
-        ////////////////////////////////////////////////////////////
+        macOSInputs();
 
         int columns = 10;
         int rows = 10;
@@ -413,22 +432,10 @@ public class IHM extends Application {
         initializeGrid(columns, rows, elementSize);
         grid.setAlignment(Pos.CENTER);
 
-        stackPane = new StackPane(grid);
-        play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
-        play.setFont(new Font(15));
-        stackPane.getChildren().add(play);
-        StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
-
-        response = new Label("");
-        response.setPadding(new Insets(40, 0, 0, 0));
-        response.setFont(new Font(18));
-        stackPane.getChildren().add(response);
-        StackPane.setAlignment(response, Pos.TOP_CENTER);
-
         initializeShootButton();
-        stackPane.getChildren().add(shoot);
-        StackPane.setAlignment(shoot, Pos.TOP_CENTER);
         shoot.setVisible(false);
+        
+        stackPaneConfiguration();
 
         scene = new Scene(stackPane, 550, 550);
         hunterPlay();
@@ -436,8 +443,6 @@ public class IHM extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-
 
     /**
      * Méthode main qui lance l'application.
