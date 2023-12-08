@@ -155,19 +155,14 @@ public class MainMenu extends Application{
         VBox.setMargin(play, new Insets(60, 0, 20, 0));
         play.setPrefSize(380, 60);
         play.getStyleClass().add("playButton");
-        play.setOnAction(e->{playMenu(primaryStage,animation);});
+        play.setOnAction(e-> playMenu(primaryStage,animation));
         
-        // Definition du bouton pour les options
+        // Definition du bouton pour les Crédits
         Button credit = new Button("Crédits");
         VBox.setMargin(credit, new Insets(30, 0, 0, 0));
         credit.setPrefWidth(245);
         credit.setMaxHeight(45);
-        credit.setOnAction(e->{
-            //Faire un menu selon les options que l'on aura besoin de mofifier
-            //
-            //
-            //
-        });
+        credit.setOnAction(e->{});
 
         // Definition du bouton pour les règles du jeu
         Button howToPlay = new  Button("Comment jouer ?");
@@ -192,7 +187,7 @@ public class MainMenu extends Application{
             System.exit(0);     // ici, le bouton ferme le processus
         });
 
-        // Definition de la box principale contenant tout les élements
+        // Definition de la box principale contenant tous les élements
         VBox root = new VBox(logo,play,howToPlay,credit,quit);
         root.getStyleClass().add("root");
 
@@ -282,28 +277,28 @@ public class MainMenu extends Application{
         HBox localBox=new HBox();
         HBox iaBox=new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
         HBox onlineBox=new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
-        Button localOnglet = new Button("Local 1V1");
+        Button joueurVsJoueurOnglet = new Button("Local 1V1");
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         localBox.getStyleClass().add("center");
         iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         iaBox.getStyleClass().add("center");
         onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         onlineBox.getStyleClass().add("center");
-        localOnglet.setOnAction(e->{
+        joueurVsJoueurOnglet.setOnAction(e->{
             root.getChildren().clear();
             root.getChildren().addAll(top,localBox,bottom);
         });
-        Button iaOnglet = new Button("IA");
-        iaOnglet.setOnAction(e->{
+        Button iaVsIaOnglet = new Button("IA");
+        iaVsIaOnglet.setOnAction(e->{
             root.getChildren().clear();
             root.getChildren().addAll(top,iaBox,bottom);
         });
-        Button onlineOnglet = new Button("En ligne");
-        onlineOnglet.setOnAction(e->{
+        Button joueurVsIaOnglet = new Button("En ligne");
+        joueurVsIaOnglet.setOnAction(e->{
             root.getChildren().clear();
             root.getChildren().addAll(top,onlineBox,bottom);
         });
-        top.getChildren().addAll(localOnglet,onlineOnglet,iaOnglet);
+        top.getChildren().addAll(joueurVsJoueurOnglet,joueurVsIaOnglet,iaVsIaOnglet);
         for(Node n : top.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(top.getChildren().size()+1));
         Button back = new Button("Menu");
         back.setOnAction(e->{
