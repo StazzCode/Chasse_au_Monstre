@@ -286,6 +286,27 @@ public class Maze implements Observer {
         this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
         this.maze[colExit][rowExit] = new Cell(new Coordinate(colExit, rowExit), CellInfo.EXIT);
     }
+
+    private void pathExist(){
+        Coordinate currentCoordinate = this.getEnter();
+        while(this.maze[currentCoordinate.getColumn()][currentCoordinate.getRow()].getState().getCar() != CellInfo.HOLE.getCar()){
+
+        }
+    }
+
+    public boolean hasNeighbors(Coordinate coord){
+        boolean neighbors = false;
+        if(coord.getColumn() < this.columns - 1 && this.maze[coord.getColumn()+1][coord.getRow()].getState().getCar() == CellInfo.EMPTY.getCar()){
+            neighbors = true;
+        } else if (coord.getRow() < this.rows - 1 && this.maze[coord.getColumn()][coord.getRow()+1].getState().getCar() == CellInfo.EMPTY.getCar()) {
+            neighbors = true;
+        }else if (coord.getColumn() > 0 && this.maze[coord.getColumn()-1][coord.getRow()].getState().getCar() == CellInfo.EMPTY.getCar()){
+            neighbors = true;
+        } else if (coord.getRow() > 0 && this.maze[coord.getColumn()][coord.getRow()-1].getState().getCar() == CellInfo.EMPTY.getCar()){
+            neighbors = true;
+        }
+        return neighbors;
+    }
     
     /**
      * Méthode qui retourne les coordonnées de l'entrée du labyrinthe
