@@ -64,7 +64,8 @@ public class IHM extends Application {
     Button shoot;
 
     /**
-     * La StackPane principale contenant l'affichage du labyrinthe et des informations de jeu.
+     * La StackPane principale contenant l'affichage du labyrinthe et des
+     * informations de jeu.
      */
     StackPane stackPane;
 
@@ -77,9 +78,11 @@ public class IHM extends Application {
      * Le Stage principal de l'interface graphique.
      */
     Stage mainStage;
-    
+
     int shootColumn;
     int shootRow;
+
+    Difficulty difficulty;
 
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
@@ -94,31 +97,37 @@ public class IHM extends Application {
     }
 
     /**
-     * Méthode qui retourne la dernière apparition du monstre si c'est une cellule vide, sinon le caractère correspondant au type de cellule
+     * Méthode qui retourne la dernière apparition du monstre si c'est une cellule
+     * vide, sinon le caractère correspondant au type de cellule
+     * 
      * @param c la cellule choisie
-     * @return la dernière apparition du monstre si c'est une cellule vide, sinon le caractère correspondant au type de cellule
+     * @return la dernière apparition du monstre si c'est une cellule vide, sinon le
+     *         caractère correspondant au type de cellule
      */
-    public String displayCell(Cell c){
-        if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0){
+    public String displayCell(Cell c) {
+        if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0) {
             return String.valueOf(c.getLastMonsterAppearance());
         }
         return Character.toString(c.getState().getCar());
     }
 
     /**
-     * Méthode qui retourne le caractère correspondant au type de cellule sauf si c'est une cellule vide avec une dernière apparition du monstre
+     * Méthode qui retourne le caractère correspondant au type de cellule sauf si
+     * c'est une cellule vide avec une dernière apparition du monstre
+     * 
      * @param c la cellule choisie
-     * @return le caractère correspondant au type de cellule sauf si c'est une cellule vide avec une dernière apparition du monstre
+     * @return le caractère correspondant au type de cellule sauf si c'est une
+     *         cellule vide avec une dernière apparition du monstre
      */
-    public String displayCellExceptMonster(Cell c){
-        if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0){
+    public String displayCellExceptMonster(Cell c) {
+        if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0) {
             return String.valueOf(c.getLastMonsterAppearance());
         } else if (c.getState() != CellInfo.MONSTER) {
             return Character.toString(c.getState().getCar());
-        } else if (c.getState() == CellInfo.MONSTER){
-            if (c.getPreviousLastMonsterAppearance() < 0){
+        } else if (c.getState() == CellInfo.MONSTER) {
+            if (c.getPreviousLastMonsterAppearance() < 0) {
                 return " ";
-            }else {
+            } else {
                 return String.valueOf(c.getPreviousLastMonsterAppearance());
             }
         }
@@ -126,7 +135,7 @@ public class IHM extends Application {
     }
 
     /**
-     * Méthode qui affiche le labyrinthe vu par le chasseur 
+     * Méthode qui affiche le labyrinthe vu par le chasseur
      */
     public void displayHunterView() {
         for (int i = 0; i < maze.getColumns(); i++) {
@@ -150,7 +159,8 @@ public class IHM extends Application {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
                 if (maze.getMonster().near(i, j)) {
-                    b.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, CornerRadii.EMPTY, Insets.EMPTY)));
+                    b.setBackground(
+                            new Background(new BackgroundFill(Color.LIGHTSALMON, CornerRadii.EMPTY, Insets.EMPTY)));
                     b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
                 } else {
                     b.setText(" ");
@@ -158,14 +168,17 @@ public class IHM extends Application {
             }
         }
     }
+
     /**
      * Méthode qui permet de mettre en pause le programme pendant un certain temps.
+     * 
      * @param time la durée choisie d'arrêt
      */
     private static void sleep(int time) {
         try {
             Thread.sleep(time);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
     }
 
     /**
@@ -173,14 +186,14 @@ public class IHM extends Application {
      */
     public void monsterPlay() {
         IHM.sleep(500);
-    	this.displayHunterView();
-    	if(maze.getEnd()) {
-    		endGame(false);
+        this.displayHunterView();
+        if (maze.getEnd()) {
+            endGame(false);
             return;
-    	}
-        
+        }
+
         play.setText("Tour " + turn + " : Chasseur   |   Choisissez un emplacement où tirer en cliquant.");
-        
+
         setMonsterInteractions(false);
 
         setHunterInteractions(true);
@@ -196,7 +209,7 @@ public class IHM extends Application {
         turn++;
         maze.setCompteur(turn);
         this.displayMonsterView();
-        
+
         play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
 
         setHunterInteractions(false);
@@ -206,7 +219,8 @@ public class IHM extends Application {
     private void endGame(boolean hunterWon) {
         if (hunterWon) {
             play.setText("Partie terminée. Le chasseur a gagné.");
-            this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            this.selected
+                    .setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             this.selected = new Button("");
             setHunterInteractions(false);
         } else {
@@ -240,6 +254,7 @@ public class IHM extends Application {
 
     /**
      * Méthode qui gère les interactions du monstre avec le clavier.
+     * 
      * @param active l'intéraction utilisée
      */
     public void setMonsterInteractions(boolean active) {
@@ -264,21 +279,24 @@ public class IHM extends Application {
     }
 
     /**
-     * Méthode qui affiche sur le jeu affiche "Mouvement impossible ! Réessayer" si le déplacement choisi pour le monstre est impossible
+     * Méthode qui affiche sur le jeu affiche "Mouvement impossible ! Réessayer" si
+     * le déplacement choisi pour le monstre est impossible
+     * 
      * @param columnMovement le mouvement en ordonnée
-     * @param rowMovement le mouvement en abscisse
+     * @param rowMovement    le mouvement en abscisse
      */
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
-                    monsterPlay();
-                } else {
-                    response.setText("Mouvement impossible ! Réessayez.");
-                }
+            monsterPlay();
+        } else {
+            response.setText("Mouvement impossible ! Réessayez.");
+        }
     }
 
     /**
      * Méthode qui gère les interactions du chasseur avec le clavier.
+     * 
      * @param active l'intéraction utilisée
      */
     public void setHunterInteractions(boolean active) {
@@ -295,10 +313,10 @@ public class IHM extends Application {
                     Integer col = GridPane.getColumnIndex(b);
                     Integer row = GridPane.getRowIndex(b);
                     if (col != null && row != null) {
-                    	shootColumn = col.intValue();
-                    	shootRow = row.intValue();
+                        shootColumn = col.intValue();
+                        shootRow = row.intValue();
                     }
-                    
+
                 });
             }
         } else {
@@ -309,11 +327,12 @@ public class IHM extends Application {
             }
         }
     }
-    
+
     /**
      * Méthode qui initialise la grille du jeu.
-     * @param columns le nombre de colonnes
-     * @param rows le nombre de lignes
+     * 
+     * @param columns     le nombre de colonnes
+     * @param rows        le nombre de lignes
      * @param elementSize la taille des boutons dans chaque case
      */
     private void initializeGrid(int columns, int rows, int elementSize) {
@@ -326,19 +345,20 @@ public class IHM extends Application {
                 b.setMaxHeight(elementSize);
                 b.setBackground(Background.EMPTY);
                 b.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 grid.add(b, i, j);
             }
         }
     }
-    
+
     /**
-     * Méthode qui permet d'initialiser le bouton shoot pour que le chasseur puisse tirer dans le labyrinthe
+     * Méthode qui permet d'initialiser le bouton shoot pour que le chasseur puisse
+     * tirer dans le labyrinthe
      */
     private void initializeShootButton() {
         shoot = new Button("Shoot !");
         shoot.setOnMouseClicked(e -> {
-        	if (selected.getText().equals("")) {
+            if (selected.getText().equals("")) {
                 response.setText("Veuillez sélectionner une case.");
             } else {
                 this.maze.getHunter().hit(new Coordinate(shootColumn, shootRow));
@@ -349,7 +369,8 @@ public class IHM extends Application {
                         int column = col.intValue();
                         int rowValue = row.intValue();
                         maze.getMaze()[column][rowValue].discover();
-                        this.response.setText("Vous avez tiré sur " + maze.getMaze()[column][rowValue].getState().toString() + "!");
+                        this.response.setText(
+                                "Vous avez tiré sur " + maze.getMaze()[column][rowValue].getState().toString() + "!");
                     }
                     hunterPlay();
                 } else {
@@ -358,7 +379,36 @@ public class IHM extends Application {
             }
         });
     }
-    
+
+    /**
+     * Méthode qui génère le nombre de lignes en fonction de la difficulté choisie.
+     * 
+     * @return le nombre de lignes en fonction de la difficulté choisie
+     */
+    public int getRowsDifficulty() {
+        return difficulty.getRowsDifficulty();
+    }
+
+    /**
+     * Méthode qui génère le nombre de colonnes en fonction de la difficulté
+     * choisie.
+     * 
+     * @return le nombre de colonnes en fonction de la difficulté choisie
+     */
+    public int getColumnsDifficulty() {
+        return difficulty.getColumnsDifficulty();
+    }
+
+    /**
+     * Méthode qui génère le nombre d'obstacles en fonction de la difficulté
+     * choisie.
+     * 
+     * @return le nombre d'obstacles en fonction de la difficulté choisie
+     */
+    public int getNbObstaclesDifficulty() {
+        return difficulty.getNbObstaclesDifficulty();
+    }
+
     /**
      * Méthode qui initialise l'interface graphique.
      * 
@@ -367,16 +417,28 @@ public class IHM extends Application {
     @Override
     public void start(Stage stage) {
         mainStage = stage;
+        // version fonctionnelle classique:
+        // int columns = 10;
+        // int rows = 10;
+        // turn = 0;
 
-        int columns = 10;
-        int rows = 10;
+        // this.maze = new Maze(columns, rows);
+        // maze.resetMaze();
+        // maze.generateEnterExit();
+        // maze.generateObstacles();
+        // maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
+
+        // version de test avec difficultés:
         turn = 0;
-
+        difficulty = Difficulty.TRES_DIFFICILE;
+        int columns = getColumnsDifficulty();
+        int rows = getRowsDifficulty();
+        System.out.println("Columns : " + columns + " Rows : " + rows);
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
         maze.generateEnterExit();
         maze.generateObstacles();
-        //maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
+        maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
 
         this.grid = new GridPane();
         int elementSize = 40;
@@ -403,8 +465,6 @@ public class IHM extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-
 
     /**
      * Méthode main qui lance l'application.
