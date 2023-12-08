@@ -45,7 +45,7 @@ public class MenuAnimation{
     }
 
     private TranslateTransition initTopLeft(Duration duree){
-        ImageView topLeftImage = new ImageView(new Image(getClass().getResource("topLeft.png").toExternalForm()));
+        ImageView topLeftImage = new ImageView(new Image(getClass().getResource("img/topLeft.png").toExternalForm()));
         topLeftImage.setPreserveRatio(true);
         topLeftImage.setFitWidth(160);
         TranslateTransition animationTopLeft = new TranslateTransition(duree, topLeftImage);
@@ -57,7 +57,7 @@ public class MenuAnimation{
         return animationTopLeft;
     }
     private TranslateTransition initTopRight(Duration duree){
-        ImageView topRightImage = new ImageView(new Image(getClass().getResource("topRight.png").toExternalForm()));
+        ImageView topRightImage = new ImageView(new Image(getClass().getResource("img/topRight.png").toExternalForm()));
         topRightImage.setPreserveRatio(true);
         topRightImage.setFitWidth(200);
         TranslateTransition animationTopRight = new TranslateTransition(duree, topRightImage);
@@ -69,7 +69,7 @@ public class MenuAnimation{
         return animationTopRight;
     }
     private TranslateTransition initBottomLeft(Duration duree){
-        ImageView bottomLeftImage = new ImageView(new Image(getClass().getResource("bottomLeft.png").toExternalForm()));
+        ImageView bottomLeftImage = new ImageView(new Image(getClass().getResource("img/bottomLeft.png").toExternalForm()));
         bottomLeftImage.setPreserveRatio(true);
         bottomLeftImage.setFitWidth(150);
         TranslateTransition animationBottomLeft = new TranslateTransition(duree, bottomLeftImage);
@@ -82,7 +82,7 @@ public class MenuAnimation{
     }
 
     private TranslateTransition initBottomRight(Duration duree){
-        ImageView bottomRightImage = new ImageView(new Image(getClass().getResource("bottomRight.png").toExternalForm()));
+        ImageView bottomRightImage = new ImageView(new Image(getClass().getResource("img/bottomRight.png").toExternalForm()));
         bottomRightImage.setPreserveRatio(true);
         bottomRightImage.setFitWidth(272);
         TranslateTransition animationBottomRight = new TranslateTransition(duree, bottomRightImage);
@@ -94,7 +94,7 @@ public class MenuAnimation{
         return animationBottomRight;
     }
     private ParallelTransition initHunter(Duration duree){
-        ImageView hunterImage = new ImageView(new Image(getClass().getResource("hunter.png").toExternalForm()));
+        ImageView hunterImage = new ImageView(new Image(getClass().getResource("img/hunter.png").toExternalForm()));
         hunterImage.setPreserveRatio(true);
         hunterImage.setFitWidth(250);
         TranslateTransition translateHunter = new TranslateTransition(duree, hunterImage);
@@ -109,7 +109,7 @@ public class MenuAnimation{
         return animationHunter;
     }
     private ParallelTransition initMonster(Duration duree){
-        ImageView monsterImage = new ImageView(new Image(getClass().getResource("monster.png").toExternalForm()));
+        ImageView monsterImage = new ImageView(new Image(getClass().getResource("img/monster.png").toExternalForm()));
         monsterImage.setPreserveRatio(true);
         monsterImage.setFitWidth(350);
         TranslateTransition translateMonster = new TranslateTransition(duree, monsterImage);

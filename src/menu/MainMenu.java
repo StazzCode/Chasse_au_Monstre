@@ -39,7 +39,7 @@ public class MainMenu extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Logo du jeu
-        ImageView logo = new ImageView(new Image(getClass().getResource("logo.png").toExternalForm()));
+        ImageView logo = new ImageView(new Image(getClass().getResource("img/logo.png").toExternalForm()));
         VBox.setMargin(logo, new Insets(50, 0, 0, 0));
         logo.setPreserveRatio(true);
         logo.setFitHeight(160);
@@ -90,22 +90,22 @@ public class MainMenu extends Application{
         root.getStyleClass().add("root");
 
         // Definition du fond de menu animé
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("background.png")));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("img/background.png")));
         background.setFitHeight(624);
         background.setPreserveRatio(true);
 
         StackPane stackPane = new StackPane(background,animation.getStackPane(), root);
 
         Scene scene = new Scene(stackPane, 984, 624);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm()); // Feuille de style contenant toutes les indications pour les élements du menu
-        Image cursorImage = new Image(getClass().getResource("cursor.png").toExternalForm());  
+        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm()); // Feuille de style contenant toutes les indications pour les élements du menu
+        Image cursorImage = new Image(getClass().getResource("img/cursor.png").toExternalForm());  
         scene.setCursor(new ImageCursor(cursorImage));
         for(Node n : root.getChildren().subList(1, root.getChildren().size())){
             n.setOnMouseEntered(e->{
-                scene.setCursor(new ImageCursor(new Image(getClass().getResource("hand.png").toExternalForm())));
+                scene.setCursor(new ImageCursor(new Image(getClass().getResource("img/hand.png").toExternalForm())));
             });
             n.setOnMouseExited(e->{
-                scene.setCursor(new ImageCursor(new Image(getClass().getResource("cursor.png").toExternalForm())));
+                scene.setCursor(new ImageCursor(new Image(getClass().getResource("img/cursor.png").toExternalForm())));
             });
         }
 
@@ -159,7 +159,7 @@ public class MainMenu extends Application{
         pane.setVvalue(0);
         VBox tot = new VBox(pane,back);
         Scene newScene = new Scene(tot, oldScene.getWidth(), oldScene.getHeight());
-        newScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        newScene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         baseStage.setScene(newScene);
     }
 
@@ -171,6 +171,10 @@ public class MainMenu extends Application{
         Scene oldScene = baseStage.getScene();
 
         DifficultySlider difficulty = new DifficultySlider();
+        difficulty.setPrefWidth(350);
+        difficulty.setMaxWidth(350);
+        difficulty.getStyleClass().add("center");
+
         TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
         TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
 
@@ -181,7 +185,7 @@ public class MainMenu extends Application{
         top.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
         top.getStyleClass().add("top");
 
-        HBox localBox=new HBox();
+        VBox localBox=new VBox();
 
         HBox iaBox=new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
 
@@ -223,8 +227,7 @@ public class MainMenu extends Application{
             parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
             parameters.setFirstPlayerName(firstPlayerLabel.getText());
             parameters.setSecondPlayerName(secondPlayerLabel.getText());
-            System.out.println(parameters.toString());
-            IHM ihm = new IHM();
+            IHM ihm = new IHM(parameters);
             baseStage.close();
             ihm.start(baseStage);
         });
@@ -235,15 +238,16 @@ public class MainMenu extends Application{
         for(Node n : bottom.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(bottom.getChildren().size()+2));
         HBox.setMargin(back, new Insets(0, oldScene.getWidth()-2*200-140, 0, 0));
 
-        difficulty.setPrefWidth(350);
         localBox.getChildren().add(new HBox(firstPlayerLabel,new Label("VS"),secondPlayerLabel));
+        localBox.getChildren().get(0).getStyleClass().add("center");
         localBox.getChildren().add(difficulty);
+
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
 
         root.getChildren().addAll(top,localBox,bottom);
         Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
-        newScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        newScene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         baseStage.setScene(newScene);
     }
     

@@ -97,7 +97,15 @@ public class IHM extends Application {
     boolean AIHunter;
     boolean AIMonster;
 
+    String firstPlayerName;
+    String secondPlayerName;
     Difficulty difficulty;
+
+    public IHM(GameParameter parameter){
+        difficulty = parameter.getDifficulty();
+        firstPlayerName = parameter.getFirstPlayerName();
+        firstPlayerName = parameter.getSecondPlayerName();
+    }
 
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
@@ -447,8 +455,8 @@ public class IHM extends Application {
 
         macOSInputs();
 
-        int columns = 10;
-        int rows = 10;
+        int columns =4 ;
+        int rows = 4;
         turn = 0;
         // version fonctionnelle classique:
 
@@ -466,7 +474,7 @@ public class IHM extends Application {
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
         maze.generateEnterExit();
-        maze.generateObstacles(40);
+        maze.generateObstacles(1);
 
         this.grid = new GridPane();
         int elementSize = 40;
