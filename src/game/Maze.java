@@ -1,8 +1,10 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 /**
  * import
  */
@@ -93,6 +95,7 @@ public class Maze implements Observer {
 
     /**
      * Retourne le chasseur du labyrinthe
+     * 
      * @return le chasseur du labyrinthe
      */
     public Hunter getHunter() {
@@ -101,6 +104,7 @@ public class Maze implements Observer {
 
     /**
      * Retourne l'arrivée du labyrinthe
+     * 
      * @return l'arrivée du labyrinthe
      */
     public boolean getEnd() {
@@ -149,7 +153,8 @@ public class Maze implements Observer {
                 maze[i][j] = new Cell(new Coordinate(i, j), CellInfo.EMPTY);
             }
         }
-        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);
+        maze[this.monster.getCoordinate().getColumn()][this.monster.getCoordinate().getRow()]
+                .setState(CellInfo.MONSTER);
     }
 
     /**
@@ -163,8 +168,8 @@ public class Maze implements Observer {
         while (countObstacles != nbObstacles) {
             int x = random.nextInt(columns);
             int y = random.nextInt(rows);
-            if(this.maze[x][y].getState() == CellInfo.EMPTY) {
-            	this.maze[x][y].setState(CellInfo.WALL);
+            if (this.maze[x][y].getState() == CellInfo.EMPTY) {
+                this.maze[x][y].setState(CellInfo.WALL);
                 countObstacles++;
             }
         }
@@ -202,48 +207,6 @@ public class Maze implements Observer {
         if (this.maze[x][y].getState() == CellInfo.EMPTY) {
             this.maze[x][y] = new Cell(new Coordinate(x, y), CellInfo.HOLE);
         }
-    }
-
-
-    /**
-     * Méthode qui génère le nombre de colonnes du labyrinthe en fonction de la difficulté
-     * @param d le niveau de difficulté choisi
-     * @return le nombre de colonnes du labyrinthe en fonction de la difficulté
-     */
-    public int generateColumnsDifficulty(Difficulty d) {
-        if (d.equals(Difficulty.TRES_FACILE)) {
-            columns = 6;
-        } else if (d.equals(Difficulty.FACILE)) {
-            columns = 8;
-        } else if (d.equals(Difficulty.MOYEN)) {
-            columns = 10;
-        } else if (d.equals(Difficulty.DIFFICILE)) {
-            columns = 12;
-        } else if (d.equals(Difficulty.TRES_DIFFICILE)) {
-            columns = 14;
-        }
-        return columns;
-    }
-
-    /**
-     * Méthode qui génère le nombre de lignes du labyrinthe en fonction de la difficulté
-     * @param d le niveau de difficulté choisi
-     * @return le nombre de lignes du labyrinthe en fonction de la difficulté
-     */
-    public int generateRowsDifficulty(Difficulty d) {
-
-        if (d.equals(Difficulty.TRES_FACILE)) {
-            rows = 6;
-        } else if (d.equals(Difficulty.FACILE)) {
-            rows = 8;
-        } else if (d.equals(Difficulty.MOYEN)) {
-            rows = 10;
-        } else if (d.equals(Difficulty.DIFFICILE)) {
-            rows = 12;
-        } else if (d.equals(Difficulty.TRES_DIFFICILE)) {
-            rows = 14;
-        }
-        return rows;
     }
 
     /**
@@ -310,34 +273,84 @@ public class Maze implements Observer {
     
     /**
      * Méthode qui retourne les coordonnées de l'entrée du labyrinthe
+     * 
      * @return les coordonnées de l'entrée du labyrinthe
      */
     public Coordinate getEnter() {
-    	Coordinate enter = new Coordinate(0,0);
-    	for(int i = 0; i < this.columns; i++) {
-    		for(int j = 0; j < this.rows; j++) {
-    			if(this.maze[i][j].getState().getCar() == CellInfo.ENTER.getCar()) {
-    				enter = new Coordinate(i, j);
-    			}
-    		}
-    	}
-    	return enter;
+        Coordinate enter = new Coordinate(0, 0);
+        for (int i = 0; i < this.columns; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                if (this.maze[i][j].getState().getCar() == CellInfo.ENTER.getCar()) {
+                    enter = new Coordinate(i, j);
+                }
+            }
+        }
+        return enter;
     }
-    
+
     /**
      * Méthode qui retourne les coordonnées de la sortie du labyrinthe
+     * 
      * @return les coordonnées de la sortie du labyrinthe
      */
     public Coordinate getExit() {
-    	Coordinate exit = new Coordinate(0,0);
-    	for(int i = 0; i < this.columns; i++) {
-    		for(int j = 0; j < this.rows; j++) {
-    			if(this.maze[i][j].getState().getCar() == CellInfo.EXIT.getCar()) {
-    				exit = new Coordinate(i, j);
-    			}
-    		}
-    	}
-    	return exit;
+        Coordinate exit = new Coordinate(0, 0);
+        for (int i = 0; i < this.columns; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                if (this.maze[i][j].getState().getCar() == CellInfo.EXIT.getCar()) {
+                    exit = new Coordinate(i, j);
+                }
+            }
+        }
+        return exit;
+    }
+
+    /**
+     * Méthode qui permet de vérifier s'il existe un chemin entre l'entrée et la
+     * sortie
+     */
+    public boolean checkPathExists() {
+        Coordinate enter = getEnter();
+        Coordinate exit = getExit();
+
+        if (enter == null || exit == null) {
+            return false;
+        }
+
+        int[][] distances = new int[columns][rows];
+        for (int i = 0; i < columns; i++) {
+            Arrays.fill(distances[i], Integer.MAX_VALUE);
+        }
+
+        PriorityQueue<Coordinate> queue = new PriorityQueue<>(
+                (a, b) -> Integer.compare(distances[a.getColumn()][a.getRow()], distances[b.getColumn()][b.getRow()]));
+
+        distances[enter.getColumn()][enter.getRow()] = 0;
+        queue.add(enter);
+
+        int[] dx = { -1, 1, 0, 0 };
+        int[] dy = { 0, 0, -1, 1 };
+
+        while (!queue.isEmpty()) {
+            Coordinate current = queue.poll();
+            if (current.equals(exit)) {
+                return true;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nextX = current.getColumn() + dx[i];
+                int nextY = current.getRow() + dy[i];
+
+                if (nextX >= 0 && nextX < columns && nextY >= 0 && nextY < rows) {
+                    if (maze[nextX][nextY].getState() != CellInfo.WALL
+                            && distances[nextX][nextY] == Integer.MAX_VALUE) {
+                        distances[nextX][nextY] = distances[current.getColumn()][current.getRow()] + 1;
+                        queue.add(new Coordinate(nextX, nextY));
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -362,50 +375,51 @@ public class Maze implements Observer {
     }
 
     /**
-     * Méthode qui met à jour 
+     * Méthode qui met à jour
      */
     @Override
-	public void update(Subject subject) {
-		Hunter hunter = (Hunter) subject;
-		this.hunter = hunter;
-		int row = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getRow();
-        int col = this.hunter.getHitsList().get(this.hunter.getHitsList().size()-1).getColumn();
-		if(this.maze[col][row].getState().getCar() == CellInfo.MONSTER.getCar()) {
-			end = true;
-		}else {
+    public void update(Subject subject) {
+        Hunter hunter = (Hunter) subject;
+        this.hunter = hunter;
+        int row = this.hunter.getHitsList().get(this.hunter.getHitsList().size() - 1).getRow();
+        int col = this.hunter.getHitsList().get(this.hunter.getHitsList().size() - 1).getColumn();
+        if (this.maze[col][row].getState().getCar() == CellInfo.MONSTER.getCar()) {
+            end = true;
+        } else {
             end = false;
         }
         this.maze[col][row].setDiscovered(true);
-	}
+    }
 
     /**
-     * Méthode qui met à jour le labyrinthe 
+     * Méthode qui met à jour le labyrinthe
      */
-	@Override
-	public void update(Subject subject, Object lastCoordinate) {
-		 	Monster monster = (Monster) subject;
-		 	Coordinate c = (Coordinate) lastCoordinate;
-		 	int row = monster.getCoordinate().getRow();
-		 	int col = monster.getCoordinate().getColumn();
-		 	if(this.maze[col][row].getState().getCar() == CellInfo.EXIT.getCar()) {
-		 		this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);
-				end = true;
-			}
-	        this.maze[col][row].setState(CellInfo.MONSTER);
-	        this.maze[c.getColumn()][c.getRow()].setState(CellInfo.EMPTY);
+    @Override
+    public void update(Subject subject, Object lastCoordinate) {
+        Monster monster = (Monster) subject;
+        Coordinate c = (Coordinate) lastCoordinate;
+        int row = monster.getCoordinate().getRow();
+        int col = monster.getCoordinate().getColumn();
+        if (this.maze[col][row].getState().getCar() == CellInfo.EXIT.getCar()) {
+            this.maze[monster.getCoordinate().getColumn()][monster.getCoordinate().getRow()].setState(CellInfo.MONSTER);
+            end = true;
+        }
+        this.maze[col][row].setState(CellInfo.MONSTER);
+        this.maze[c.getColumn()][c.getRow()].setState(CellInfo.EMPTY);
 
-            int lastAppearance = this.maze[c.getColumn()][c.getRow()].getLastMonsterAppearance();
-            if (lastAppearance == -1){
-                this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
-                this.maze[c.getColumn()][c.getRow()].setPreviousLastMonsterAppearance(compteur);
-            }else {
-                this.maze[c.getColumn()][c.getRow()].setPreviousLastMonsterAppearance(lastAppearance);
-                this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
-            }
+        int lastAppearance = this.maze[c.getColumn()][c.getRow()].getLastMonsterAppearance();
+        if (lastAppearance == -1) {
+            this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
+            this.maze[c.getColumn()][c.getRow()].setPreviousLastMonsterAppearance(compteur);
+        } else {
+            this.maze[c.getColumn()][c.getRow()].setPreviousLastMonsterAppearance(lastAppearance);
+            this.maze[c.getColumn()][c.getRow()].setLastMonsterAppearance(compteur);
+        }
     }
 
     /**
      * Redéfinie l'attribut compteur représentant le nombre de tours de la partie.
+     * 
      * @param compteur Le compteur représentant le nombre de tours de la partie.
      */
     public void setCompteur(int compteur) {
