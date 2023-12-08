@@ -106,6 +106,9 @@ public class IHM extends Application {
         firstPlayerName = parameter.getFirstPlayerName();
         firstPlayerName = parameter.getSecondPlayerName();
     }
+    public IHM() {
+        this(new GameParameter());
+    }
 
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
@@ -318,7 +321,7 @@ public class IHM extends Application {
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
-                    System.out.println(maze.hasNeighbors(maze.getMonster().coordinate));
+                    //System.out.println(maze.hasNeighbors(maze.getMonster().coordinate));
                     monsterPlay();
                 } else {
                     response.setText("Mouvement impossible ! Réessayez.");
