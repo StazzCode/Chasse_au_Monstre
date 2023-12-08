@@ -228,11 +228,23 @@ public class IHM extends Application {
             setMonsterInteractions(false);
             return;
         }
+
         Button replay = new Button("Recommencer");
+        Button backToMenu = new Button("Retour au menu");
+        Button quit = new Button("Quitter");
+
+        endGameButtonsActions(replay, backToMenu, quit);
+        
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.TOP_CENTER);
+        hbox.getChildren().addAll(replay, backToMenu, quit);
+        stackPane.getChildren().add(hbox);
+    }
+
+    private void endGameButtonsActions(Button replay, Button backToMenu, Button quit) {
         replay.setOnMouseClicked(e -> {
             this.start(mainStage);
         });
-        Button backToMenu = new Button("Retour au menu");
         backToMenu.setOnMouseClicked(e -> {
             MainMenu main = new MainMenu();
             mainStage.close();
@@ -242,14 +254,9 @@ public class IHM extends Application {
                 e1.printStackTrace();
             }
         });
-        Button quit = new Button("Quitter");
         quit.setOnMouseClicked(e -> {
             System.exit(0);
         });
-        HBox hbox = new HBox();
-        hbox.setAlignment(Pos.TOP_CENTER);
-        hbox.getChildren().addAll(replay, backToMenu, quit);
-        stackPane.getChildren().add(hbox);
     }
 
     /**
