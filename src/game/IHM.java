@@ -82,6 +82,9 @@ public class IHM extends Application {
     int shootColumn;
     int shootRow;
 
+    boolean AIHunter;
+    boolean AIMonster;
+
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
      */
@@ -368,6 +371,10 @@ public class IHM extends Application {
     @Override
     public void start(Stage stage) {
         mainStage = stage;
+
+        // Mettre à jour la valeur avec le choix utilisateur.
+        AIHunter = false;
+        AIMonster = false;
 
         int columns = 10;
         int rows = 10;
