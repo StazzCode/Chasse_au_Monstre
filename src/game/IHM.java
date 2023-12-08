@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import menu.MainMenu;
 
@@ -385,10 +386,13 @@ public class IHM extends Application {
 
         stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
+        play.setFont(new Font(15));
         stackPane.getChildren().add(play);
         StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
 
         response = new Label("");
+        response.setPadding(new Insets(40, 0, 0, 0));
+        response.setFont(new Font(18));
         stackPane.getChildren().add(response);
         StackPane.setAlignment(response, Pos.TOP_CENTER);
 
@@ -397,7 +401,7 @@ public class IHM extends Application {
         StackPane.setAlignment(shoot, Pos.TOP_CENTER);
         shoot.setVisible(false);
 
-        scene = new Scene(stackPane, 500, 500);
+        scene = new Scene(stackPane, 550, 550);
         hunterPlay();
 
         stage.setScene(scene);
