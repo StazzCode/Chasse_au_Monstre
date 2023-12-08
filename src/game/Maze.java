@@ -112,6 +112,25 @@ public class Maze implements Observer {
     }
 
     /**
+     * Retourne une version booléenne du labyrinthe codant true pour un mur et false pour autre chose.
+     */
+    public boolean[][] getBooleanMaze() {
+        int columns = this.getColumns();
+        int rows = this.getRows();
+        boolean[][] bMaze = new boolean[columns][rows];
+        for (int i=0; i<columns; i++) {
+            for (int j=0; j<rows; j++) {
+                if (this.getMaze()[i][j].getState().equals(CellInfo.WALL)) {
+                    bMaze[i][j] = true;
+                } else {
+                    bMaze[i][j] = false;
+                }
+            }
+        }
+        return bMaze;
+    }
+
+    /**
      * Méthode qui met à jour le labyrinthe avec un nouveau labyrinthe
      * 
      * @param newMaze le nouveau labyrinthe
@@ -193,36 +212,42 @@ public class Maze implements Observer {
     /**
      * Méthode qui génère l'entrée et la sortie du labyrinthe.
      */
-    public void generateEnterExit() {
+    public void generateEnterExit(){
         Random random = new Random();
-
         int rand = random.nextInt(4);
 
-        if (rand == 0) {// TOP
-            int col = random.nextInt(this.columns);
-            this.maze[col][0] = new Cell(new Coordinate(col, 0), CellInfo.ENTER);
-            this.monster.setMonsterPosition(new Coordinate(col, 0));
-            col = random.nextInt(this.columns);
-            this.maze[col][this.rows - 1] = new Cell(new Coordinate(col, this.rows - 1), CellInfo.EXIT);
+        int colEntrance, rowEntrance, colExit, rowExit;
+
+        if (rand == 0) { // TOP
+            colEntrance = random.nextInt(this.columns);
+            rowEntrance = 0;
+            colExit = random.nextInt(this.columns);
+            rowExit = this.rows - 1;
         } else if (rand == 1) { // RIGHT
-            int row = random.nextInt(this.rows);
-            this.maze[this.columns - 1][row] = new Cell(new Coordinate(this.columns - 1, row), CellInfo.ENTER);
-            this.monster.setMonsterPosition(new Coordinate(this.columns - 1, row));
-            row = random.nextInt(this.columns);
-            this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.EXIT);
+            colEntrance = this.columns - 1;
+            rowEntrance = random.nextInt(this.rows);
+            colExit = 0;
+            rowExit = random.nextInt(this.rows);
         } else if (rand == 2) { // BOTTOM
-            int col = random.nextInt(this.columns);
-            this.maze[col][this.rows - 1] = new Cell(new Coordinate(col, this.rows - 1), CellInfo.ENTER);
-            this.monster.setMonsterPosition(new Coordinate(col, this.rows - 1));
-            col = random.nextInt(this.rows);
-            this.maze[col][0] = new Cell(new Coordinate(col, 0), CellInfo.EXIT);
-        } else if (rand == 3) { // LEFT
-            int row = random.nextInt(this.rows);
-            this.maze[0][row] = new Cell(new Coordinate(0, row), CellInfo.ENTER);
-            this.monster.setMonsterPosition(new Coordinate(0, row));
-            row = random.nextInt(this.columns);
-            this.maze[this.columns - 1][row] = new Cell(new Coordinate(this.columns - 1, row), CellInfo.EXIT);
+            colEntrance = random.nextInt(this.columns);
+            rowEntrance = this.rows - 1;
+            colExit = random.nextInt(this.columns);
+            rowExit = 0;
+        } else { // LEFT
+            colEntrance = 0;
+            rowEntrance = random.nextInt(this.rows);
+            colExit = this.columns - 1;
+            rowExit = random.nextInt(this.rows);
         }
+
+        placeEntranceExit(colEntrance, rowEntrance, colExit, rowExit);
+
+    }
+
+    private void placeEntranceExit(int colEntrance, int rowEntrance, int colExit, int rowExit) {
+        this.maze[colEntrance][rowEntrance] = new Cell(new Coordinate(colEntrance, rowEntrance), CellInfo.ENTER);
+        this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
+        this.maze[colExit][rowExit] = new Cell(new Coordinate(colExit, rowExit), CellInfo.EXIT);
     }
 
     /**
@@ -379,48 +404,4 @@ public class Maze implements Observer {
     public void setCompteur(int compteur) {
         this.compteur = compteur;
     }
-
-    public void genererLabyrinthe(int x, int y) {
-        this.maze[y][x].setState(CellInfo.HOLE);
-        int[] directions = { 0, 1, 2, 3 }; // 0: haut, 1: droite, 2: bas, 3: gauche
-        shuffleArray(directions);
-
-        for (int direction : directions) {
-            int newX = x;
-            int newY = y;
-
-            switch (direction) {
-                case 0: // Haut
-                    newY -= 2;
-                    break;
-                case 1: // Droite
-                    newX += 2;
-                    break;
-                case 2: // Bas
-                    newY += 2;
-                    break;
-                case 3: // Gauche
-                    newX -= 2;
-                    break;
-            }
-
-            if (newX > 0 && newX < this.columns - 1 && newY > 0 && newY < this.rows - 1
-                    && this.maze[newY][newX].getState().getCar() == CellInfo.WALL.getCar()) {
-                this.maze[newY][newX].setState(CellInfo.HOLE);
-                this.maze[y + (newY - y) / 2][x + (newX - x) / 2].setState(CellInfo.HOLE);
-                genererLabyrinthe(newX, newY);
-            }
-        }
-    }
-
-    private void shuffleArray(int[] array) {
-        Random random = new Random();
-        for (int i = array.length - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
-            int temp = array[index];
-            array[index] = array[i];
-            array[i] = temp;
-        }
-    }
-
 }

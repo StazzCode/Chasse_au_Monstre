@@ -66,4 +66,9 @@ public enum Difficulty {
     public int getNbObstaclesDifficulty() {
         return nbObstaclesDifficulty;
     }
+    TRES_FACILE, FACILE, MOYEN, DIFFICILE, TRES_DIFFICILE;
+    
+	public static Difficulty fromInt(int i){
+		return Difficulty.values()[i];
+	}
 }

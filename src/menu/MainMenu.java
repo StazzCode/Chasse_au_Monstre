@@ -1,15 +1,9 @@
 package menu;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.Transition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,12 +19,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import game.*;
 /**
  * La classe MainMenu représente le menu principal du jeu.
@@ -40,98 +30,6 @@ import game.*;
  */
 public class MainMenu extends Application{
 
-    /**
-     * La classe MenuAnimation représente l'animation du menu principal.
-     * Elle contient les briques lego et les figurines qui bougent.
-     */
-    private class MenuAnimation{
-        private StackPane pane;
-        private List<Transition> animations;
-
-        public MenuAnimation(){
-            HBox animeBriksBox = new HBox();
-            Duration duree = Duration.millis(300);
-            animations = new ArrayList<>();
-
-            ImageView topRightImage = new ImageView(new Image(getClass().getResource("topRight.png").toExternalForm()));
-            topRightImage.setPreserveRatio(true);
-            topRightImage.setFitWidth(200);
-            TranslateTransition animationTopRight = new TranslateTransition(duree, topRightImage);
-            animationTopRight.setFromX(800+topRightImage.getFitWidth());
-            animationTopRight.setToX(800);
-            animationTopRight.setFromY(0-200);
-            animationTopRight.setToY(0);
-            animations.add(animationTopRight);
-
-            ImageView topLeftImage = new ImageView(new Image(getClass().getResource("topLeft.png").toExternalForm()));
-            topLeftImage.setPreserveRatio(true);
-            topLeftImage.setFitWidth(160);
-            TranslateTransition animationTopLeft = new TranslateTransition(duree, topLeftImage);
-            animationTopLeft.setFromX(-220-topLeftImage.getFitWidth());
-            animationTopLeft.setToX(-220);
-            animationTopLeft.setFromY(-210);
-            animationTopLeft.setToY(-10);
-            animations.add(animationTopLeft);
-
-            ImageView bottomLeftImage = new ImageView(new Image(getClass().getResource("bottomLeft.png").toExternalForm()));
-            bottomLeftImage.setPreserveRatio(true);
-            bottomLeftImage.setFitWidth(150);
-            TranslateTransition animationBottomLeft = new TranslateTransition(duree, bottomLeftImage);
-            animationBottomLeft.setFromX(-365-bottomLeftImage.getFitWidth());
-            animationBottomLeft.setToX(-365);
-            animationBottomLeft.setFromY(650);
-            animationBottomLeft.setToY(470);
-            animations.add(animationBottomLeft);
-
-            ImageView bottomRightImage = new ImageView(new Image(getClass().getResource("bottomRight.png").toExternalForm()));
-            bottomRightImage.setPreserveRatio(true);
-            bottomRightImage.setFitWidth(272);
-            TranslateTransition animationBottomRight = new TranslateTransition(duree, bottomRightImage);
-            animationBottomRight.setFromX(200+bottomRightImage.getFitWidth());
-            animationBottomRight.setToX(200);
-            animationBottomRight.setFromY(650);
-            animationBottomRight.setToY(475);
-            animations.add(animationBottomRight);
-
-            animeBriksBox.getChildren().addAll(topRightImage,topLeftImage,bottomLeftImage,bottomRightImage);
-
-            HBox animePersoBox = new HBox();
-            duree = Duration.millis(duree.toMillis()+300);
-
-            ImageView hunterImage = new ImageView(new Image(getClass().getResource("hunter.png").toExternalForm()));
-            hunterImage.setPreserveRatio(true);
-            hunterImage.setFitWidth(250);
-            TranslateTransition translateHunter = new TranslateTransition(duree, hunterImage);
-            RotateTransition rotateHunter = new RotateTransition(duree, hunterImage);
-            rotateHunter.setToAngle(-17);
-            translateHunter.setFromX(400+hunterImage.getFitWidth());
-            translateHunter.setToX(400);
-            translateHunter.setFromY(200);
-            translateHunter.setToY(200);
-            ParallelTransition animationHunter = new ParallelTransition(translateHunter,rotateHunter);
-            animations.add(animationHunter);
-
-            ImageView monsterImage = new ImageView(new Image(getClass().getResource("monster.png").toExternalForm()));
-            monsterImage.setPreserveRatio(true);
-            monsterImage.setFitWidth(350);
-            TranslateTransition translateMonster = new TranslateTransition(duree, monsterImage);
-            RotateTransition rotateMonster = new RotateTransition(duree, monsterImage);
-            rotateMonster.setToAngle(8);
-            translateMonster.setFromX(0-monsterImage.getFitWidth());
-            translateMonster.setToX(0);
-            translateMonster.setFromY(280);
-            translateMonster.setToY(280);
-            ParallelTransition animationMonster = new ParallelTransition(translateMonster,rotateMonster);
-            animations.add(animationMonster);
-
-            animePersoBox.getChildren().addAll(monsterImage,hunterImage);
-            pane = new StackPane(animePersoBox,animeBriksBox);
-        }
-
-        public void play(){for(Transition t : animations)t.play();}
-
-        public StackPane getStackPane(){return pane;}
-    }
 
     /**
      * La méthode start permet d'initialiser le début du jeu.
@@ -155,19 +53,14 @@ public class MainMenu extends Application{
         VBox.setMargin(play, new Insets(60, 0, 20, 0));
         play.setPrefSize(380, 60);
         play.getStyleClass().add("playButton");
-        play.setOnAction(e->{playMenu(primaryStage,animation);});
+        play.setOnAction(e-> playMenu(primaryStage,animation));
         
-        // Definition du bouton pour les options
+        // Definition du bouton pour les Crédits
         Button credit = new Button("Crédits");
         VBox.setMargin(credit, new Insets(30, 0, 0, 0));
         credit.setPrefWidth(245);
         credit.setMaxHeight(45);
-        credit.setOnAction(e->{
-            //Faire un menu selon les options que l'on aura besoin de mofifier
-            //
-            //
-            //
-        });
+        credit.setOnAction(e->{});
 
         // Definition du bouton pour les règles du jeu
         Button howToPlay = new  Button("Comment jouer ?");
@@ -192,7 +85,7 @@ public class MainMenu extends Application{
             System.exit(0);     // ici, le bouton ferme le processus
         });
 
-        // Definition de la box principale contenant tout les élements
+        // Definition de la box principale contenant tous les élements
         VBox root = new VBox(logo,play,howToPlay,credit,quit);
         root.getStyleClass().add("root");
 
@@ -221,6 +114,8 @@ public class MainMenu extends Application{
         primaryStage.setTitle("Menu");
         primaryStage.show();
     }
+
+
     /**
      * Méthode qui permet d'expliquer comment jouer au jeu de la chasse au monstre.
      * @param baseStage le stage de base.
@@ -274,58 +169,78 @@ public class MainMenu extends Application{
      */
     public void playMenu(Stage baseStage, MenuAnimation menuAnimation){
         Scene oldScene = baseStage.getScene();
+
+        DifficultySlider difficulty = new DifficultySlider();
+        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
+        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
+
         VBox root = new VBox();
         HBox bottom=new HBox();
+
         HBox top=new HBox(50);
         top.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
         top.getStyleClass().add("top");
+
         HBox localBox=new HBox();
+
         HBox iaBox=new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+
         HBox onlineBox=new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
-        Button localOnglet = new Button("Local 1V1");
+
+        Button joueurVsJoueurOnglet = new Button("Local 1V1");
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         localBox.getStyleClass().add("center");
         iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         iaBox.getStyleClass().add("center");
         onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
         onlineBox.getStyleClass().add("center");
-        localOnglet.setOnAction(e->{
+        joueurVsJoueurOnglet.setOnAction(e->{
             root.getChildren().clear();
             root.getChildren().addAll(top,localBox,bottom);
         });
-        Button iaOnglet = new Button("IA");
-        iaOnglet.setOnAction(e->{
+        Button iaVsIaOnglet = new Button("IA");
+        iaVsIaOnglet.setOnAction(e->{
             root.getChildren().clear();
             root.getChildren().addAll(top,iaBox,bottom);
         });
-        Button onlineOnglet = new Button("En ligne");
-        onlineOnglet.setOnAction(e->{
+        Button joueurVsIaOnglet = new Button("En ligne");
+        joueurVsIaOnglet.setOnAction(e->{
             root.getChildren().clear();
             root.getChildren().addAll(top,onlineBox,bottom);
         });
-        top.getChildren().addAll(localOnglet,onlineOnglet,iaOnglet);
+        top.getChildren().addAll(joueurVsJoueurOnglet,joueurVsIaOnglet,iaVsIaOnglet);
         for(Node n : top.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(top.getChildren().size()+1));
+
         Button back = new Button("Menu");
         back.setOnAction(e->{
             baseStage.setScene(oldScene);
             menuAnimation.play();
         });
+
         Button play = new Button("Lancer");
         play.setOnAction(e->{
+            GameParameter parameters = new GameParameter();
+            parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
+            parameters.setFirstPlayerName(firstPlayerLabel.getText());
+            parameters.setSecondPlayerName(secondPlayerLabel.getText());
+            System.out.println(parameters.toString());
             IHM ihm = new IHM();
             baseStage.close();
             ihm.start(baseStage);
         });
+
         bottom.getChildren().addAll(back, play);
         bottom.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
         bottom.getStyleClass().add("bottom");
         for(Node n : bottom.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(bottom.getChildren().size()+2));
         HBox.setMargin(back, new Insets(0, oldScene.getWidth()-2*200-140, 0, 0));
-        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
-        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
-        localBox.getChildren().addAll(firstPlayerLabel,new Label("VS"),secondPlayerLabel);
+
+        difficulty.setPrefWidth(350);
+        localBox.getChildren().add(new HBox(firstPlayerLabel,new Label("VS"),secondPlayerLabel));
+        localBox.getChildren().add(difficulty);
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
+
         root.getChildren().addAll(top,localBox,bottom);
         Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
         newScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());

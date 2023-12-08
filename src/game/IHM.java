@@ -1,6 +1,5 @@
 package game;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +18,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.condition.OS;
+
+import java.awt.im.InputContext;
 import menu.MainMenu;
 
 /**
@@ -27,6 +30,14 @@ import menu.MainMenu;
  * classe Application de JavaFX.
  */
 public class IHM extends Application {
+
+    ////////////////////////////////////////////////////////////
+    // Constante des touches par défaut.
+    KeyCode keyCodeUp = KeyCode.Z;
+    KeyCode keyCodeDown = KeyCode.S;
+    KeyCode keyCodeLeft = KeyCode.Q;
+    KeyCode keyCodeRight = KeyCode.D;
+    ////////////////////////////////////////////////////////////
 
     /**
      * Le plateau de jeu représenté sous forme de grille.
@@ -79,8 +90,12 @@ public class IHM extends Application {
      */
     Stage mainStage;
 
+
     int shootColumn;
     int shootRow;
+
+    boolean AIHunter;
+    boolean AIMonster;
 
     Difficulty difficulty;
 
@@ -228,11 +243,23 @@ public class IHM extends Application {
             setMonsterInteractions(false);
             return;
         }
+
         Button replay = new Button("Recommencer");
+        Button backToMenu = new Button("Retour au menu");
+        Button quit = new Button("Quitter");
+
+        endGameButtonsActions(replay, backToMenu, quit);
+        
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.TOP_CENTER);
+        hbox.getChildren().addAll(replay, backToMenu, quit);
+        stackPane.getChildren().add(hbox);
+    }
+
+    private void endGameButtonsActions(Button replay, Button backToMenu, Button quit) {
         replay.setOnMouseClicked(e -> {
             this.start(mainStage);
         });
-        Button backToMenu = new Button("Retour au menu");
         backToMenu.setOnMouseClicked(e -> {
             MainMenu main = new MainMenu();
             mainStage.close();
@@ -242,14 +269,9 @@ public class IHM extends Application {
                 e1.printStackTrace();
             }
         });
-        Button quit = new Button("Quitter");
         quit.setOnMouseClicked(e -> {
             System.exit(0);
         });
-        HBox hbox = new HBox();
-        hbox.setAlignment(Pos.TOP_CENTER);
-        hbox.getChildren().addAll(replay, backToMenu, quit);
-        stackPane.getChildren().add(hbox);
     }
 
     /**
@@ -260,16 +282,16 @@ public class IHM extends Application {
     public void setMonsterInteractions(boolean active) {
         if (active) {
             scene.setOnKeyPressed(e -> {
-                if (e.getCode() == KeyCode.Z) {
+                if (e.getCode() == keyCodeUp) {
                     setMonsterMovementKeybind(0, -1);
                 }
-                if (e.getCode() == KeyCode.Q) {
+                if (e.getCode() == keyCodeLeft) {
                     setMonsterMovementKeybind(-1, 0);
                 }
-                if (e.getCode() == KeyCode.S) {
+                if (e.getCode() == keyCodeDown) {
                     setMonsterMovementKeybind(0, 1);
                 }
-                if (e.getCode() == KeyCode.D) {
+                if (e.getCode() == keyCodeRight) {
                     setMonsterMovementKeybind(1, 0);
                 }
             });
@@ -379,36 +401,36 @@ public class IHM extends Application {
             }
         });
     }
+    
+    private void stackPaneConfiguration() {
+        stackPane = new StackPane(grid);
+        play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
+        play.setFont(new Font(15));
+        stackPane.getChildren().add(play);
+        StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
 
-    /**
-     * Méthode qui génère le nombre de lignes en fonction de la difficulté choisie.
-     * 
-     * @return le nombre de lignes en fonction de la difficulté choisie
-     */
-    public int getRowsDifficulty() {
-        return difficulty.getRowsDifficulty();
+        response = new Label("");
+        response.setPadding(new Insets(40, 0, 0, 0));
+        response.setFont(new Font(18));
+        stackPane.getChildren().add(response);
+        StackPane.setAlignment(response, Pos.TOP_CENTER);
+
+        stackPane.getChildren().add(shoot);
+        StackPane.setAlignment(shoot, Pos.TOP_CENTER);
     }
 
     /**
-     * Méthode qui génère le nombre de colonnes en fonction de la difficulté
-     * choisie.
-     * 
-     * @return le nombre de colonnes en fonction de la difficulté choisie
+     * Gestion des touches pour Macos.
      */
-    public int getColumnsDifficulty() {
-        return difficulty.getColumnsDifficulty();
+    private void macOSInputs() {
+        InputContext context = InputContext.getInstance();
+        String loc = context.getLocale().toString();
+        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+                keyCodeUp = KeyCode.W;
+                keyCodeLeft = KeyCode.A;
+        }
     }
-
-    /**
-     * Méthode qui génère le nombre d'obstacles en fonction de la difficulté
-     * choisie.
-     * 
-     * @return le nombre d'obstacles en fonction de la difficulté choisie
-     */
-    public int getNbObstaclesDifficulty() {
-        return difficulty.getNbObstaclesDifficulty();
-    }
-
+    
     /**
      * Méthode qui initialise l'interface graphique.
      * 
@@ -417,6 +439,15 @@ public class IHM extends Application {
     @Override
     public void start(Stage stage) {
         mainStage = stage;
+
+        // Mettre à jour la valeur avec le choix utilisateur.
+        AIHunter = false;
+        AIMonster = false;
+
+        macOSInputs();
+
+        int columns = 10;
+        int rows = 10;
         // version fonctionnelle classique:
         // int columns = 10;
         // int rows = 10;
@@ -437,29 +468,20 @@ public class IHM extends Application {
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
         maze.generateEnterExit();
-        maze.generateObstacles();
-        maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
+        maze.generateObstacles(40);
+        //maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
 
         this.grid = new GridPane();
         int elementSize = 40;
         initializeGrid(columns, rows, elementSize);
         grid.setAlignment(Pos.CENTER);
 
-        stackPane = new StackPane(grid);
-        play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
-        stackPane.getChildren().add(play);
-        StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
-
-        response = new Label("");
-        stackPane.getChildren().add(response);
-        StackPane.setAlignment(response, Pos.TOP_CENTER);
-
         initializeShootButton();
-        stackPane.getChildren().add(shoot);
-        StackPane.setAlignment(shoot, Pos.TOP_CENTER);
         shoot.setVisible(false);
+        
+        stackPaneConfiguration();
 
-        scene = new Scene(stackPane, 500, 500);
+        scene = new Scene(stackPane, 550, 550);
         hunterPlay();
 
         stage.setScene(scene);

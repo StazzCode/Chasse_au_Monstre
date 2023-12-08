@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * La classe Hunter représente le chasseur dans le jeu de chasse au monstre. Elle hérite de la classe Player.Elle possède une liste de coordonnées de coups réalisés avec succès.
@@ -39,4 +40,10 @@ public class Hunter extends Player{
     	return this.hitsList;
     }
     
+    public Coordinate AIplay() {
+        Random rd = new Random();
+        int i = rd.nextInt(maze.getColumns());
+        int j = rd.nextInt(maze.getRows());
+        return new Coordinate(i, j);
+    }
 }
