@@ -108,6 +108,25 @@ public class Maze implements Observer {
     }
 
     /**
+     * Retourne une version booléenne du labyrinthe codant true pour un mur et false pour autre chose.
+     */
+    public boolean[][] getBooleanMaze() {
+        int columns = this.getColumns();
+        int rows = this.getRows();
+        boolean[][] bMaze = new boolean[columns][rows];
+        for (int i=0; i<columns; i++) {
+            for (int j=0; j<rows; j++) {
+                if (this.getMaze()[i][j].getState().equals(CellInfo.WALL)) {
+                    bMaze[i][j] = true;
+                } else {
+                    bMaze[i][j] = false;
+                }
+            }
+        }
+        return bMaze;
+    }
+
+    /**
      * Méthode qui met à jour le labyrinthe avec un nouveau labyrinthe
      * 
      * @param newMaze le nouveau labyrinthe
