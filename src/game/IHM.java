@@ -1,6 +1,5 @@
 package game;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +18,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.condition.OS;
+
+import java.awt.im.InputContext;
 import menu.MainMenu;
 
 /**
@@ -27,6 +30,14 @@ import menu.MainMenu;
  * classe Application de JavaFX.
  */
 public class IHM extends Application {
+
+    ////////////////////////////////////////////////////////////
+    // Constante des touches par défaut.
+    KeyCode keyCodeUp = KeyCode.Z;
+    KeyCode keyCodeDown = KeyCode.S;
+    KeyCode keyCodeLeft = KeyCode.Q;
+    KeyCode keyCodeRight = KeyCode.D;
+    ////////////////////////////////////////////////////////////
 
     /**
      * Le plateau de jeu représenté sous forme de grille.
@@ -77,9 +88,12 @@ public class IHM extends Application {
      * Le Stage principal de l'interface graphique.
      */
     Stage mainStage;
-    
+
     int shootColumn;
     int shootRow;
+
+    boolean AIHunter;
+    boolean AIMonster;
 
     /**
      * Méthode qui affiche le labyrinthe sur la grille.
@@ -245,16 +259,16 @@ public class IHM extends Application {
     public void setMonsterInteractions(boolean active) {
         if (active) {
             scene.setOnKeyPressed(e -> {
-                if (e.getCode() == KeyCode.Z) {
+                if (e.getCode() == keyCodeUp) {
                     setMonsterMovementKeybind(0, -1);
                 }
-                if (e.getCode() == KeyCode.Q) {
+                if (e.getCode() == keyCodeLeft) {
                     setMonsterMovementKeybind(-1, 0);
                 }
-                if (e.getCode() == KeyCode.S) {
+                if (e.getCode() == keyCodeDown) {
                     setMonsterMovementKeybind(0, 1);
                 }
-                if (e.getCode() == KeyCode.D) {
+                if (e.getCode() == keyCodeRight) {
                     setMonsterMovementKeybind(1, 0);
                 }
             });
@@ -368,6 +382,22 @@ public class IHM extends Application {
     public void start(Stage stage) {
         mainStage = stage;
 
+        // Mettre à jour la valeur avec le choix utilisateur.
+        AIHunter = false;
+        AIMonster = false;
+
+
+        ////////////////////////////////////////////////////////////
+        // Gestion des touches pour Macos.
+        ////////////////////////////////////////////////////////////
+        InputContext context = InputContext.getInstance();
+        String loc = context.getLocale().toString();
+        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+                keyCodeUp = KeyCode.W;
+                keyCodeLeft = KeyCode.A;
+        }
+        ////////////////////////////////////////////////////////////
+
         int columns = 10;
         int rows = 10;
         turn = 0;
@@ -385,10 +415,13 @@ public class IHM extends Application {
 
         stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
+        play.setFont(new Font(15));
         stackPane.getChildren().add(play);
         StackPane.setAlignment(play, Pos.BOTTOM_CENTER);
 
         response = new Label("");
+        response.setPadding(new Insets(40, 0, 0, 0));
+        response.setFont(new Font(18));
         stackPane.getChildren().add(response);
         StackPane.setAlignment(response, Pos.TOP_CENTER);
 
@@ -397,7 +430,7 @@ public class IHM extends Application {
         StackPane.setAlignment(shoot, Pos.TOP_CENTER);
         shoot.setVisible(false);
 
-        scene = new Scene(stackPane, 500, 500);
+        scene = new Scene(stackPane, 550, 550);
         hunterPlay();
 
         stage.setScene(scene);
