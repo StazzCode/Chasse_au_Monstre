@@ -312,7 +312,7 @@ public class IHM extends Application {
                     	shootColumn = col.intValue();
                     	shootRow = row.intValue();
                     }
-                    
+
                 });
             }
         } else {
@@ -405,7 +405,7 @@ public class IHM extends Application {
         this.maze = new Maze(columns, rows);
         maze.resetMaze();
         maze.generateEnterExit();
-        maze.generateObstacles();
+        maze.generateObstacles(40);
         //maze.genererLabyrinthe(maze.getEnter().column, maze.getEnter().row);
 
         this.grid = new GridPane();
