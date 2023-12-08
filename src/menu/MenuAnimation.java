@@ -49,6 +49,7 @@ public class MenuAnimation{
         topLeftImage.setPreserveRatio(true);
         topLeftImage.setFitWidth(160);
         TranslateTransition animationTopLeft = new TranslateTransition(duree, topLeftImage);
+        
         animationTopLeft.setFromX(-220-topLeftImage.getFitWidth());
         animationTopLeft.setToX(-220);
         animationTopLeft.setFromY(-210);
