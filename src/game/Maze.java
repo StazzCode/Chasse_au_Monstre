@@ -164,12 +164,30 @@ public class Maze implements Observer {
      * 
      * @param nbObstacles nombre d'obstacles à générer.
      */
-    public void generateObstacles(int nbObstacles) {
-        Random random = new Random();
+    public void generateObstacles(/*int nbObstacles*/ int obstaclePercentage) {
+        /*Random random = new Random();
         int countObstacles = 0;
         while (countObstacles != nbObstacles) {
             int x = random.nextInt(columns);
             int y = random.nextInt(rows);
+            if (this.maze[x][y].getState() == CellInfo.EMPTY) {
+                this.maze[x][y].setState(CellInfo.WALL);
+                countObstacles++;
+            }
+        }*/
+    	if (obstaclePercentage < 0 || obstaclePercentage > 100) {
+            throw new IllegalArgumentException("Le pourcentage d'obstacles doit être compris entre 0 et 100.");
+        }
+    	
+        int nbObstacles = (int) Math.round((obstaclePercentage / 100.0) * this.getMaxObstaclePossible());
+
+        Random random = new Random();
+        int countObstacles = 0;
+
+        while (countObstacles != nbObstacles) {
+            int x = random.nextInt(columns);
+            int y = random.nextInt(rows);
+
             if (this.maze[x][y].getState() == CellInfo.EMPTY) {
                 this.maze[x][y].setState(CellInfo.WALL);
                 countObstacles++;
@@ -197,6 +215,12 @@ public class Maze implements Observer {
 
         generateObstacles(nbObstacles);
 
+    }
+    
+    public int getMaxObstaclePossible() {
+    	int size = this.getColumns() * this.getRows() - 2;
+    	int manathan = (this.getColumns()-1) + (this.getRows()-1) -1;
+    	return size - manathan;
     }
 
     /**

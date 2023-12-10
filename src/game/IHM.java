@@ -252,7 +252,6 @@ public class IHM extends Application {
         } else {
             play.setText("Partie terminée. Le Monstre a gagné.");
             setMonsterInteractions(false);
-            return;
         }
 
         Button replay = new Button("Recommencer");
@@ -456,7 +455,7 @@ public class IHM extends Application {
         AIHunter = false;
         AIMonster = false;
 
-        macOSInputs();
+        //macOSInputs();
 
         int columns =4 ;
         int rows = 4;
@@ -479,10 +478,10 @@ public class IHM extends Application {
         while(!pathExist) { //Disclamer : ne jamais mettre en param de generateObstacle un nombre trop élevé par rapport a la taille du labyrinthe
         	maze.resetMaze();
             maze.generateEnterExit();
-            maze.generateObstacles(9);
-            System.out.println(maze.checkPathExists());
+            maze.generateObstacles(100);
             pathExist = maze.checkPathExists();
         }
+        System.out.println(maze.getMaxObstaclePossible());
         this.grid = new GridPane();
         int elementSize = 40;
         initializeGrid(columns, rows, elementSize);
