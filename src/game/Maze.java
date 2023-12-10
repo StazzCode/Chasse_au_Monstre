@@ -9,6 +9,8 @@ import java.util.PriorityQueue;
  * import
  */
 import java.util.Random;
+import java.util.Stack;
+
 // import java.util.Scanner;
 import utils.Observer;
 import utils.Subject;
@@ -53,7 +55,7 @@ public class Maze implements Observer {
      * 
      * @return the maze
      */
-    public Cell[][] getMaze() {
+    public Cell[][] getMaze() { 
         return maze;
     }
 
@@ -249,26 +251,21 @@ public class Maze implements Observer {
         this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
         this.maze[colExit][rowExit] = new Cell(new Coordinate(colExit, rowExit), CellInfo.EXIT);
     }
+    
+    /*public boolean checkPath() {
+    	
+    }*/
 
-    private void pathExist(){
-        Coordinate currentCoordinate = this.getEnter();
-        while(this.maze[currentCoordinate.getColumn()][currentCoordinate.getRow()].getState().getCar() != CellInfo.HOLE.getCar()){
+    public boolean hasNeighbors(Coordinate coord) {
+        int x = coord.getColumn();
+        int y = coord.getRow();
 
-        }
-    }
+        boolean rightNeighbor = x < this.columns - 1 && this.maze[x + 1][y].getState() == CellInfo.EMPTY;
+        boolean downNeighbor = y < this.rows - 1 && this.maze[x][y + 1].getState() == CellInfo.EMPTY;
+        boolean leftNeighbor = x > 0 && this.maze[x - 1][y].getState() == CellInfo.EMPTY;
+        boolean upNeighbor = y > 0 && this.maze[x][y - 1].getState() == CellInfo.EMPTY;
 
-    public boolean hasNeighbors(Coordinate coord){
-        boolean neighbors = false;
-        if(coord.getColumn() < this.columns - 1 && this.maze[coord.getColumn()+1][coord.getRow()].getState().getCar() == CellInfo.EMPTY.getCar()){
-            neighbors = true;
-        } else if (coord.getRow() < this.rows - 1 && this.maze[coord.getColumn()][coord.getRow()+1].getState().getCar() == CellInfo.EMPTY.getCar()) {
-            neighbors = true;
-        }else if (coord.getColumn() > 0 && this.maze[coord.getColumn()-1][coord.getRow()].getState().getCar() == CellInfo.EMPTY.getCar()){
-            neighbors = true;
-        } else if (coord.getRow() > 0 && this.maze[coord.getColumn()][coord.getRow()-1].getState().getCar() == CellInfo.EMPTY.getCar()){
-            neighbors = true;
-        }
-        return neighbors;
+        return rightNeighbor || downNeighbor || leftNeighbor || upNeighbor;
     }
     
     /**
@@ -280,7 +277,7 @@ public class Maze implements Observer {
         Coordinate enter = new Coordinate(0, 0);
         for (int i = 0; i < this.columns; i++) {
             for (int j = 0; j < this.rows; j++) {
-                if (this.maze[i][j].getState().getCar() == CellInfo.ENTER.getCar()) {
+                if (this.maze[i][j].getState().getCar() == CellInfo.MONSTER.getCar()) {
                     enter = new Coordinate(i, j);
                 }
             }
@@ -310,8 +307,10 @@ public class Maze implements Observer {
      * sortie
      */
     public boolean checkPathExists() {
-        Coordinate enter = getEnter();
+    	Coordinate enter = getEnter();
         Coordinate exit = getExit();
+        
+        System.out.println(enter.getColumn());
 
         if (enter == null || exit == null) {
             return false;
@@ -333,8 +332,9 @@ public class Maze implements Observer {
 
         while (!queue.isEmpty()) {
             Coordinate current = queue.poll();
-            if (current.equals(exit)) {
-                return true;
+            System.out.println(current.getColumn() + " , " + current.getRow());
+            if (this.maze[current.getColumn()][current.getRow()].getState().getCar() == CellInfo.EXIT.getCar()) {
+                return true;  // Chemin trouvé
             }
 
             for (int i = 0; i < 4; i++) {
@@ -350,7 +350,7 @@ public class Maze implements Observer {
                 }
             }
         }
-        return false;
+        return false;  // Aucun chemin trouvé
     }
 
     /**
