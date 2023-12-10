@@ -456,7 +456,7 @@ public class IHM extends Application {
         AIHunter = false;
         AIMonster = false;
 
-        macOSInputs();
+        //macOSInputs();
 
         int columns =4 ;
         int rows = 4;
@@ -475,12 +475,14 @@ public class IHM extends Application {
         // int columns = getColumnsDifficulty();
         // int rows = getRowsDifficulty();
         this.maze = new Maze(columns, rows);
-        maze.resetMaze();
-        maze.generateEnterExit();
-        maze.generateObstacles(6);
-        System.out.println(maze.checkPathExists());
-        //System.out.println(maze.checkPath());
-
+        boolean pathExist = false;
+        while(!pathExist) { //Disclamer : ne jamais mettre en param de generateObstacle un nombre trop élevé par rapport a la taille du labyrinthe
+        	maze.resetMaze();
+            maze.generateEnterExit();
+            maze.generateObstacles(9);
+            System.out.println(maze.checkPathExists());
+            pathExist = maze.checkPathExists();
+        }
         this.grid = new GridPane();
         int elementSize = 40;
         initializeGrid(columns, rows, elementSize);
