@@ -248,7 +248,7 @@ public class Maze implements Observer {
 
     private void placeEntranceExit(int colEntrance, int rowEntrance, int colExit, int rowExit) {
         this.maze[colEntrance][rowEntrance] = new Cell(new Coordinate(colEntrance, rowEntrance), CellInfo.ENTER);
-        this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
+        //this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
         this.maze[colExit][rowExit] = new Cell(new Coordinate(colExit, rowExit), CellInfo.EXIT);
     }
     
@@ -277,7 +277,7 @@ public class Maze implements Observer {
         Coordinate enter = new Coordinate(0, 0);
         for (int i = 0; i < this.columns; i++) {
             for (int j = 0; j < this.rows; j++) {
-                if (this.maze[i][j].getState().getCar() == CellInfo.MONSTER.getCar()) {
+                if (this.maze[i][j].getState().getCar() == CellInfo.ENTER.getCar()) {
                     enter = new Coordinate(i, j);
                 }
             }
