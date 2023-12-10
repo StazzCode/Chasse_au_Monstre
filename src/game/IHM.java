@@ -456,7 +456,7 @@ public class IHM extends Application {
         AIHunter = false;
         AIMonster = false;
 
-        //macOSInputs();
+        macOSInputs();
 
         int columns =4 ;
         int rows = 4;
