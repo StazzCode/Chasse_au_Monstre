@@ -21,7 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import game.*;
 import game.model.Difficulty;
 import game.model.GameParameter;
 import game.view.IHM;

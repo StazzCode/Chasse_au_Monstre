@@ -1,6 +1,5 @@
 package test;
 
-import game.*;
 import game.model.Cell;
 import game.model.CellInfo;
 import game.model.Coordinate;
