@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 /**
  * La classe Cell représente une cellule dans le labyrinthe du jeu.

@@ -1,6 +1,6 @@
 package menu;
 
-import game.Difficulty;
+import game.model.Difficulty;
 import javafx.scene.control.Slider;
 import javafx.util.StringConverter;
 

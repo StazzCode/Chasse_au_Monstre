@@ -1,4 +1,4 @@
-package game;
+package game.view;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -21,6 +21,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.condition.OS;
+
+import game.model.Cell;
+import game.model.CellInfo;
+import game.model.Coordinate;
+import game.model.Difficulty;
+import game.model.GameParameter;
+import game.model.Maze;
 
 import java.awt.im.InputContext;
 import menu.MainMenu;

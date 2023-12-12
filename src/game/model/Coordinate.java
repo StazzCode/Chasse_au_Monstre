@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 /**
  * Cette classe représente les coordonnées d'une cellule dans le labyrinthe du jeu.
