@@ -156,7 +156,7 @@ public class MonsterView extends Stage implements IView {
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
-                    play();
+                    this.display();
                     setInteractions(false);
                     play.setText("Tour " + turn + " : Chasseur   |   Patience.");
                     if (maze.getEnd()) {

@@ -273,7 +273,7 @@ public class HunterView extends Stage implements IView {
                         this.response.setText(
                                 "Vous avez tiré sur " + maze.getMaze()[column][rowValue].getState().toString() + "!");
                     }
-                    play();
+                    this.display();
                     setInteractions(false);
                     play.setText("Tour " + turn + " : Monstre   |   Patience.");
                     ihm.mView.play();
