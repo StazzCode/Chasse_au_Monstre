@@ -28,6 +28,7 @@ import game.model.Coordinate;
 import game.model.Difficulty;
 import game.model.GameParameter;
 import game.model.Maze;
+import graphics.PopUpPane;
 
 import java.awt.im.InputContext;
 import menu.MainMenu;
@@ -250,6 +251,13 @@ public class IHM extends Application {
     }
 
     private void endGame(boolean hunterWon) {
+        PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
+        stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
+        gameOverPopUp.setOnFinished(e->{
+            stackPane.getChildren().remove(gameOverPopUp);
+        });
+        gameOverPopUp.play();
+
         if (hunterWon) {
             play.setText("Partie terminée. Le chasseur a gagné.");
             this.selected

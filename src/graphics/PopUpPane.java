@@ -1,6 +1,7 @@
 package graphics;
 
 import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,38 +14,29 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class PopUpPane extends StackPane{
-    private ScaleTransition animation;
+    private SequentialTransition animation;
 
-    private PopUpPane(Duration duree, Image img){
-        ImageView image = new ImageView(img);
-        image.setPreserveRatio(true);
-        image.setFitWidth(1000);
-        animation = new ScaleTransition(duree, image);
-        animation.setFromX(0.01);
-        animation.setFromY(0.01);
-        animation.setToX(1);
-        animation.setToY(1);
-        
-        image.setStyle("-fx-alignment : center;");
-
-        setStyle(
-            "-fx-alignment : center;"+
-            "-fx-background-color:transparent;"
-        );
+    private PopUpPane(double millis, Image img){
+        this(millis, img.getUrl());
     }
 
-    private PopUpPane(Duration duree, String img){
+    private PopUpPane(double millis, String img){
        ImageView image = new ImageView(new Image(getClass().getResource(img).toExternalForm()));
         image.setPreserveRatio(true);
-        //image.setFitWidth(this.getWidth());
-        //setHeight(image.getFitHeight());
-        animation = new ScaleTransition(duree, image);
-        animation.setFromX(0.01);
-        animation.setFromY(0.01);
-        animation.setToX(1);
-        animation.setToY(1);
-        
-        //image.setStyle("-fx-alignment : center;");
+
+        ScaleTransition scaleAnimation = new ScaleTransition(Duration.millis(millis/4), image);
+        scaleAnimation.setFromX(0.01);
+        scaleAnimation.setFromY(0.01);
+        scaleAnimation.setToX(1);
+        scaleAnimation.setToY(1);
+
+        ScaleTransition pause = new ScaleTransition(Duration.millis((millis/4)*3), image);
+        pause.setFromX(1);
+        pause.setToX(1.2);
+        pause.setFromY(1);
+        pause.setToY(1.2);
+
+        animation = new SequentialTransition(scaleAnimation,pause);
 
         setStyle(
             "-fx-background-color:transparent;"
@@ -73,7 +65,11 @@ public class PopUpPane extends StackPane{
     }
 
     public static PopUpPane getGameOverPane(){
-        return new PopUpPane(Duration.millis(350), "img/gameOver.png");
+        return getGameOverPane(1000);
+    }
+
+    public static PopUpPane getGameOverPane(double millis){
+        return new PopUpPane(millis, "img/gameOver.png");
     }
 
 }
