@@ -3,17 +3,17 @@ package menu;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.UnaryOperator;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -21,6 +21,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import game.*;
+import javafx.util.converter.IntegerStringConverter;
+
 import game.model.Difficulty;
 import game.model.GameParameter;
 import game.view.IHM;
@@ -32,6 +35,10 @@ import game.view.IHM;
  */
 public class MainMenu extends Application{
 
+    private static final boolean SQUAREONLY = true;
+    private static final int MINSIZE = 4;
+    private static final int MAXSIZE = 10;
+    private static final int DEFAULTSIZE = 7;
 
     /**
      * La méthode start permet d'initialiser le début du jeu.
@@ -172,6 +179,76 @@ public class MainMenu extends Application{
     public void playMenu(Stage baseStage, MenuAnimation menuAnimation){
         Scene oldScene = baseStage.getScene();
 
+        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+            String newText = change.getControlNewText();
+            /* MAKE NUMERIC ONLY */
+            String digitsOnlyFrom1To10 = "[1-9]|" + MAXSIZE;
+
+            // Check if the new text is empty or matches the allowed pattern
+            if (newText.isEmpty() || newText.matches(digitsOnlyFrom1To10)) {
+                return change;
+            }
+            // Reject the change if it doesn't meet the criteria
+            return null;
+        };
+
+        TextField largeurField = new TextField(); // TextField contenant uniquement des chiffres pour définir la taille du labyrinthe
+        largeurField.setTextFormatter(
+                new TextFormatter<>(integerFilter)
+        );
+        largeurField.setText(String.valueOf(DEFAULTSIZE));
+        largeurField.setMaxWidth(50);
+        largeurField.setMinWidth(50);
+
+        TextField longueurField = new TextField(); // TextField contenant uniquement des chiffres pour définir la taille du labyrinthe
+        longueurField.setTextFormatter(
+                new TextFormatter<>(integerFilter)
+        );
+        longueurField.setText(String.valueOf(DEFAULTSIZE));
+        longueurField.setMaxWidth(50);
+        longueurField.setMinWidth(50);
+
+        if (SQUAREONLY){
+            // Ajout d'un écouteur de changement à longueurField
+            longueurField.textProperty().addListener((ChangeListener<String>) (observable, oldValue, newValue) -> {
+                // Met à jour la valeur du largeurField avec la nouvelle valeur du longueurField
+                largeurField.setText(newValue);
+            });
+
+            // Ajout d'un écouteur de changement à largeurField
+            largeurField.textProperty().addListener((ChangeListener<String>) (observable, oldValue, newValue) -> {
+                // Met à jour la valeur du longueurField avec la nouvelle valeur du largeurField
+                longueurField.setText(newValue);
+            });
+        }
+
+        Label multiplicationSymbol = new Label(" X "); // Format Taille : 10 X 10
+        multiplicationSymbol.setMinHeight(25);
+        HBox mazeSizeInputs = new HBox();
+        mazeSizeInputs.getChildren().addAll(longueurField,multiplicationSymbol,largeurField);
+
+
+        Label sizeLabel = new Label("Taille du Labyrinthe (Par Défaut : 7x7)");
+        // Bouton pour repasser la taille par défaut
+        Button resetSizeButton = new Button("Réinitialiser");
+        resetSizeButton.getStyleClass().add("optionMenuButton");
+        resetSizeButton.setMinWidth(115);
+        resetSizeButton.setMaxWidth(115);
+        resetSizeButton.setOnAction(e -> {
+            longueurField.setText(String.valueOf(DEFAULTSIZE));
+            largeurField.setText(String.valueOf(DEFAULTSIZE));
+        });
+
+        VBox optionMazeSize = new VBox(); // Colonne d'option de configuration de la taille du labyrinthe
+        // Menu regroupant l'ensemble des options configurables de la partie
+        HBox optionsMenu = new HBox();
+        // Ajout des éléments de la configuration de la taille du labyrinthe à la colonne
+        optionMazeSize.getChildren().addAll(sizeLabel,mazeSizeInputs,resetSizeButton);
+        optionMazeSize.setSpacing(7.5);
+
+        // Ajout des différents blocs d'options au bloc général
+        optionsMenu.getChildren().add(optionMazeSize);
+
         DifficultySlider difficulty = new DifficultySlider();
         difficulty.setPrefWidth(350);
         difficulty.setMaxWidth(350);
@@ -229,6 +306,8 @@ public class MainMenu extends Application{
             parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
             parameters.setFirstPlayerName(firstPlayerLabel.getText());
             parameters.setSecondPlayerName(secondPlayerLabel.getText());
+            parameters.setLongueur(Integer.parseInt(longueurField.getText()));
+            parameters.setLargeur(Integer.parseInt(largeurField.getText()));
             IHM ihm = new IHM(parameters);
             baseStage.close();
             ihm.start(baseStage);
@@ -243,6 +322,8 @@ public class MainMenu extends Application{
         localBox.getChildren().add(new HBox(firstPlayerLabel,new Label("VS"),secondPlayerLabel));
         localBox.getChildren().get(0).getStyleClass().add("center");
         localBox.getChildren().add(difficulty);
+
+        localBox.getChildren().add(optionsMenu);
 
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
