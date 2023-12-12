@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 /**
  * Cette enum représente les différents types de cellules qui se trouvent sur le labyrinthe.

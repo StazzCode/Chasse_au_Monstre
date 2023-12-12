@@ -1,10 +1,10 @@
 package test;
 import org.junit.Test;
 
-import game.Cell;
-import game.CellInfo;
-import game.Coordinate;
-import game.Maze;
+import game.model.Cell;
+import game.model.CellInfo;
+import game.model.Coordinate;
+import game.model.Maze;
 
 import static org.junit.Assert.*;
 
