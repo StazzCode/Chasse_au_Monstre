@@ -6,6 +6,7 @@ import org.junit.jupiter.api.condition.OS;
 
 import game.model.Coordinate;
 import game.model.Maze;
+import graphics.PopUpPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -180,6 +181,14 @@ public class MonsterView extends Stage implements IView {
     }
 
     public void endGame() {
+        PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
+        stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
+        gameOverPopUp.setOnFinished(e->{
+            stackPane.getChildren().remove(gameOverPopUp);
+        });
+        gameOverPopUp.play();
+
+
         play.setText("Partie terminée. Le Monstre a gagné.");
 
         Button replay = new Button("Recommencer");

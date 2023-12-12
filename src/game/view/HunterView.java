@@ -4,6 +4,7 @@ import game.model.Cell;
 import game.model.CellInfo;
 import game.model.Coordinate;
 import game.model.Maze;
+import graphics.PopUpPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -174,6 +175,14 @@ public class HunterView extends Stage implements IView {
     }
 
     public void endGame() {
+        PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
+        stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
+        gameOverPopUp.setOnFinished(e->{
+            stackPane.getChildren().remove(gameOverPopUp);
+        });
+        gameOverPopUp.play();
+
+
         play.setText("Partie terminée. Le chasseur a gagné.");
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
