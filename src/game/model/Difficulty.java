@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 /**
  * Cette énumération représente les différents niveaux de difficulté du jeu,

@@ -1,6 +1,12 @@
 package test;
 
 import game.*;
+import game.model.Cell;
+import game.model.CellInfo;
+import game.model.Coordinate;
+import game.model.Maze;
+import game.model.Monster;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,4 @@
-package game;
+package game.view;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -21,6 +21,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.condition.OS;
+
+import game.model.Cell;
+import game.model.CellInfo;
+import game.model.Coordinate;
+import game.model.Difficulty;
+import game.model.GameParameter;
+import game.model.Maze;
 
 import java.awt.im.InputContext;
 import menu.MainMenu;
@@ -90,7 +97,6 @@ public class IHM extends Application {
      */
     Stage mainStage;
 
-
     int shootColumn;
     int shootRow;
 
@@ -101,11 +107,12 @@ public class IHM extends Application {
     String secondPlayerName;
     Difficulty difficulty;
 
-    public IHM(GameParameter parameter){
+    public IHM(GameParameter parameter) {
         difficulty = parameter.getDifficulty();
         firstPlayerName = parameter.getFirstPlayerName();
         firstPlayerName = parameter.getSecondPlayerName();
     }
+
     public IHM() {
         this(new GameParameter());
     }
@@ -259,7 +266,7 @@ public class IHM extends Application {
         Button quit = new Button("Quitter");
 
         endGameButtonsActions(replay, backToMenu, quit);
-        
+
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.TOP_CENTER);
         hbox.getChildren().addAll(replay, backToMenu, quit);
@@ -320,11 +327,11 @@ public class IHM extends Application {
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
-                    //System.out.println(maze.hasNeighbors(maze.getMonster().coordinate));
-                    monsterPlay();
-                } else {
-                    response.setText("Mouvement impossible ! Réessayez.");
-                }
+            // System.out.println(maze.hasNeighbors(maze.getMonster().coordinate));
+            monsterPlay();
+        } else {
+            response.setText("Mouvement impossible ! Réessayez.");
+        }
     }
 
     /**
@@ -412,7 +419,7 @@ public class IHM extends Application {
             }
         });
     }
-    
+
     private void stackPaneConfiguration() {
         stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
@@ -436,12 +443,12 @@ public class IHM extends Application {
     private void macOSInputs() {
         InputContext context = InputContext.getInstance();
         String loc = context.getLocale().toString();
-        if (OS.current() == OS.MAC && (loc.equals("fr"))){
-                keyCodeUp = KeyCode.W;
-                keyCodeLeft = KeyCode.A;
+        if (OS.current() == OS.MAC && (loc.equals("fr"))) {
+            keyCodeUp = KeyCode.W;
+            keyCodeLeft = KeyCode.A;
         }
     }
-    
+
     /**
      * Méthode qui initialise l'interface graphique.
      * 
@@ -455,10 +462,10 @@ public class IHM extends Application {
         AIHunter = false;
         AIMonster = false;
 
-        //macOSInputs();
+        // macOSInputs();
 
-        int columns =4 ;
-        int rows = 4;
+        // int columns = 4;
+        // int rows = 4;
         turn = 0;
         // version fonctionnelle classique:
 
@@ -470,15 +477,17 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
 
-        // difficulty = Difficulty.TRES_DIFFICILE;
-        // int columns = getColumnsDifficulty();
-        // int rows = getRowsDifficulty();
+        difficulty = Difficulty.MOYEN;
+        int columns = difficulty.getColumnsDifficulty();
+        int rows = difficulty.getRowsDifficulty();
+        int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;
-        while(!pathExist) { //Disclamer : ne jamais mettre en param de generateObstacle un nombre trop élevé par rapport a la taille du labyrinthe
-        	maze.resetMaze();
+        while (!pathExist) { // Disclamer : ne jamais mettre en param de generateObstacle un nombre trop
+                             // élevé par rapport a la taille du labyrinthe
+            maze.resetMaze();
             maze.generateEnterExit();
-            maze.generateObstacles(100);
+            maze.generateObstacles(nbObstacles);
             pathExist = maze.checkPathExists();
         }
         System.out.println(maze.getMaxObstaclePossible());
@@ -489,7 +498,7 @@ public class IHM extends Application {
 
         initializeShootButton();
         shoot.setVisible(false);
-        
+
         stackPaneConfiguration();
 
         scene = new Scene(stackPane, 550, 550);
@@ -497,6 +506,24 @@ public class IHM extends Application {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+    public int updateNbObstacles(Difficulty difficulty) {
+        int ratio = 0;
+        if (Difficulty.TRES_FACILE == difficulty) {
+            ratio = 4;
+        } else if (Difficulty.FACILE == difficulty) {
+            ratio = 3;
+        } else if (Difficulty.MOYEN == difficulty) {
+            ratio = 2;
+        } else if (Difficulty.DIFFICILE == difficulty) {
+            ratio = 2;
+        } else if (Difficulty.TRES_DIFFICILE == difficulty) {
+            ratio = 2;
+        }
+
+        int nbObstacles = (maze.getColumns() * maze.getRows() / ratio);
+        return nbObstacles;
     }
 
     /**
