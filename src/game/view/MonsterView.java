@@ -113,6 +113,8 @@ public class MonsterView extends Stage implements IView {
                             new Background(new BackgroundFill(Color.LIGHTSALMON, CornerRadii.EMPTY, Insets.EMPTY)));
                     b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
                 } else {
+                    b.setBackground(
+                            new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
                     b.setText(" ");
                 }
             }
