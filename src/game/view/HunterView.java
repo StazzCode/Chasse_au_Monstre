@@ -174,13 +174,17 @@ public class HunterView extends Stage implements IView {
         setInteractions(true);
     }
 
-    public void endGame() {
+    void gameOverPopUp() {
         PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
         stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
         gameOverPopUp.setOnFinished(e->{
             stackPane.getChildren().remove(gameOverPopUp);
         });
         gameOverPopUp.play();
+    }
+
+    public void endGame() {
+        ihm.mView.gameOverPopUp();
 
 
         play.setText("Partie terminée. Le chasseur a gagné.");
