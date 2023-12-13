@@ -93,6 +93,7 @@ public class MonsterView extends Stage implements IView {
 
     int shootColumn;
     int shootRow;
+    boolean iaMonster;
 
     public MonsterView(IHM ihm, Stage mainStage, Maze maze) {
         this.ihm = ihm;
@@ -129,6 +130,11 @@ public class MonsterView extends Stage implements IView {
     public void setInteractions(boolean active) {
         if (active) {
             play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
+            if(iaMonster) {
+            	 Coordinate coord = this.maze.getMonster().iaMove();
+            	 setMonsterMovementKeybind(coord.getColumn(), coord.getRow());
+            	 return;
+            }
             scene.setOnKeyPressed(e -> {
                 if (e.getCode() == keyCodeUp) {
                     setMonsterMovementKeybind(0, -1);
@@ -298,6 +304,7 @@ public class MonsterView extends Stage implements IView {
 
         this.grid = new GridPane();
         int elementSize = 40;
+        iaMonster = true;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
         

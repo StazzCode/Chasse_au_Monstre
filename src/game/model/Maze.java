@@ -160,17 +160,7 @@ public class Maze implements Observer {
      * 
      * @param nbObstacles nombre d'obstacles à générer.
      */
-    public void generateObstacles(/*int nbObstacles*/ int obstaclePercentage) {
-        /*Random random = new Random();
-        int countObstacles = 0;
-        while (countObstacles != nbObstacles) {
-            int x = random.nextInt(columns);
-            int y = random.nextInt(rows);
-            if (this.maze[x][y].getState() == CellInfo.EMPTY) {
-                this.maze[x][y].setState(CellInfo.WALL);
-                countObstacles++;
-            }
-        }*/
+    public void generateObstacles(int obstaclePercentage) {
     	if (obstaclePercentage < 0 || obstaclePercentage > 100) {
             throw new IllegalArgumentException("Le pourcentage d'obstacles doit être compris entre 0 et 100.");
         }

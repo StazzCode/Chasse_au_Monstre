@@ -114,6 +114,20 @@ public class Monster extends Player {
     	}
         return false;
     }
+    
+    public Coordinate iaMove(){
+    	Coordinate newCoord = null;
+    	if(this.canMove(new Coordinate(this.getCoordinate().getColumn(), this.getCoordinate().getRow()-1))) {
+    		newCoord = new Coordinate(0, -1);
+    	}else if(this.canMove(new Coordinate(this.getCoordinate().getColumn()-1, this.getCoordinate().getRow()))) {
+    		newCoord = new Coordinate(-1, 0);
+    	}else if(this.canMove(new Coordinate(this.getCoordinate().getColumn()+1, this.getCoordinate().getRow()))) {
+    		newCoord = new Coordinate(1, 0);
+    	}else if(this.canMove(new Coordinate(this.getCoordinate().getColumn(), this.getCoordinate().getRow()+1))) {
+    		newCoord = new Coordinate(0, 1);
+    	}
+    	return newCoord;
+    }
 
     /**
      * Méthode qui déplace le monstre en diagonale à la coordonnée donnée si c'est possible
