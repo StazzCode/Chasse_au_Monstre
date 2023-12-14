@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.UnaryOperator;
 
+import graphics.PopUpMazeSize;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,12 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import game.*;
 import javafx.util.converter.IntegerStringConverter;
 
 import game.model.Difficulty;
@@ -36,6 +35,7 @@ import game.view.IHM;
 public class MainMenu extends Application{
 
     private static final boolean SQUAREONLY = true;
+    private static boolean ENABLECUSTOM = false;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
@@ -241,7 +241,32 @@ public class MainMenu extends Application{
 
         VBox optionMazeSize = new VBox(); // Colonne d'option de configuration de la taille du labyrinthe
         // Menu regroupant l'ensemble des options configurables de la partie
+        VBox options = new VBox();
+        options.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        HBox confighbox = new HBox();
+        Label configLabel = new Label("Activer Configuration Personnalisée");
+        CheckBox check = new CheckBox();
+
+        confighbox.getChildren().addAll(check,configLabel);
+
         HBox optionsMenu = new HBox();
+        optionsMenu.setDisable(true);
+        options.getChildren().addAll(confighbox,optionsMenu);
+        optionsMenu.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        check.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if(observableValue.getValue()){
+                ENABLECUSTOM = true;
+                optionsMenu.setDisable(false);
+            } else {
+                ENABLECUSTOM = false;
+                optionsMenu.setDisable(true);
+            }
+        });
+
         // Ajout des éléments de la configuration de la taille du labyrinthe à la colonne
         optionMazeSize.getChildren().addAll(sizeLabel,mazeSizeInputs,resetSizeButton);
         optionMazeSize.setSpacing(7.5);
@@ -302,15 +327,33 @@ public class MainMenu extends Application{
 
         Button play = new Button("Lancer");
         play.setOnAction(e->{
-            GameParameter parameters = new GameParameter();
-            parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
-            parameters.setFirstPlayerName(firstPlayerLabel.getText());
-            parameters.setSecondPlayerName(secondPlayerLabel.getText());
-            parameters.setLongueur(Integer.parseInt(longueurField.getText()));
-            parameters.setLargeur(Integer.parseInt(largeurField.getText()));
-            IHM ihm = new IHM(parameters);
-            baseStage.close();
-            ihm.start(baseStage);
+            if (!belowMinSize(longueurField)){
+                GameParameter parameters = new GameParameter();
+                parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
+                parameters.setFirstPlayerName(firstPlayerLabel.getText());
+                parameters.setSecondPlayerName(secondPlayerLabel.getText());
+
+                if (ENABLECUSTOM){
+                    parameters.setLongueur(Integer.parseInt(longueurField.getText()));
+                    parameters.setLargeur(Integer.parseInt(largeurField.getText()));
+                } else {
+                    parameters.setLongueur(parameters.getDifficulty().getColumnsDifficulty());
+                    parameters.setLargeur(parameters.getDifficulty().getRowsDifficulty());
+                }
+
+                IHM ihm = new IHM(parameters);
+                baseStage.close();
+                ihm.start(baseStage);
+            } else {
+                PopUpMazeSize p = new PopUpMazeSize();
+                p.setMINSIZE(MINSIZE);
+                try {
+                    p.start(baseStage);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
         });
 
         bottom.getChildren().addAll(back, play);
@@ -323,7 +366,7 @@ public class MainMenu extends Application{
         localBox.getChildren().get(0).getStyleClass().add("center");
         localBox.getChildren().add(difficulty);
 
-        localBox.getChildren().add(optionsMenu);
+        localBox.getChildren().add(options);
 
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
@@ -333,7 +376,11 @@ public class MainMenu extends Application{
         newScene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         baseStage.setScene(newScene);
     }
-    
+
+    boolean belowMinSize(TextField tf){
+        return Integer.parseInt(tf.getText()) < MINSIZE;
+    }
+
     /**
      * Méthode qui permet de lancer le jeu.
      * @param args

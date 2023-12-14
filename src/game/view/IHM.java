@@ -24,11 +24,15 @@ public class IHM extends Application {
     String firstPlayerName;
     String secondPlayerName;
     Difficulty difficulty;
+    Integer longueur;
+    Integer largeur;
 
     public IHM(GameParameter parameter) {
         difficulty = parameter.getDifficulty();
         firstPlayerName = parameter.getFirstPlayerName();
         firstPlayerName = parameter.getSecondPlayerName();
+        longueur = parameter.getLongueur();
+        largeur = parameter.getLargeur();
     }
 
     public IHM() {
@@ -65,8 +69,8 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
         difficulty = Difficulty.MOYEN;
-        int columns = difficulty.getColumnsDifficulty();
-        int rows = difficulty.getRowsDifficulty();
+        int columns = longueur;// difficulty.getColumnsDifficulty();
+        int rows = largeur; // difficulty.getRowsDifficulty();
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;
