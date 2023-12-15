@@ -257,16 +257,6 @@ public class MainMenu extends Application{
         optionsMenu.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        check.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if(observableValue.getValue()){
-                ENABLECUSTOM = true;
-                optionsMenu.setDisable(false);
-            } else {
-                ENABLECUSTOM = false;
-                optionsMenu.setDisable(true);
-            }
-        });
-
         // Ajout des éléments de la configuration de la taille du labyrinthe à la colonne
         optionMazeSize.getChildren().addAll(sizeLabel,mazeSizeInputs,resetSizeButton);
         optionMazeSize.setSpacing(7.5);
@@ -323,6 +313,19 @@ public class MainMenu extends Application{
         back.setOnAction(e->{
             baseStage.setScene(oldScene);
             menuAnimation.play();
+        });
+
+        // Gestion du Bouton d'activation des options personnalisées de la partie
+        check.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if(observableValue.getValue()){
+                ENABLECUSTOM = true;
+                optionsMenu.setDisable(false);
+                difficulty.setDisable(true);
+            } else {
+                ENABLECUSTOM = false;
+                optionsMenu.setDisable(true);
+                difficulty.setDisable(false);
+            }
         });
 
         Button play = new Button("Lancer");
