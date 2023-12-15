@@ -1,6 +1,8 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 /**
  * Cette classe représente le monstre dans le jeu. Elle contient des méthodes pour vérifier si le monstre peut se déplacer à une coordonnée donnée, pour déplacer le monstre à une coordonnée aléatoire parmi les coordonnées possibles et pour déplacer le monstre à la coordonnée donnée si c'est possible.
  * Elle étend la classe Player.
@@ -9,6 +11,8 @@ public class Monster extends Player {
 
     protected Maze maze;
     ArrayList<Coordinate> deplacementPossible = new ArrayList<Coordinate>();
+    Stack<Coordinate> stack = new Stack<>();
+    List<Coordinate> marquer = new ArrayList<>(); 
 
     /**
      * Constructeur de la classe Monster.
@@ -115,20 +119,55 @@ public class Monster extends Player {
         return false;
     }
     
-    public Coordinate iaMove(){
-    	Coordinate newCoord = null;
-    	if(this.canMove(new Coordinate(this.getCoordinate().getColumn(), this.getCoordinate().getRow()-1))) {
-    		newCoord = new Coordinate(0, -1);
-    	}else if(this.canMove(new Coordinate(this.getCoordinate().getColumn()-1, this.getCoordinate().getRow()))) {
-    		newCoord = new Coordinate(-1, 0);
-    	}else if(this.canMove(new Coordinate(this.getCoordinate().getColumn()+1, this.getCoordinate().getRow()))) {
-    		newCoord = new Coordinate(1, 0);
-    	}else if(this.canMove(new Coordinate(this.getCoordinate().getColumn(), this.getCoordinate().getRow()+1))) {
-    		newCoord = new Coordinate(0, 1);
-    	}
-    	return newCoord;
+    public Coordinate iaMove() {
+        if (stack.isEmpty()) {
+            initializeStack();
+        }
+
+        while (!stack.isEmpty()) {
+            System.out.println("check");
+            Coordinate c = stack.peek();
+
+            if (this.maze.getMaze()[c.getColumn()][c.getRow()].getState().getCar() == CellInfo.EXIT.getCar()) {
+                System.out.println("sortie trouvée");
+                return new Coordinate(0, 0);
+            } else {
+                System.out.println(c.column + " , " + c.row);
+                for (int xOffset = -1; xOffset <= 1; xOffset++) {
+                    for (int yOffset = -1; yOffset <= 1; yOffset++) {
+                        if ((xOffset == 0 || yOffset == 0) && isValidMove(c.getColumn() + xOffset, c.getRow() + yOffset)) {
+                            this.marquer.add(this.maze.getMaze()[c.getColumn() + xOffset][c.getRow() + yOffset].getCoordinate());
+                            stack.add(this.maze.getMaze()[c.getColumn() + xOffset][c.getRow() + yOffset].getCoordinate());
+                            return new Coordinate(xOffset, yOffset);
+                        }
+                    }
+                }
+
+                int colonne = c.getColumn();
+                int row = c.getRow();
+                stack.pop();
+                if (!stack.isEmpty()) {
+                    c = stack.peek();
+                    return new Coordinate(c.getColumn() - colonne, c.getRow() - row);
+                }
+            }
+        }
+
+        return null;
     }
 
+    private void initializeStack() {
+        stack.push(this.maze.getEnter());
+        marquer.add(this.maze.getEnter());
+    }
+
+    private boolean isValidMove(int newColumn, int newRow) {
+        return newColumn >= 0 && newColumn < this.maze.getColumns()
+                && newRow >= 0 && newRow < this.maze.getRows()
+                && this.maze.getMaze()[newColumn][newRow].getState().getCar() != CellInfo.WALL.getCar()
+                && !this.marquer.contains(this.maze.getMaze()[newColumn][newRow].getCoordinate());
+    }
+    
     /**
      * Méthode qui déplace le monstre en diagonale à la coordonnée donnée si c'est possible
      * @param c la coordonnée à laquelle le monstre doit se déplacer

@@ -319,8 +319,6 @@ public class Maze implements Observer {
     public boolean checkPathExists() {
     	Coordinate enter = getEnter();
         Coordinate exit = getExit();
-        
-        System.out.println(enter.getColumn());
 
         if (enter == null || exit == null) {
             return false;
