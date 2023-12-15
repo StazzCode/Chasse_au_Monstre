@@ -69,13 +69,12 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
         difficulty = Difficulty.MOYEN;
-        int columns = 5;// difficulty.getColumnsDifficulty();
-        int rows = 5; // difficulty.getRowsDifficulty();
+        int columns = largeur;// difficulty.getColumnsDifficulty();
+        int rows = longueur; // difficulty.getRowsDifficulty();
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;
-        while (!pathExist) { // Disclamer : ne jamais mettre en param de generateObstacle un nombre trop
-                             // élevé par rapport a la taille du labyrinthe
+        while (!pathExist) {
             maze.resetMaze();
             maze.generateEnterExit();
             maze.generateObstacles(nbObstacles);
