@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import menu.MainMenu;
+import java.util.Random;
 
 public class HunterView extends Stage implements IView {
 
@@ -176,8 +177,8 @@ public class HunterView extends Stage implements IView {
 
     void gameOverPopUp() {
         PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
-        stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
-        gameOverPopUp.setOnFinished(e->{
+        stackPane.getChildren().add(stackPane.getChildren().size() - 1, gameOverPopUp);
+        gameOverPopUp.setOnFinished(e -> {
             stackPane.getChildren().remove(gameOverPopUp);
         });
         gameOverPopUp.play();
@@ -186,19 +187,17 @@ public class HunterView extends Stage implements IView {
     public void endGame() {
         ihm.mView.gameOverPopUp();
 
-
         play.setText("Partie terminée. Le chasseur a gagné.");
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         setInteractions(false);
-        
 
         Button replay = new Button("Recommencer");
         Button backToMenu = new Button("Retour au menu");
         Button quit = new Button("Quitter");
 
         endGameButtonsActions(replay, backToMenu, quit);
-        
+
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.TOP_CENTER);
         hbox.getChildren().addAll(replay, backToMenu, quit);
@@ -307,26 +306,49 @@ public class HunterView extends Stage implements IView {
     }
 
     /**
+     * Méthode qui génère un tour de jeu pour le chasseur de façon aléatoire :
+     * il tire sur une case au hasard.
+     */
+    public void playAISimple() {
+        Random random = new Random();
+        int randomColumn = random.nextInt(maze.getColumns());
+        int randomRow = random.nextInt(maze.getRows());
+        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        if (!maze.getEnd()) {
+            maze.getMaze()[randomColumn][randomRow].discover();
+            this.response.setText(
+                    "Vous avez tiré sur " + maze.getMaze()[randomColumn][randomRow].getState().toString() + "!");
+            this.display();
+            setInteractions(false);
+            play.setText("Tour " + turn + " : Monstre   |   Patience.");
+            ihm.mView.play();
+        } else {
+            endGame();
+            return;
+        }
+    }
+
+    /**
      * Méthode qui initialise l'interface graphique.
      * 
      * @param stage la scène principale de l'interface graphique.
      */
     private void start() {
 
-        //macOSInputs();
+        // macOSInputs();
 
         turn = 0;
-        
+
         this.grid = new GridPane();
         int elementSize = 40;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
 
         initializeShootButton();
-        
+
         stackPaneConfiguration();
         scene = new Scene(stackPane, 550, 550);
-        
+
         setInteractions(false);
         display();
 
