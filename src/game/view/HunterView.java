@@ -367,7 +367,6 @@ public class HunterView extends Stage implements IView {
             ihm.mView.play();
         } else {
             endGame();
-            return;
         }
     }
 
