@@ -106,10 +106,11 @@ public class MonsterView extends Stage implements IView {
      * @param mainStage le Stage principal de l'interface graphique.
      * @param maze      le labyrinthe du jeu.
      */
-    public MonsterView(IHM ihm, Stage mainStage, Maze maze) {
+    public MonsterView(IHM ihm, Stage mainStage, Maze maze, boolean ia) {
         this.ihm = ihm;
         this.mainStage = mainStage;
         this.maze = maze;
+        this.iaMonster = ia;
         this.start();
     }
 
@@ -330,7 +331,7 @@ public class MonsterView extends Stage implements IView {
 
         this.grid = new GridPane();
         int elementSize = 40;
-        iaMonster = true;
+        //iaMonster = true;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
 

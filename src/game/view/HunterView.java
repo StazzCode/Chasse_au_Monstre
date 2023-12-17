@@ -98,10 +98,11 @@ public class HunterView extends Stage implements IView {
      * @param mainStage la scène principale
      * @param maze      le labyrinthe
      */
-    public HunterView(IHM ihm, Stage mainStage, Maze maze) {
+    public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ia) {
         this.ihm = ihm;
         this.mainStage = mainStage;
         this.maze = maze;
+        this.iaHunter = ia;
         this.start();
     }
 
@@ -399,7 +400,7 @@ public class HunterView extends Stage implements IView {
 
         this.grid = new GridPane();
         int elementSize = 40;
-        iaHunter = true;
+        //iaHunter = true;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
 
