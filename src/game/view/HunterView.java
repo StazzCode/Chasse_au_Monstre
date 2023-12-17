@@ -26,6 +26,9 @@ import javafx.stage.Stage;
 import menu.MainMenu;
 import java.util.Random;
 
+/**
+ * Classe représentant la vue du chasseur dans le jeu du labyrinthe.
+ */
 public class HunterView extends Stage implements IView {
 
     IHM ihm;
@@ -79,11 +82,19 @@ public class HunterView extends Stage implements IView {
     /**
      * Le Stage principal de l'interface graphique.
      */
+
     Stage mainStage;
 
     int shootColumn;
     int shootRow;
 
+    /**
+     * Constructeur de la classe HunterView.
+     * 
+     * @param ihm       l'interface utilisateur
+     * @param mainStage la scène principale
+     * @param maze      le labyrinthe
+     */
     public HunterView(IHM ihm, Stage mainStage, Maze maze) {
         this.ihm = ihm;
         this.mainStage = mainStage;
@@ -92,7 +103,22 @@ public class HunterView extends Stage implements IView {
     }
 
     /**
-     * Méthode qui affiche le labyrinthe vu par le chasseur
+     * Constructeur de la classe HunterView pour le mode IA.
+     * 
+     * @param ihm       l'interface utilisateur
+     * @param mainStage la scène principale
+     * @param maze      le labyrinthe
+     * @param ai        le mode IA
+     */
+    public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ai) {
+        this.ihm = ihm;
+        this.mainStage = mainStage;
+        this.maze = maze;
+        this.startAI();
+    }
+
+    /**
+     * Méthode qui affiche le labyrinthe vu par le chasseur.
      */
     public void display() {
         for (int i = 0; i < maze.getColumns(); i++) {
@@ -110,7 +136,7 @@ public class HunterView extends Stage implements IView {
 
     /**
      * Méthode qui retourne le caractère correspondant au type de cellule sauf si
-     * c'est une cellule vide avec une dernière apparition du monstre
+     * c'est une cellule vide avec une dernière apparition du monstre.
      * 
      * @param c la cellule choisie
      * @return le caractère correspondant au type de cellule sauf si c'est une
@@ -175,6 +201,9 @@ public class HunterView extends Stage implements IView {
         setInteractions(true);
     }
 
+    /**
+     * Méthode qui affiche la fenêtre de fin de jeu.
+     */
     void gameOverPopUp() {
         PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
         stackPane.getChildren().add(stackPane.getChildren().size() - 1, gameOverPopUp);
@@ -184,6 +213,9 @@ public class HunterView extends Stage implements IView {
         gameOverPopUp.play();
     }
 
+    /**
+     * Méthode qui termine le jeu.
+     */
     public void endGame() {
         ihm.mView.gameOverPopUp();
 
@@ -206,6 +238,12 @@ public class HunterView extends Stage implements IView {
         ihm.mView.play.setText("Partie terminée. Le chasseur a gagné.");
     }
 
+    /**
+     * Méthode qui gère les actions des boutons de fin de jeu.
+     * @param replay
+     * @param backToMenu
+     * @param quit
+     */
     private void endGameButtonsActions(Button replay, Button backToMenu, Button quit) {
         replay.setOnMouseClicked(e -> {
             ihm.mView.close();
@@ -253,7 +291,7 @@ public class HunterView extends Stage implements IView {
 
     /**
      * Méthode qui permet d'initialiser le bouton shoot pour que le chasseur puisse
-     * tirer dans le labyrinthe
+     * tirer dans le labyrinthe.
      */
     private void initializeShootButton() {
         shoot = new Button("Shoot !");
@@ -283,7 +321,9 @@ public class HunterView extends Stage implements IView {
             }
         });
     }
-
+    /**
+     * Méthode qui configure la StackPane principale.
+     */
     private void stackPaneConfiguration() {
         stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Patience.");
@@ -301,13 +341,16 @@ public class HunterView extends Stage implements IView {
         StackPane.setAlignment(shoot, Pos.TOP_CENTER);
     }
 
+    /**
+     * Méthode qui ferme la fenêtre.
+     */
     public void close() {
         super.close();
     }
 
     /**
-     * Méthode qui génère un tour de jeu pour le chasseur de façon aléatoire :
-     * il tire sur une case au hasard.
+     * Méthode qui génère un tour de jeu pour le chasseur de façon aléatoire : il
+     * tire sur une case au hasard.
      */
     public void playAISimple() {
         Random random = new Random();
@@ -325,6 +368,27 @@ public class HunterView extends Stage implements IView {
         } else {
             endGame();
             return;
+        }
+    }
+
+    /**
+     * Méthode qui démarre le mode IA.
+     */
+    public void startAI() {
+        Random random = new Random();
+        int randomColumn = random.nextInt(maze.getColumns());
+        int randomRow = random.nextInt(maze.getRows());
+        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        if (!maze.getEnd()) {
+            maze.getMaze()[randomColumn][randomRow].discover();
+            this.response.setText(
+                    "Vous avez tiré sur " + maze.getMaze()[randomColumn][randomRow].getState().toString() + "!");
+            this.display();
+            setInteractions(false);
+            play.setText("Tour " + turn + " : Monstre   |   Patience.");
+            ihm.mView.play();
+        } else {
+            endGame();
         }
     }
 

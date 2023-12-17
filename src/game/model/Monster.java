@@ -119,6 +119,10 @@ public class Monster extends Player {
         return false;
     }
     
+    /**
+     * Méthode qui gère un tour de l'IA monstre.
+     * @return la coordonnée à laquelle le monstre doit se déplacer.
+     */
     public Coordinate iaMove() {
         if (stack.isEmpty()) {
             initializeStack();
@@ -156,11 +160,20 @@ public class Monster extends Player {
         return null;
     }
 
+    /**
+     * Méthode qui initialise la pile de coordonnées.
+     */
     private void initializeStack() {
         stack.push(this.maze.getEnter());
         marquer.add(this.maze.getEnter());
     }
 
+    /**
+     * Méthode qui vérifie si le déplacement à la coordonnée donnée est possible.
+     * @param newColumn la colonne de la coordonnée.
+     * @param newRow la ligne de la coordonnée.
+     * @return true si le déplacement est possible, false sinon.    
+     */
     private boolean isValidMove(int newColumn, int newRow) {
         return newColumn >= 0 && newColumn < this.maze.getColumns()
                 && newRow >= 0 && newRow < this.maze.getRows()

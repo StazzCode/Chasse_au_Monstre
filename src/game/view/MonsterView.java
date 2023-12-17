@@ -28,6 +28,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import menu.MainMenu;
 
+/**
+ * Cette classe représente l'interface graphique du monstre. Elle hérite de la
+ * classe Stage de JavaFX et implémente l'interface IView.
+ */
 public class MonsterView extends Stage implements IView {
 
     IHM ihm;
@@ -95,13 +99,20 @@ public class MonsterView extends Stage implements IView {
     int shootRow;
     boolean iaMonster;
 
+    /**
+     * Constructeur de la classe MonsterView.
+     * 
+     * @param ihm       l'interface graphique du jeu.
+     * @param mainStage le Stage principal de l'interface graphique.
+     * @param maze      le labyrinthe du jeu.
+     */
     public MonsterView(IHM ihm, Stage mainStage, Maze maze) {
         this.ihm = ihm;
         this.mainStage = mainStage;
         this.maze = maze;
         this.start();
     }
-    
+
     /**
      * Méthode qui affiche le labyrinthe vu par le monstre
      */
@@ -130,10 +141,10 @@ public class MonsterView extends Stage implements IView {
     public void setInteractions(boolean active) {
         if (active) {
             play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
-            if(iaMonster) {
-            	 Coordinate coord = this.maze.getMonster().iaMove();
-            	 setMonsterMovementKeybind(coord.getColumn(), coord.getRow());
-            	 return;
+            if (iaMonster) {
+                Coordinate coord = this.maze.getMonster().iaMove();
+                setMonsterMovementKeybind(coord.getColumn(), coord.getRow());
+                return;
             }
             scene.setOnKeyPressed(e -> {
                 if (e.getCode() == keyCodeUp) {
@@ -164,17 +175,17 @@ public class MonsterView extends Stage implements IView {
     private void setMonsterMovementKeybind(int columnMovement, int rowMovement) {
         if (maze.getMonster().move(new Coordinate(maze.getMonster().getCoordinate().getColumn() + columnMovement,
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
-                    this.display();
-                    setInteractions(false);
-                    play.setText("Tour " + turn + " : Chasseur   |   Patience.");
-                    if (maze.getEnd()) {
-                        endGame();
-                        return;
-                    }
-                    ihm.hView.play();
-                } else {
-                    response.setText("Mouvement impossible ! Réessayez.");
-                }
+            this.display();
+            setInteractions(false);
+            play.setText("Tour " + turn + " : Chasseur   |   Patience.");
+            if (maze.getEnd()) {
+                endGame();
+                return;
+            }
+            ihm.hView.play();
+        } else {
+            response.setText("Mouvement impossible ! Réessayez.");
+        }
     }
 
     /**
@@ -188,15 +199,21 @@ public class MonsterView extends Stage implements IView {
         setInteractions(true);
     }
 
+    /**
+     * Méthode qui affiche un pop-up de fin de partie.
+     */
     void gameOverPopUp() {
         PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
-        stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
-        gameOverPopUp.setOnFinished(e->{
+        stackPane.getChildren().add(stackPane.getChildren().size() - 1, gameOverPopUp);
+        gameOverPopUp.setOnFinished(e -> {
             stackPane.getChildren().remove(gameOverPopUp);
         });
         gameOverPopUp.play();
     }
 
+    /**
+     * Méthode qui affiche la fin de la partie.
+     */
     public void endGame() {
         ihm.hView.gameOverPopUp();
 
@@ -207,7 +224,7 @@ public class MonsterView extends Stage implements IView {
         Button quit = new Button("Quitter");
 
         endGameButtonsActions(replay, backToMenu, quit);
-        
+
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.TOP_CENTER);
         hbox.getChildren().addAll(replay, backToMenu, quit);
@@ -216,11 +233,15 @@ public class MonsterView extends Stage implements IView {
         ihm.hView.play.setText("Partie terminée. Le Monstre a gagné.");
     }
 
+    /**
+     * Méthode qui gère les actions des boutons de fin de partie.
+     */
     private void endGameButtonsActions(Button replay, Button backToMenu, Button quit) {
         replay.setOnMouseClicked(e -> {
             ihm.hView.close();
             this.close();
-            ihm.start(mainStage);;
+            ihm.start(mainStage);
+            ;
         });
         backToMenu.setOnMouseClicked(e -> {
             MainMenu main = new MainMenu();
@@ -267,12 +288,15 @@ public class MonsterView extends Stage implements IView {
     private void macOSInputs() {
         InputContext context = InputContext.getInstance();
         String loc = context.getLocale().toString();
-        if (OS.current() == OS.MAC && (loc.equals("fr"))){
-                keyCodeUp = KeyCode.W;
-                keyCodeLeft = KeyCode.A;
+        if (OS.current() == OS.MAC && (loc.equals("fr"))) {
+            keyCodeUp = KeyCode.W;
+            keyCodeLeft = KeyCode.A;
         }
     }
 
+    /**
+     * Méthode qui configure la StackPane principale.
+     */
     private void stackPaneConfiguration() {
         stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
@@ -287,6 +311,9 @@ public class MonsterView extends Stage implements IView {
         StackPane.setAlignment(response, Pos.TOP_CENTER);
     }
 
+    /**
+     * Méthode qui ferme la fenêtre.
+     */
     public void close() {
         super.close();
     }
@@ -298,7 +325,7 @@ public class MonsterView extends Stage implements IView {
      */
     private void start() {
 
-        //macOSInputs();
+        // macOSInputs();
 
         turn = 0;
 
@@ -307,7 +334,7 @@ public class MonsterView extends Stage implements IView {
         iaMonster = true;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
-        
+
         stackPaneConfiguration();
         scene = new Scene(stackPane, 550, 550);
 

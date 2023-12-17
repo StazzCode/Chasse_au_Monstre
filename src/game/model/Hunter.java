@@ -39,7 +39,11 @@ public class Hunter extends Player{
     public ArrayList<Coordinate> getHitsList(){
     	return this.hitsList;
     }
-    
+
+    /**
+     * Méthode qui gère un tour de l'IA chasseur.
+     * @return
+     */
     public Coordinate AIplay() {
         Random rd = new Random();
         int i = rd.nextInt(maze.getColumns());

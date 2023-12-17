@@ -203,6 +203,10 @@ public class Maze implements Observer {
 
     }
     
+    /**
+     * Méthode qui retourne le nombre d'obstacles maximum possible dans le labyrinthe
+     * @return le nombre d'obstacles maximum possible dans le labyrinthe
+     */
     public int getMaxObstaclePossible() {
     	int size = this.getColumns() * this.getRows() - 2;
     	int manathan = (this.getColumns()-1) + (this.getRows()-1) -1;
@@ -256,16 +260,24 @@ public class Maze implements Observer {
 
     }
 
+    /**
+     * Méthode qui place l'entrée et la sortie du labyrinthe.
+     * @param colEntrance
+     * @param rowEntrance
+     * @param colExit
+     * @param rowExit
+     */
     private void placeEntranceExit(int colEntrance, int rowEntrance, int colExit, int rowExit) {
     	this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
         this.maze[colEntrance][rowEntrance] = new Cell(new Coordinate(colEntrance, rowEntrance), CellInfo.ENTER);
         this.maze[colExit][rowExit] = new Cell(new Coordinate(colExit, rowExit), CellInfo.EXIT);
     }
     
-    /*public boolean checkPath() {
-    	
-    }*/
 
+/**
+ * Méthode qui vérifie si une case a des voisins
+ * @return true si la case a des voisins, false sinon
+ */
     public boolean hasNeighbors(Coordinate coord) {
         int x = coord.getColumn();
         int y = coord.getRow();

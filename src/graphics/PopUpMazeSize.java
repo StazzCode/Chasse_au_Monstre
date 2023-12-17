@@ -12,14 +12,29 @@ import javafx.util.Duration;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Cette classe représente une fenêtre modale (popup) affichant un message de taille inférieure à une valeur minimale.
+ * Elle hérite de la classe Application de JavaFX.
+ */
 public class PopUpMazeSize extends Application {
 
     private static int MINSIZE;
 
+    /**
+     * Méthode principale pour lancer l'application.
+     *
+     * @param args les arguments de la ligne de commande
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Méthode pour démarrer l'application.
+     *
+     * @param primaryStage la fenêtre principale de l'application
+     * @throws InterruptedException si une interruption se produit pendant l'exécution
+     */
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
 
@@ -40,10 +55,10 @@ public class PopUpMazeSize extends Application {
         popupStage.setTitle("");
 
         int ratio = 6;
-        popupStage.setMinWidth(primaryStage.getWidth()/ratio);
-        popupStage.setMaxWidth(primaryStage.getWidth()/ratio);
-        popupStage.setMinHeight(primaryStage.getHeight()/ratio);
-        popupStage.setMaxHeight(primaryStage.getHeight()/ratio);
+        popupStage.setMinWidth(primaryStage.getWidth() / ratio);
+        popupStage.setMaxWidth(primaryStage.getWidth() / ratio);
+        popupStage.setMinHeight(primaryStage.getHeight() / ratio);
+        popupStage.setMaxHeight(primaryStage.getHeight() / ratio);
 
         // Affecter la scène à la fenêtre popup
         popupStage.setScene(scene);
@@ -67,6 +82,11 @@ public class PopUpMazeSize extends Application {
 
     }
 
+    /**
+     * Méthode pour définir la valeur minimale de la taille.
+     *
+     * @param MINSIZE la valeur minimale de la taille
+     */
     public void setMINSIZE(int MINSIZE) {
         PopUpMazeSize.MINSIZE = MINSIZE;
     }

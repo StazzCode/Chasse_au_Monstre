@@ -20,6 +20,7 @@ public class IHM extends Application {
 
     MonsterView mView;
     HunterView hView;
+    HunterView hViewAI;
 
     String firstPlayerName;
     String secondPlayerName;
@@ -27,6 +28,11 @@ public class IHM extends Application {
     Integer longueur;
     Integer largeur;
 
+    /**
+     * Constructeur de la classe IHM avec un paramètre.
+     * 
+     * @param parameter les paramètres du jeu.
+     */
     public IHM(GameParameter parameter) {
         difficulty = parameter.getDifficulty();
         firstPlayerName = parameter.getFirstPlayerName();
@@ -35,10 +41,19 @@ public class IHM extends Application {
         largeur = parameter.getLargeur();
     }
 
+    /**
+     * Constructeur par défaut de la classe IHM.
+     */
     public IHM() {
         this(new GameParameter());
     }
       
+    /**
+     * Met à jour le nombre d'obstacles en fonction de la difficulté.
+     * 
+     * @param difficulty la difficulté du jeu.
+     * @return le nombre d'obstacles mis à jour.
+     */
     public int updateNbObstacles(Difficulty difficulty) {
         int ratio = 0;
         if (Difficulty.TRES_FACILE == difficulty) {
@@ -85,12 +100,39 @@ public class IHM extends Application {
         mView = new MonsterView(this, stage, this.maze);
     }
 
+    /**
+     * Méthode qui permet de lancer le jeu avec le monstre contre l'IA hunter.
+     * 
+     * @param stage la scène principale de l'interface graphique.
+     */
+    public void startWithAIHunter(Stage stage) {
+        // macOSInputs();
+
+        // version de test avec difficultés:
+        difficulty = Difficulty.MOYEN;
+        int columns = largeur;// difficulty.getColumnsDifficulty();
+        int rows = longueur; // difficulty.getRowsDifficulty();
+        int nbObstacles = difficulty.getNbObstaclesDifficulty();
+        this.maze = new Maze(columns, rows);
+        boolean pathExist = false;
+        while (!pathExist) {
+            maze.resetMaze();
+            maze.generateEnterExit();
+            maze.generateObstacles(nbObstacles);
+            pathExist = maze.checkPathExists();
+        }
+
+        hViewAI = new HunterView(this, stage,  this.maze, true);
+        mView = new MonsterView(this, stage, this.maze);
+    }
 
     /**
-     * Méthode main qui lance l'application.
+     * Méthode qui lance l'interface graphique.
+     * 
+     * @param args les arguments de la ligne de commande.
      */
     public static void main(String[] args) {
-        Application.launch(args);
+        launch(args);
     }
 
 }

@@ -3,7 +3,17 @@ package menu;
 import javafx.scene.control.Slider;
 import javafx.util.StringConverter;
 
+/**
+ * La classe DifficultySlider représente un curseur de difficulté personnalisé pour un menu.
+ * Il hérite de la classe Slider de JavaFX.
+ */
 public class DifficultySlider extends Slider{
+    /**
+     * Constructeur par défaut de la classe DifficultySlider.
+     * Initialise le curseur avec une plage de valeurs de 0 à 4 et une valeur initiale de 0.
+     * Configure les propriétés du curseur pour afficher des marques de graduation et des étiquettes correspondantes.
+     * Définit également un convertisseur de chaîne personnalisé pour afficher les étiquettes de difficulté en français.
+     */
     public DifficultySlider(){
         super(0, 4, 0);
 
