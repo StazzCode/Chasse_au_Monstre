@@ -1,13 +1,15 @@
 # Groupe H3 SAE Développement d'application (Chasse au monstre)
 
-## Compte rendu de la semaine du mercredi 08 novembre 2023
+## Compte rendu du jalon 1 au jalon 2
 
 
 ### Ulysse Couliou
 
-- Modifications de la classe Maze et IHM afin de pouvoir générer un labyrinthe dont la taille et le nombre d'obstacles varient en fonction d'un niveau de difficulté choisi. 
-- Ajout d'un nouveau type de cellule (Hole), un trou dans lequel si le monstre tombe dedans, il perd la partie, évènement à programmer par la suite
-- Commencement d'une méthode qui utilise l'algorithme de Dijkstra pour vérifier qu'un chemin existe entre l'entrée et la sortie du labyrinthe
+- Enumeration Difficulty qui permet de gérer différents niveau de difficulté pour le jeu.
+- IA simple pour le chasseur
+- Ecriture et génération de la Javadoc
+- Modifications dans Maze et IHM
+- Ecriture du Readme.md
 
 ### Eddy Vantard
 
