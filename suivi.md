@@ -66,3 +66,22 @@
 - Implémentation du menu de configuration de partie dans le MainMenu.
 - Ajout d'un bouton pour activer la configuration de la partie.
 - Ajout de la configuration de la taille du labyrinthe.
+
+### Sofiane Lasoa
+
+#### Semaine du lundi 06 novembre 2023
+
+- Implémentation de la fonctionnalité permettant au chasseur de tirer. Si le chasseur tire sur la case du monstre, la partie se termine
+- Implémentation de la fin du jeu si le monstre atteint la sortie.
+- Génération aléatoire de l'entrée et de la sortie.
+
+#### Semaine du lundi 04 décembre 2023
+
+- Implémentation de la fonctionnalité qui vérifie qu'un chemin existe bien dans le labyrinthe. Si ce n'est pas le cas, le labyrinthe se recharge.
+- Modification de la fonctionnalité qui génère des obstacles dans le labyrinthe pour qu'elle génère des obstacles en fonction d'un pourcentage.
+- Correction de quelques bugs par rapport à l'affichage du monstre.
+
+#### Semaine du lundi 11 décembre 2023
+
+- Implémentation de l'IA du monstre qui peut se déplacer automatiquement jusqu'à trouver la sortie ou mourir (j'utilise un parcours avec une pile).
+- Mise en commun des deux intelligences artificielles : celle du monstre et celle du chasseur, afin qu'elles puissent fonctionner ensemble.
