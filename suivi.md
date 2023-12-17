@@ -13,11 +13,26 @@
 
 ### Eddy Vantard
 
+#### Semaine du lundi 06 novembre 2023
+
 - Ajout d'un affichage propre au chasseur et d'un autre propre au monstre (le monstre voit dans un rayon de n cases à déterminer, le chasseur voit les cases sur lesquelles il a déjà tiré).
 - Refactoring de plusieurs méthodes dans la classe implémentant le JavaFX.
 - Corrections de quelques bugs d'affichage et d'un bug sur la boucle de jeu principale.
 - Ajout d'un retour textuel sur les actions des joueurs (sur quoi le chasseur vient de tirer ou si le monstre a tenté un déplacement impossible).
 - Ajout d'une énumération Difficulty.
+
+#### Semaine du lundi 04 décembre 2023
+
+- Ajout des options de fin de jeu (relancer, retour au menu..)
+- Refactoring multiples
+- Séparation en deux fenêtres des vues du monstre et du chasseur
+
+#### Semaine du lundi 11 décembre 2023
+
+- Structure MVC pour le projet
+- Réécriture de toute la partie vue du projet
+- Résolutions de bugs liés à la restructuration
+
 
 ### Kellian Mirey
 
