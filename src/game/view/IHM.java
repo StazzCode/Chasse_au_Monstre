@@ -84,8 +84,8 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
         difficulty = Difficulty.MOYEN;
-        int columns = largeur;// difficulty.getColumnsDifficulty();
-        int rows = longueur; // difficulty.getRowsDifficulty();
+        int columns = 10;// difficulty.getColumnsDifficulty();
+        int rows = 10; // difficulty.getRowsDifficulty();
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;
@@ -95,9 +95,10 @@ public class IHM extends Application {
             maze.generateObstacles(nbObstacles);
             pathExist = maze.checkPathExists();
         }
-
-        hView = new HunterView(this, stage,  this.maze);
+        
+        hView = new HunterView(this, stage,  this.maze); 
         mView = new MonsterView(this, stage, this.maze);
+        mView.setInteractions(true);
     }
 
     /**
@@ -105,7 +106,7 @@ public class IHM extends Application {
      * 
      * @param stage la scène principale de l'interface graphique.
      */
-    public void startWithAIHunter(Stage stage) {
+    /*public void startWithAIHunter(Stage stage) {
         // macOSInputs();
 
         // version de test avec difficultés:
@@ -124,7 +125,7 @@ public class IHM extends Application {
 
         hViewAI = new HunterView(this, stage,  this.maze, true);
         mView = new MonsterView(this, stage, this.maze);
-    }
+    }*/
 
     /**
      * Méthode qui lance l'interface graphique.

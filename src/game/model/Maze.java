@@ -352,7 +352,6 @@ public class Maze implements Observer {
 
         while (!queue.isEmpty()) {
             Coordinate current = queue.poll();
-            System.out.println(current.getColumn() + " , " + current.getRow());
             if (this.maze[current.getColumn()][current.getRow()].getState().getCar() == CellInfo.EXIT.getCar()) {
                 return true;  // Chemin trouvé
             }

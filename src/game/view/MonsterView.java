@@ -146,6 +146,7 @@ public class MonsterView extends Stage implements IView {
                 setMonsterMovementKeybind(coord.getColumn(), coord.getRow());
                 return;
             }
+            System.out.println("monster");
             scene.setOnKeyPressed(e -> {
                 if (e.getCode() == keyCodeUp) {
                     setMonsterMovementKeybind(0, -1);
@@ -177,6 +178,7 @@ public class MonsterView extends Stage implements IView {
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
             this.display();
             setInteractions(false);
+            System.out.println("monster");
             play.setText("Tour " + turn + " : Chasseur   |   Patience.");
             if (maze.getEnd()) {
                 endGame();
@@ -195,7 +197,6 @@ public class MonsterView extends Stage implements IView {
         turn++;
         maze.setCompteur(turn);
         this.display();
-
         setInteractions(true);
     }
 
@@ -241,7 +242,6 @@ public class MonsterView extends Stage implements IView {
             ihm.hView.close();
             this.close();
             ihm.start(mainStage);
-            ;
         });
         backToMenu.setOnMouseClicked(e -> {
             MainMenu main = new MainMenu();
@@ -326,7 +326,6 @@ public class MonsterView extends Stage implements IView {
     private void start() {
 
         // macOSInputs();
-
         turn = 0;
 
         this.grid = new GridPane();
@@ -337,10 +336,10 @@ public class MonsterView extends Stage implements IView {
 
         stackPaneConfiguration();
         scene = new Scene(stackPane, 550, 550);
-
         display();
-        setInteractions(true);
-
+        
+       	//setInteractions(true);
+        	
         this.setX(100);
         this.setY(100);
         this.setTitle("MonsterView");
