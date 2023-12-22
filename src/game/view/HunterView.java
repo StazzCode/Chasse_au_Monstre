@@ -171,23 +171,24 @@ public class HunterView extends Stage implements IView {
         	if(iaHunter) {
         		System.out.println("no");
         		playAISimple();
-        	}
-            response.setText("");
-            shoot.setVisible(true);
-            for (int i = 0; i < grid.getChildren().size(); i++) {
-                Button b = (Button) grid.getChildren().get(i);
-                b.setOnMouseClicked(e -> {
-                    this.selected.setBackground(
-                            new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                    this.selected = b;
-                    b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-                    Integer col = GridPane.getColumnIndex(b);
-                    Integer row = GridPane.getRowIndex(b);
-                    if (col != null && row != null) {
-                        shootColumn = col.intValue();
-                        shootRow = row.intValue();
-                    }
-                });
+        	} else {
+                response.setText("");
+                shoot.setVisible(true);
+                for (int i = 0; i < grid.getChildren().size(); i++) {
+                    Button b = (Button) grid.getChildren().get(i);
+                    b.setOnMouseClicked(e -> {
+                        this.selected.setBackground(
+                                new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                        this.selected = b;
+                        b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                        Integer col = GridPane.getColumnIndex(b);
+                        Integer row = GridPane.getRowIndex(b);
+                        if (col != null && row != null) {
+                            shootColumn = col.intValue();
+                            shootRow = row.intValue();
+                        }
+                    });
+                }
             }
         } else {
             shoot.setVisible(false);

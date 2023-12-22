@@ -27,6 +27,8 @@ public class IHM extends Application {
     Difficulty difficulty;
     Integer longueur;
     Integer largeur;
+    boolean iaHunter;
+    boolean iaMonster;
 
     /**
      * Constructeur de la classe IHM avec un paramètre.
@@ -39,6 +41,8 @@ public class IHM extends Application {
         firstPlayerName = parameter.getSecondPlayerName();
         longueur = parameter.getLongueur();
         largeur = parameter.getLargeur();
+        iaHunter = parameter.getIaHunter();
+        iaMonster = parameter.getIaMonster();
     }
 
     /**
@@ -96,10 +100,12 @@ public class IHM extends Application {
             pathExist = maze.checkPathExists();
         }
         
-        hView = new HunterView(this, stage,  this.maze, false); 
-        mView = new MonsterView(this, stage, this.maze, true);
+        hView = new HunterView(this, stage,  this.maze, this.iaHunter); 
+        mView = new MonsterView(this, stage, this.maze, this.iaMonster);
         mView.setInteractions(true);
     }
+
+
 
     /**
      * Méthode qui permet de lancer le jeu avec le monstre contre l'IA hunter.
