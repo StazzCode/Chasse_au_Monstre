@@ -333,6 +333,7 @@ public class MainMenu extends Application {
             });
             
             iaBox.getChildren().clear();
+            iaBox.getChildren().addAll(iaChasseurVsMonster, iaMonsterVsChasseur, iaChasseurVsIaMonster); // Add IA mode buttons to iaBox
             root.getChildren().addAll(top, iaBox, bottom);
         });
         Button joueurVsIaOnglet = new Button("En ligne");
