@@ -4,8 +4,10 @@ import java.awt.im.InputContext;
 
 import org.junit.jupiter.api.condition.OS;
 
+import game.model.CellInfo;
 import game.model.Coordinate;
 import game.model.Maze;
+import graphics.ItemsView;
 import graphics.PopUpPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -122,12 +124,16 @@ public class MonsterView extends Stage implements IView {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
                 if (maze.getMonster().near(i, j)) {
-                    b.setBackground(
-                            new Background(new BackgroundFill(Color.LIGHTSALMON, CornerRadii.EMPTY, Insets.EMPTY)));
-                    b.setText(Character.toString(maze.getMaze()[i][j].getState().getCar()));
+                    CellInfo state = maze.getMaze()[i][j].getState();
+
+                    if(state == CellInfo.EMPTY || state == CellInfo.MONSTER) b.setBackground(ItemsView.getVisibleMazeCellBackground());
+                    else if(state == CellInfo.WALL) b.setBackground(ItemsView.getWallMazeCellBackground());
+                    else if(state == CellInfo.ENTER)b.setBackground(ItemsView.getEnterMazeCellBackground());
+                    else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
+
+                    if(state == CellInfo.MONSTER) b.setGraphic(ItemsView.getMonsterImageView());
                 } else {
-                    b.setBackground(
-                            new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                    b.setBackground(ItemsView.getHiddenMazeCellBackground());
                     b.setText(" ");
                 }
             }
