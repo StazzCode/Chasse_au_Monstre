@@ -38,6 +38,7 @@ public class MainMenu extends Application {
 
     private static final boolean SQUAREONLY = true;
     private static boolean ENABLECUSTOM = false;
+    private static final boolean ENABLEIA = false;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
@@ -331,9 +332,9 @@ public class MainMenu extends Application {
                 root.getChildren().clear();
                 root.getChildren().addAll(top, iaBox, bottom);
             });
-            
+
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(iaChasseurVsMonster, iaMonsterVsChasseur, iaChasseurVsIaMonster); // Add IA mode buttons to iaBox
+            iaBox.getChildren().addAll(iaChasseurVsMonster, iaMonsterVsChasseur, iaChasseurVsIaMonster, optionsMenu);
             root.getChildren().addAll(top, iaBox, bottom);
         });
         Button joueurVsIaOnglet = new Button("En ligne");
