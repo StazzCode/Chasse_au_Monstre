@@ -317,24 +317,36 @@ public class MainMenu extends Application {
         Button iaVsIaOnglet = new Button("IA");
         iaVsIaOnglet.setOnAction(e -> {
             root.getChildren().clear();
-            Button iaChasseurVsMonster = new Button("IA Chasseur VS Monstre");
-            iaChasseurVsMonster.setOnAction(e1 -> {
-                root.getChildren().clear();
-                root.getChildren().addAll(top, iaBox, bottom);
-            });
-            Button iaMonsterVsChasseur = new Button("IA Monstre VS Chasseur");
-            iaMonsterVsChasseur.setOnAction(e1 -> {
-                root.getChildren().clear();
-                root.getChildren().addAll(top, iaBox, bottom);
-            });
-            Button iaChasseurVsIaMonster = new Button("IA Chasseur VS IA Monstre");
-            iaChasseurVsIaMonster.setOnAction(e1 -> {
-                root.getChildren().clear();
-                root.getChildren().addAll(top, iaBox, bottom);
-            });
+            // Button iaChasseurVsMonster = new Button("IA Chasseur VS Monstre");
+            // iaChasseurVsMonster.setOnAction(e1 -> {
+            //     root.getChildren().clear();
+            //     root.getChildren().addAll(top, iaBox, bottom);
+            // });
+            // Button iaMonsterVsChasseur = new Button("IA Monstre VS Chasseur");
+            // iaMonsterVsChasseur.setOnAction(e1 -> {
+            //     root.getChildren().clear();
+            //     root.getChildren().addAll(top, iaBox, bottom);
+            // });
+            // Button iaChasseurVsIaMonster = new Button("IA Chasseur VS IA Monstre");
+            // iaChasseurVsIaMonster.setOnAction(e1 -> {
+            //     root.getChildren().clear();
+            //     root.getChildren().addAll(top, iaBox, bottom);
+            // });
+
+            ToggleGroup group = new ToggleGroup();
+
+            RadioButton rb1 = new RadioButton("IA Chasseur VS Monstre");
+            rb1.setToggleGroup(group);
+            rb1.setSelected(true);
+
+            RadioButton rb2 = new RadioButton("IA Monstre VS Chasseur");
+            rb2.setToggleGroup(group);
+            
+            RadioButton rb3 = new RadioButton("IA Chasseur VS IA Monstre");
+            rb3.setToggleGroup(group);
 
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(iaChasseurVsMonster, iaMonsterVsChasseur, iaChasseurVsIaMonster, optionsMenu);
+            iaBox.getChildren().addAll(rb1, rb2, rb3, optionsMenu);
             root.getChildren().addAll(top, iaBox, bottom);
         });
         Button joueurVsIaOnglet = new Button("En ligne");
