@@ -9,7 +9,8 @@ public class GameParameter {
     private Difficulty difficulty;
     private String firstPlayerName, secondPlayerName;
     private Integer longueur, largeur, pourcentageObs;
-    private boolean iaHunter, iaMonster;
+    private boolean iaHunter = false;
+    private boolean iaMonster = false;
 
     public boolean getIaHunter(){
         return iaMonster;

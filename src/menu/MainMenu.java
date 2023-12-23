@@ -38,10 +38,15 @@ public class MainMenu extends Application {
 
     private static final boolean SQUAREONLY = true;
     private static boolean ENABLECUSTOM = false;
-    private static final boolean ENABLEIA = false;
+    private static final boolean ENABLEIA = true;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
+
+    ToggleGroup group;
+    RadioButton rb1;
+    RadioButton rb2;
+    RadioButton rb3;
 
     /**
      * La méthode start permet d'initialiser le début du jeu.
@@ -332,22 +337,23 @@ public class MainMenu extends Application {
             //     root.getChildren().clear();
             //     root.getChildren().addAll(top, iaBox, bottom);
             // });
+            
+            group = new ToggleGroup();
 
-            ToggleGroup group = new ToggleGroup();
-
-            RadioButton rb1 = new RadioButton("IA Chasseur VS Monstre");
+            rb1 = new RadioButton("IA Chasseur VS Monstre");
             rb1.setToggleGroup(group);
             rb1.setSelected(true);
 
-            RadioButton rb2 = new RadioButton("IA Monstre VS Chasseur");
+            rb2 = new RadioButton("IA Monstre VS Chasseur");
             rb2.setToggleGroup(group);
             
-            RadioButton rb3 = new RadioButton("IA Chasseur VS IA Monstre");
+            rb3 = new RadioButton("IA Chasseur VS IA Monstre");
             rb3.setToggleGroup(group);
 
             iaBox.getChildren().clear();
             iaBox.getChildren().addAll(rb1, rb2, rb3, optionsMenu);
             root.getChildren().addAll(top, iaBox, bottom);
+
         });
         Button joueurVsIaOnglet = new Button("En ligne");
         joueurVsIaOnglet.setOnAction(e -> {
@@ -392,7 +398,11 @@ public class MainMenu extends Application {
                     parameters.setLongueur(parameters.getDifficulty().getColumnsDifficulty());
                     parameters.setLargeur(parameters.getDifficulty().getRowsDifficulty());
                 }
-
+                
+                parameters.setIaHunter(rb1.isSelected() || rb3.isSelected());
+                parameters.setIaMonster(rb2.isSelected() || rb3.isSelected());
+                System.out.println("Parameters: " + parameters);
+                
                 IHM ihm = new IHM(parameters);
                 baseStage.close();
                 ihm.start(baseStage);
