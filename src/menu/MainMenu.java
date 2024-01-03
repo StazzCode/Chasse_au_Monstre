@@ -200,6 +200,9 @@ public class MainMenu extends Application {
     public void playMenu(Stage baseStage, MenuAnimation menuAnimation) {
         Scene oldScene = baseStage.getScene();
 
+        //////////////////////////////////////////////////
+        // Menu de configuration des options (NE PAS RETIRER LES '/' DE SÉPARATION SVP)
+
         UnaryOperator<TextFormatter.Change> integerFilter = change -> {
             String newText = change.getControlNewText();
             /* MAKE NUMERIC ONLY */
@@ -285,6 +288,8 @@ public class MainMenu extends Application {
         // Ajout des différents blocs d'options au bloc général
         optionsMenu.getChildren().add(optionMazeSize);
 
+        //////////////////////////////////////////////////
+
         DifficultySlider difficulty = new DifficultySlider();
         difficulty.setPrefWidth(350);
         difficulty.setMaxWidth(350);
@@ -303,20 +308,34 @@ public class MainMenu extends Application {
         top.getStyleClass().add("top");
 
         VBox localBox = new VBox();
+        localBox.setSpacing(50);
 
-        HBox iaBox = new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+        VBox iaBox = new VBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+        iaBox.setSpacing(50);
 
         HBox onlineBox = new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
 
-        Button joueurVsJoueurOnglet = new Button("Local 1V1");
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
         localBox.getStyleClass().add("center");
         iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
         iaBox.getStyleClass().add("center");
         onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
         onlineBox.getStyleClass().add("center");
+
+        localBox.getChildren().add(new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel));
+        localBox.getChildren().get(0).getStyleClass().add("center");
+        localBox.getChildren().addAll(difficulty,options);
+
+        Button joueurVsJoueurOnglet = new Button("Local 1V1");
         joueurVsJoueurOnglet.setOnAction(e -> {
             root.getChildren().clear();
+
+            HBox playerInput = new HBox();
+            playerInput.getChildren().addAll(firstPlayerLabel, new Label("VS"), secondPlayerLabel);
+            playerInput.getStyleClass().add("center");
+
+            localBox.getChildren().clear();
+            localBox.getChildren().addAll(playerInput,difficulty,options);
             root.getChildren().addAll(top, localBox, bottom);
         });
         Button iaVsIaOnglet = new Button("IA");
@@ -337,7 +356,7 @@ public class MainMenu extends Application {
             //     root.getChildren().clear();
             //     root.getChildren().addAll(top, iaBox, bottom);
             // });
-            
+
             group = new ToggleGroup();
 
             rb1 = new RadioButton("IA Chasseur VS Monstre");
@@ -350,8 +369,11 @@ public class MainMenu extends Application {
             rb3 = new RadioButton("IA Chasseur VS IA Monstre");
             rb3.setToggleGroup(group);
 
+            HBox gameModeField = new HBox(rb1, rb2, rb3);
+            gameModeField.getStyleClass().add("center");
+
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(rb1, rb2, rb3, optionsMenu);
+            iaBox.getChildren().addAll(gameModeField, options);
             root.getChildren().addAll(top, iaBox, bottom);
 
         });
@@ -424,12 +446,6 @@ public class MainMenu extends Application {
         for (Node n : bottom.getChildren())
             ((Button) n).setPrefWidth(oldScene.getWidth() / (bottom.getChildren().size() + 2));
         HBox.setMargin(back, new Insets(0, oldScene.getWidth() - 2 * 200 - 140, 0, 0));
-
-        localBox.getChildren().add(new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel));
-        localBox.getChildren().get(0).getStyleClass().add("center");
-        localBox.getChildren().add(difficulty);
-
-        localBox.getChildren().add(options);
 
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
