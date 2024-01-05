@@ -29,5 +29,5 @@ public class ItemsView {
     public static Background getHiddenMazeCellBackground(){return new ItemsView().initBackground("fog.png");}
     public static Background getEnterMazeCellBackground(){return new ItemsView().initBackground("enter.png");}
     public static Background getExitMazeCellBackground(){return new ItemsView().initBackground("exit.png");}
-    public static ImageView getMonsterImageView(){return new ItemsView().initImage("monster.png");}
+    public static Background getMonsterImageView(){return new ItemsView().initBackground("monster.png");}
 }

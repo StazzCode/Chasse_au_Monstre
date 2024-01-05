@@ -87,9 +87,9 @@ public class IHM extends Application {
         // macOSInputs();
 
         // version de test avec difficultés:
-        difficulty = Difficulty.MOYEN;
-        int columns = 10;// difficulty.getColumnsDifficulty();
-        int rows = 10; // difficulty.getRowsDifficulty();
+        difficulty = Difficulty.TRES_FACILE;
+        int columns = 4;// difficulty.getColumnsDifficulty();
+        int rows = 8; // difficulty.getRowsDifficulty();
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;

@@ -122,7 +122,7 @@ public class MonsterView extends Stage implements IView {
     public void display() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
-                Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
+                Button b = (Button) grid.getChildren().get(i * maze.getRows() + j);
                 if (maze.getMonster().near(i, j)) {
                     CellInfo state = maze.getMaze()[i][j].getState();
 
@@ -131,7 +131,7 @@ public class MonsterView extends Stage implements IView {
                     else if(state == CellInfo.ENTER)b.setBackground(ItemsView.getEnterMazeCellBackground());
                     else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
 
-                    if(state == CellInfo.MONSTER) b.setGraphic(ItemsView.getMonsterImageView());
+                    if(state == CellInfo.MONSTER) b.setBackground(ItemsView.getMonsterImageView());
                 } else {
                     b.setBackground(ItemsView.getHiddenMazeCellBackground());
                     b.setText(" ");

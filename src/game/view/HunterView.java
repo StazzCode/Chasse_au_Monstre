@@ -127,7 +127,7 @@ public class HunterView extends Stage implements IView {
     public void display() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
-                Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
+                Button b = (Button) grid.getChildren().get(i * maze.getRows() + j);
                 b.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
                 if (maze.getMaze()[i][j].isDiscovered()) {
                     b.setText(displayCellExceptMonster(maze.getMaze()[i][j]));
