@@ -46,6 +46,7 @@ public class MonsterView extends Stage implements IView {
     KeyCode keyCodeRight = KeyCode.D;
     ////////////////////////////////////////////////////////////
 
+
     /**
      * Le plateau de jeu représenté sous forme de grille.
      */
@@ -146,6 +147,18 @@ public class MonsterView extends Stage implements IView {
      * @param active booléen pour activer ou désactiver
      */
     public void setInteractions(boolean active) {
+
+        ////////////////////////////////////////////////////////////
+        // Gestion des touches pour Macos.
+        ////////////////////////////////////////////////////////////
+        InputContext context = InputContext.getInstance();
+        String loc = context.getLocale().toString();
+        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+            keyCodeUp = KeyCode.W;
+            keyCodeLeft = KeyCode.A;
+        }
+        ////////////////////////////////////////////////////////////
+
         if (active) {
             play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
             if (iaMonster) {

@@ -88,8 +88,8 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
         difficulty = Difficulty.TRES_FACILE;
-        int columns = 4;// difficulty.getColumnsDifficulty();
-        int rows = 8; // difficulty.getRowsDifficulty();
+        int columns = longueur;
+        int rows = largeur;
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;

@@ -36,17 +36,14 @@ import game.view.IHM;
  */
 public class MainMenu extends Application {
 
-    private static final boolean SQUAREONLY = true;
+    private static final boolean SQUAREONLY = false;
     private static boolean ENABLECUSTOM = false;
     private static final boolean ENABLEIA = true;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
 
-    ToggleGroup group;
-    RadioButton rb1;
-    RadioButton rb2;
-    RadioButton rb3;
+
 
     /**
      * La méthode start permet d'initialiser le début du jeu.
@@ -339,6 +336,12 @@ public class MainMenu extends Application {
             root.getChildren().addAll(top, localBox, bottom);
         });
         Button iaVsIaOnglet = new Button("IA");
+
+        ToggleGroup group = new ToggleGroup();
+        RadioButton rb1 = new RadioButton("IA Chasseur VS Monstre");
+        RadioButton rb2 = new RadioButton("IA Monstre VS Chasseur");
+        RadioButton rb3 = new RadioButton("IA Chasseur VS IA Monstre");
+
         iaVsIaOnglet.setOnAction(e -> {
             root.getChildren().clear();
             // Button iaChasseurVsMonster = new Button("IA Chasseur VS Monstre");
@@ -357,16 +360,16 @@ public class MainMenu extends Application {
             //     root.getChildren().addAll(top, iaBox, bottom);
             // });
 
-            group = new ToggleGroup();
+            //group = new ToggleGroup();
 
-            rb1 = new RadioButton("IA Chasseur VS Monstre");
+            //rb1 = new RadioButton("IA Chasseur VS Monstre");
             rb1.setToggleGroup(group);
             rb1.setSelected(true);
 
-            rb2 = new RadioButton("IA Monstre VS Chasseur");
+            //rb2 = new RadioButton("IA Monstre VS Chasseur");
             rb2.setToggleGroup(group);
             
-            rb3 = new RadioButton("IA Chasseur VS IA Monstre");
+            //rb3 = new RadioButton("IA Chasseur VS IA Monstre");
             rb3.setToggleGroup(group);
 
             HBox gameModeField = new HBox(rb1, rb2, rb3);
