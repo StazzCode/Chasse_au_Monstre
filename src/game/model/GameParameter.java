@@ -13,7 +13,7 @@ public class GameParameter {
     private boolean iaMonster = false;
 
     public boolean getIaHunter(){
-        return iaMonster;
+        return iaHunter;
     }
 
     public boolean getIaMonster(){

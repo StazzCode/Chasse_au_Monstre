@@ -43,8 +43,6 @@ public class MainMenu extends Application {
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
 
-
-
     /**
      * La méthode start permet d'initialiser le début du jeu.
      * 
@@ -321,7 +319,7 @@ public class MainMenu extends Application {
 
         localBox.getChildren().add(new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel));
         localBox.getChildren().get(0).getStyleClass().add("center");
-        localBox.getChildren().addAll(difficulty,options);
+        localBox.getChildren().addAll(difficulty, options);
 
         Button joueurVsJoueurOnglet = new Button("Local 1V1");
         joueurVsJoueurOnglet.setOnAction(e -> {
@@ -332,7 +330,7 @@ public class MainMenu extends Application {
             playerInput.getStyleClass().add("center");
 
             localBox.getChildren().clear();
-            localBox.getChildren().addAll(playerInput,difficulty,options);
+            localBox.getChildren().addAll(playerInput, difficulty, options);
             root.getChildren().addAll(top, localBox, bottom);
         });
         Button iaVsIaOnglet = new Button("IA");
@@ -344,32 +342,12 @@ public class MainMenu extends Application {
 
         iaVsIaOnglet.setOnAction(e -> {
             root.getChildren().clear();
-            // Button iaChasseurVsMonster = new Button("IA Chasseur VS Monstre");
-            // iaChasseurVsMonster.setOnAction(e1 -> {
-            //     root.getChildren().clear();
-            //     root.getChildren().addAll(top, iaBox, bottom);
-            // });
-            // Button iaMonsterVsChasseur = new Button("IA Monstre VS Chasseur");
-            // iaMonsterVsChasseur.setOnAction(e1 -> {
-            //     root.getChildren().clear();
-            //     root.getChildren().addAll(top, iaBox, bottom);
-            // });
-            // Button iaChasseurVsIaMonster = new Button("IA Chasseur VS IA Monstre");
-            // iaChasseurVsIaMonster.setOnAction(e1 -> {
-            //     root.getChildren().clear();
-            //     root.getChildren().addAll(top, iaBox, bottom);
-            // });
 
-            //group = new ToggleGroup();
-
-            //rb1 = new RadioButton("IA Chasseur VS Monstre");
             rb1.setToggleGroup(group);
             rb1.setSelected(true);
 
-            //rb2 = new RadioButton("IA Monstre VS Chasseur");
             rb2.setToggleGroup(group);
-            
-            //rb3 = new RadioButton("IA Chasseur VS IA Monstre");
+
             rb3.setToggleGroup(group);
 
             HBox gameModeField = new HBox(rb1, rb2, rb3);
@@ -423,11 +401,17 @@ public class MainMenu extends Application {
                     parameters.setLongueur(parameters.getDifficulty().getColumnsDifficulty());
                     parameters.setLargeur(parameters.getDifficulty().getRowsDifficulty());
                 }
-                
-                parameters.setIaHunter(rb1.isSelected() || rb3.isSelected());
-                parameters.setIaMonster(rb2.isSelected() || rb3.isSelected());
-                System.out.println("Parameters: " + parameters);
-                
+                if (rb1.isSelected()) {
+                    parameters.setIaHunter(true);
+                    parameters.setIaMonster(false);
+                } else if (rb2.isSelected()) {
+                    parameters.setIaHunter(false);
+                    parameters.setIaMonster(true);
+                } else if (rb3.isSelected()) {
+                    parameters.setIaHunter(true);
+                    parameters.setIaMonster(true);
+                }
+
                 IHM ihm = new IHM(parameters);
                 baseStage.close();
                 ihm.start(baseStage);
