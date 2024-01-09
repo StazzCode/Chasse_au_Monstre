@@ -129,14 +129,11 @@ public class Monster extends Player {
         }
 
         while (!stack.isEmpty()) {
-            System.out.println("check");
             Coordinate c = stack.peek();
 
             if (this.maze.getMaze()[c.getColumn()][c.getRow()].getState().getCar() == CellInfo.EXIT.getCar()) {
-                System.out.println("sortie trouvée");
                 return new Coordinate(0, 0);
             } else {
-                System.out.println(c.column + " , " + c.row);
                 for (int xOffset = -1; xOffset <= 1; xOffset++) {
                     for (int yOffset = -1; yOffset <= 1; yOffset++) {
                         if ((xOffset == 0 || yOffset == 0) && isValidMove(c.getColumn() + xOffset, c.getRow() + yOffset)) {

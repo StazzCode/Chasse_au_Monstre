@@ -169,7 +169,6 @@ public class HunterView extends Stage implements IView {
     public void setInteractions(boolean active) {
         if (active) {
         	if(iaHunter) {
-        		System.out.println("no");
         		playAISimple();
         	} else {
                 response.setText("");

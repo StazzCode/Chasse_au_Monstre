@@ -376,20 +376,6 @@ public class Maze implements Observer {
     }
 
     /**
-     * Méthode qui affiche le labyrinthe dans la console
-     */
-    public void displayMaze() {
-        for (int i = 0; i < columns; i++) {
-            System.out.print("|");
-            for (int j = 0; j < rows; j++) {
-                System.out.print(maze[i][j].getState().getCar());
-                System.out.print("|");
-            }
-            System.out.println();
-        }
-    }
-
-    /**
      * Méthode qui met à jour la dernière apparition du monstre
      */
     public void updateLastAppearance() {
