@@ -61,6 +61,10 @@ public class Cell {
         this.lastMonsterAppearance = lastMonsterAppearance;
     }
 
+    public int getLastMonsterAppearanceReverse(int compteur) {
+        return compteur - lastMonsterAppearance + 1;
+    }
+
     /**
      * Retourne l'indice de l'avant-dernière apparence du monstre sur cette case.
      * 
