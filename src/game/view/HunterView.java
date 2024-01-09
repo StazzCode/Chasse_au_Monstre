@@ -148,7 +148,7 @@ public class HunterView extends Stage implements IView {
      */
     public String displayCellExceptMonster(Cell c) {
         if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0) {
-            return String.valueOf(c.getLastMonsterAppearance());
+            return String.valueOf(c.getLastMonsterAppearanceReverse(this.maze.getCompteur()));
         } else if (c.getState() != CellInfo.MONSTER) {
             return Character.toString(c.getState().getCar());
         } else if (c.getState() == CellInfo.MONSTER) {
