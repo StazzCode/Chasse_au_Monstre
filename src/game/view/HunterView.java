@@ -396,19 +396,32 @@ public class HunterView extends Stage implements IView {
     public Coordinate  playAIHard() {
         Random random = new Random();
         Coordinate myCell = maze.findShortedLastAppearance();
-        int moreOrLess = random.nextInt(1);
-        int randomColumn;
-        if(moreOrLess == 0){
-            randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-        }else{
-            randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        int moreOrLess = 0;
+        int randomColumn = 0;
+        boolean end = false;
+        while(!end) {
+        	moreOrLess = random.nextInt(1);
+        	if(moreOrLess == 0){
+                randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+            }else{
+                randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+            }
+        	if(randomColumn > 0 && randomColumn < this.maze.getColumns()) {
+        		end = true;
+        	}
         }
-        moreOrLess = random.nextInt(1);
-        int randomRow;
-        if(moreOrLess == 0){
-            randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-        }else{
-            randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        end = false;
+        int randomRow = 0;
+        while(!end) {
+        	moreOrLess = random.nextInt(1);
+            if(moreOrLess == 0){
+                randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+            }else{
+                randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+            }
+            if(randomRow > 0 && randomRow < this.maze.getRows()) {
+        		end = true;
+        	}
         }
         this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
         System.out.println(randomColumn + " ; " + randomRow);

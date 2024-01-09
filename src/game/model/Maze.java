@@ -391,7 +391,7 @@ public class Maze implements Observer {
     }
 
     public Coordinate findShortedLastAppearance(){
-        Coordinate shorted = new Coordinate(0, 0);
+        Coordinate shorted = new Coordinate(2, 2);
         for(int i = 0; i < this.getColumns(); i++){
             for(int j = 0; j  < this.getRows(); j++){
                 if(this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) < this.maze[shorted.getColumn()][shorted.getRow()].getLastMonsterAppearanceReverse(this.compteur) &&

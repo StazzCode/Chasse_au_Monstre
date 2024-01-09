@@ -88,8 +88,8 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
         difficulty = Difficulty.TRES_FACILE;
-        int columns = longueur;
-        int rows = largeur;
+        int columns = 5;
+        int rows = 5;
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;
@@ -100,7 +100,7 @@ public class IHM extends Application {
             pathExist = maze.checkPathExists();
         }
         
-        hView = new HunterView(this, stage,  this.maze, this.iaHunter);
+        hView = new HunterView(this, stage,  this.maze, true);
         mView = new MonsterView(this, stage, this.maze, this.iaMonster);
         mView.setInteractions(true);
     }
