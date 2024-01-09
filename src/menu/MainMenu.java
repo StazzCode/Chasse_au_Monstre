@@ -9,8 +9,10 @@ import graphics.PopUpMazeSize;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,7 +23,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.converter.IntegerStringConverter;
 
 import game.model.Difficulty;
 import game.model.GameParameter;
@@ -37,7 +38,7 @@ import game.view.IHM;
 public class MainMenu extends Application {
 
     private static final boolean SQUAREONLY = false;
-    private static boolean ENABLECUSTOM = false;
+    private static boolean enableCustom = false;
     private static final boolean ENABLEIA = true;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
@@ -271,7 +272,7 @@ public class MainMenu extends Application {
 
         HBox optionsMenu = new HBox();
         optionsMenu.setDisable(true);
-        options.getChildren().addAll(confighbox, optionsMenu);
+        options.getChildren().addAll(optionsMenu);
         optionsMenu.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
@@ -305,7 +306,7 @@ public class MainMenu extends Application {
         VBox localBox = new VBox();
         localBox.setSpacing(50);
 
-        VBox iaBox = new VBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+        VBox iaBox = new VBox();
         iaBox.setSpacing(50);
 
         HBox onlineBox = new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
@@ -317,21 +318,28 @@ public class MainMenu extends Application {
         onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
         onlineBox.getStyleClass().add("center");
 
-        localBox.getChildren().add(new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel));
-        localBox.getChildren().get(0).getStyleClass().add("center");
-        localBox.getChildren().addAll(difficulty, options);
+        HBox playerInput = new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel);
+        playerInput.getStyleClass().add("center");
+        localBox.getChildren().addAll(playerInput,difficulty);
+
+        // Onglet de sélection entre partie par défaut et partie custom
+        ToggleGroup configRadioGroup = new ToggleGroup();
+        RadioButton defaults = new RadioButton("Default");
+        defaults.setToggleGroup(configRadioGroup);
+        defaults.setSelected(true);
+        RadioButton custom = new RadioButton("Custom");
+        custom.setToggleGroup(configRadioGroup);
+        HBox selectMode = new HBox();
+        selectMode.getChildren().addAll(defaults,custom);
+        //////////////////////////////////////////////////
 
         Button joueurVsJoueurOnglet = new Button("Local 1V1");
         joueurVsJoueurOnglet.setOnAction(e -> {
+            defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
-
-            HBox playerInput = new HBox();
-            playerInput.getChildren().addAll(firstPlayerLabel, new Label("VS"), secondPlayerLabel);
-            playerInput.getStyleClass().add("center");
-
             localBox.getChildren().clear();
-            localBox.getChildren().addAll(playerInput, difficulty, options);
-            root.getChildren().addAll(top, localBox, bottom);
+            localBox.getChildren().addAll(playerInput,difficulty);
+            root.getChildren().addAll(top, selectMode, localBox, bottom);
         });
         Button iaVsIaOnglet = new Button("IA");
 
@@ -340,7 +348,11 @@ public class MainMenu extends Application {
         RadioButton rb2 = new RadioButton("IA Monstre VS Chasseur");
         RadioButton rb3 = new RadioButton("IA Chasseur VS IA Monstre");
 
+        HBox gameModeField = new HBox(rb1, rb2, rb3);
+        gameModeField.getStyleClass().add("center");
+
         iaVsIaOnglet.setOnAction(e -> {
+            defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
 
             rb1.setToggleGroup(group);
@@ -350,12 +362,9 @@ public class MainMenu extends Application {
 
             rb3.setToggleGroup(group);
 
-            HBox gameModeField = new HBox(rb1, rb2, rb3);
-            gameModeField.getStyleClass().add("center");
-
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(gameModeField, options);
-            root.getChildren().addAll(top, iaBox, bottom);
+            iaBox.getChildren().addAll(gameModeField);
+            root.getChildren().addAll(top, selectMode, iaBox, bottom);
 
         });
         Button joueurVsIaOnglet = new Button("En ligne");
@@ -374,15 +383,28 @@ public class MainMenu extends Application {
         });
 
         // Gestion du Bouton d'activation des options personnalisées de la partie
-        check.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (observableValue.getValue()) {
-                ENABLECUSTOM = true;
-                optionsMenu.setDisable(false);
-                difficulty.setDisable(true);
-            } else {
-                ENABLECUSTOM = false;
-                optionsMenu.setDisable(true);
-                difficulty.setDisable(false);
+        configRadioGroup.selectedToggleProperty().addListener((ob, o, n) -> {
+
+            RadioButton rb = (RadioButton)configRadioGroup.getSelectedToggle();
+
+            if (rb != null && rb.getText().equals("Default")) {
+                if (root.getChildren().get(2) == localBox){
+                    localBox.getChildren().clear();
+                    localBox.getChildren().addAll(playerInput,difficulty);
+                }
+                if (root.getChildren().get(2) == iaBox) {
+                    iaBox.getChildren().clear();
+                    iaBox.getChildren().addAll(gameModeField);
+                }
+            } else if (rb != null && rb.getText().equals("Custom")){
+                if (root.getChildren().get(2) == localBox){
+                    localBox.getChildren().clear();
+                    localBox.getChildren().addAll(playerInput,difficulty,options);
+                }
+                if (root.getChildren().get(2) == iaBox){
+                    iaBox.getChildren().clear();
+                    iaBox.getChildren().addAll(gameModeField,options);
+                }
             }
         });
 
@@ -394,7 +416,7 @@ public class MainMenu extends Application {
                 parameters.setFirstPlayerName(firstPlayerLabel.getText());
                 parameters.setSecondPlayerName(secondPlayerLabel.getText());
 
-                if (ENABLECUSTOM) {
+                if (enableCustom) {
                     parameters.setLongueur(Integer.parseInt(longueurField.getText()));
                     parameters.setLargeur(Integer.parseInt(largeurField.getText()));
                 } else {
@@ -437,7 +459,7 @@ public class MainMenu extends Application {
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
 
-        root.getChildren().addAll(top, localBox, bottom);
+        root.getChildren().addAll(top, selectMode, localBox, bottom);
         Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
         newScene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         baseStage.setScene(newScene);
@@ -446,7 +468,7 @@ public class MainMenu extends Application {
     /**
      * Méthode qui permet de vérifier si la taille du labyrinthe saisie est
      * inférieure à la taille du labyrinthe minimale.
-     * 
+     *
      * @param tf le champ de saisie personnalisé pour la taille du labyrinthe
      * @return true si la taille du labyrinthe saisie est inférieure à la taille du
      *         labyrinthe minimale, false sinon
