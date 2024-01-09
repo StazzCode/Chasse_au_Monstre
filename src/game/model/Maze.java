@@ -376,6 +376,7 @@ public class Maze implements Observer {
     }
 
     /**
+<<<<<<< HEAD
      * Méthode qui affiche le labyrinthe dans la console
      */
     public void displayMaze() {
@@ -403,6 +404,8 @@ public class Maze implements Observer {
     }
 
     /**
+=======
+>>>>>>> 8d948fb819c270c7b15d479309f32308bea4b736
      * Méthode qui met à jour la dernière apparition du monstre
      */
     public void updateLastAppearance() {

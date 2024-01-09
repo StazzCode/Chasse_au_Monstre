@@ -166,7 +166,6 @@ public class MonsterView extends Stage implements IView {
                 setMonsterMovementKeybind(coord.getColumn(), coord.getRow());
                 return;
             }
-            System.out.println("monster");
             scene.setOnKeyPressed(e -> {
                 if (e.getCode() == keyCodeUp) {
                     setMonsterMovementKeybind(0, -1);
@@ -198,7 +197,6 @@ public class MonsterView extends Stage implements IView {
                 maze.getMonster().getCoordinate().getRow() + rowMovement))) {
             this.display();
             setInteractions(false);
-            System.out.println("monster");
             play.setText("Tour " + turn + " : Chasseur   |   Patience.");
             if (maze.getEnd()) {
                 endGame();
