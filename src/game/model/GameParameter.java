@@ -2,7 +2,8 @@ package game.model;
 
 /**
  * La classe GameParameter représente les paramètres du jeu.
- * Elle contient des informations telles que la difficulté, les noms des joueurs,
+ * Elle contient des informations telles que la difficulté, les noms des
+ * joueurs,
  * la longueur et la largeur du jeu, ainsi que le pourcentage d'obstacles.
  */
 public class GameParameter {
@@ -12,24 +13,9 @@ public class GameParameter {
     private boolean iaHunter = false;
     private boolean iaMonster = false;
 
-    public boolean getIaHunter(){
-        return iaHunter;
-    }
-
-    public boolean getIaMonster(){
-        return iaMonster;
-    }
-
-    public void setIaHunter(boolean iaHunter) {
-        this.iaHunter = iaHunter;
-    }
-
-    public void setIaMonster(boolean iaMonster){
-        this.iaMonster = iaMonster;
-    }
-
     /**
      * Obtient la difficulté du jeu.
+     * 
      * @return La difficulté du jeu.
      */
     public Difficulty getDifficulty() {
@@ -38,6 +24,7 @@ public class GameParameter {
 
     /**
      * Définit la difficulté du jeu.
+     * 
      * @param difficulty La difficulté du jeu.
      */
     public void setDifficulty(Difficulty difficulty) {
@@ -46,6 +33,7 @@ public class GameParameter {
 
     /**
      * Obtient le nom du premier joueur.
+     * 
      * @return Le nom du premier joueur.
      */
     public String getFirstPlayerName() {
@@ -54,6 +42,7 @@ public class GameParameter {
 
     /**
      * Définit le nom du premier joueur.
+     * 
      * @param firstPlayerName Le nom du premier joueur.
      */
     public void setFirstPlayerName(String firstPlayerName) {
@@ -62,6 +51,7 @@ public class GameParameter {
 
     /**
      * Obtient le nom du deuxième joueur.
+     * 
      * @return Le nom du deuxième joueur.
      */
     public String getSecondPlayerName() {
@@ -70,6 +60,7 @@ public class GameParameter {
 
     /**
      * Définit le nom du deuxième joueur.
+     * 
      * @param secondPlayerName Le nom du deuxième joueur.
      */
     public void setSecondPlayerName(String secondPlayerName) {
@@ -78,6 +69,7 @@ public class GameParameter {
 
     /**
      * Obtient la longueur du jeu.
+     * 
      * @return La longueur du jeu.
      */
     public Integer getLongueur() {
@@ -86,6 +78,7 @@ public class GameParameter {
 
     /**
      * Obtient la largeur du jeu.
+     * 
      * @return La largeur du jeu.
      */
     public Integer getLargeur() {
@@ -94,6 +87,7 @@ public class GameParameter {
 
     /**
      * Définit la longueur du jeu.
+     * 
      * @param longueur La longueur du jeu.
      */
     public void setLongueur(Integer longueur) {
@@ -102,6 +96,7 @@ public class GameParameter {
 
     /**
      * Définit la largeur du jeu.
+     * 
      * @param largeur La largeur du jeu.
      */
     public void setLargeur(Integer largeur) {
@@ -110,6 +105,7 @@ public class GameParameter {
 
     /**
      * Obtient le pourcentage d'obstacles.
+     * 
      * @return Le pourcentage d'obstacles.
      */
     public Integer getPourcentageObs() {
@@ -118,6 +114,7 @@ public class GameParameter {
 
     /**
      * Définit le pourcentage d'obstacles.
+     * 
      * @param pourcentageObs Le pourcentage d'obstacles.
      */
     public void setPourcentageObs(Integer pourcentageObs) {
@@ -133,5 +130,40 @@ public class GameParameter {
                 + ", secondPlayerName=" + secondPlayerName + "]";
     }
 
-    
+    /**
+     * Méthode qui permet de savoir si l'IA pour le chasseur est activée
+     * 
+     * @return true si l'IA est activée, false sinon
+     */
+    public boolean getIaHunter() {
+        return iaHunter;
+    }
+
+    /**
+     * Méthode qui permet de savoir si l'IA pour le monstre est activée
+     * 
+     * @return true si l'IA est activée, false sinon
+     */
+    public boolean getIaMonster() {
+        return iaMonster;
+    }
+
+    /**
+     * Méthode qui permet de définir si l'IA pour le chasseur est activée
+     * 
+     * @param iaHunter
+     */
+    public void setIaHunter(boolean iaHunter) {
+        this.iaHunter = iaHunter;
+    }
+
+    /**
+     * Méthode qui permet de définir si l'IA pour le monstre est activée
+     * 
+     * @param iaMonster
+     */
+    public void setIaMonster(boolean iaMonster) {
+        this.iaMonster = iaMonster;
+    }
+
 }

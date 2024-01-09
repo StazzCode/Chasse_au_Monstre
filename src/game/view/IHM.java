@@ -105,34 +105,6 @@ public class IHM extends Application {
         mView.setInteractions(true);
     }
 
-
-
-    /**
-     * Méthode qui permet de lancer le jeu avec le monstre contre l'IA hunter.
-     * 
-     * @param stage la scène principale de l'interface graphique.
-     */
-    /*public void startWithAIHunter(Stage stage) {
-        // macOSInputs();
-
-        // version de test avec difficultés:
-        difficulty = Difficulty.MOYEN;
-        int columns = largeur;// difficulty.getColumnsDifficulty();
-        int rows = longueur; // difficulty.getRowsDifficulty();
-        int nbObstacles = difficulty.getNbObstaclesDifficulty();
-        this.maze = new Maze(columns, rows);
-        boolean pathExist = false;
-        while (!pathExist) {
-            maze.resetMaze();
-            maze.generateEnterExit();
-            maze.generateObstacles(nbObstacles);
-            pathExist = maze.checkPathExists();
-        }
-
-        hViewAI = new HunterView(this, stage,  this.maze, true);
-        mView = new MonsterView(this, stage, this.maze);
-    }*/
-
     /**
      * Méthode qui lance l'interface graphique.
      * 

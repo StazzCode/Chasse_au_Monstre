@@ -443,6 +443,14 @@ public class MainMenu extends Application {
         baseStage.setScene(newScene);
     }
 
+    /**
+     * Méthode qui permet de vérifier si la taille du labyrinthe saisie est
+     * inférieure à la taille du labyrinthe minimale.
+     * 
+     * @param tf le champ de saisie personnalisé pour la taille du labyrinthe
+     * @return true si la taille du labyrinthe saisie est inférieure à la taille du
+     *         labyrinthe minimale, false sinon
+     */
     boolean belowMinSize(TextField tf) {
         return Integer.parseInt(tf.getText()) < MINSIZE;
     }
