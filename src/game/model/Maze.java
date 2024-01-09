@@ -389,6 +389,19 @@ public class Maze implements Observer {
         }
     }
 
+    public Coordinate findShortedLastAppearance(){
+        Coordinate shorted = new Coordinate(0, 0);
+        for(int i = 0; i < this.getColumns(); i++){
+            for(int j = 0; j  < this.getRows(); j++){
+                if(this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) < this.maze[shorted.getColumn()][shorted.getRow()].getLastMonsterAppearanceReverse(this.compteur) &&
+                        this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) > -1 && this.maze[i][j].isDiscovered()){
+                    shorted =  this.maze[i][j].getCoordinate();
+                }
+            }
+        }
+        return shorted;
+    }
+
     /**
      * Méthode qui met à jour la dernière apparition du monstre
      */

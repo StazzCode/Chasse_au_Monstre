@@ -170,7 +170,7 @@ public class HunterView extends Stage implements IView {
         if (active) {
         	if(iaHunter) {
         		System.out.println("no");
-        		playAISimple();
+        		playAI();
         	} else {
                 response.setText("");
                 shoot.setVisible(true);
@@ -360,21 +360,26 @@ public class HunterView extends Stage implements IView {
      * Méthode qui génère un tour de jeu pour le chasseur de façon aléatoire : il
      * tire sur une case au hasard.
      */
-    public void playAISimple() {
+    public void playAI() {
         Random random = new Random();
-        int randomColumn = random.nextInt(maze.getColumns());
-        int randomRow = random.nextInt(maze.getRows());
-        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        Coordinate hitCoord = null;
+        Coordinate myCell = maze.findShortedLastAppearance();
+        if(myCell == null){
+            hitCoord = playAISimple();
+        }else{
+            hitCoord = playAIHard();
+        }
         PauseTransition pause =  new PauseTransition(Duration.seconds(1));
         if(this.iaHunter && ihm.mView.iaMonster) {
         	pause = new PauseTransition(Duration.seconds(0.5));
         }else {
         	pause = new PauseTransition(Duration.seconds(0));
         }
+        Coordinate finalHitCoord = hitCoord;
         pause.setOnFinished(event -> {
             if (!maze.getEnd()) {
-                maze.getMaze()[randomColumn][randomRow].discover();
-                this.response.setText("Vous avez tiré sur " + maze.getMaze()[randomColumn][randomRow].getState().toString() + "!");
+                maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].discover();
+                this.response.setText("Vous avez tiré sur " + maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].getState().toString() + "!");
                 this.display();
                 setInteractions(false);
                 play.setText("Tour " + turn + " : Monstre   |   Patience.");
@@ -387,6 +392,37 @@ public class HunterView extends Stage implements IView {
         
         pause.play();
     }
+
+    public Coordinate  playAIHard() {
+        Random random = new Random();
+        Coordinate myCell = maze.findShortedLastAppearance();
+        int moreOrLess = random.nextInt(1);
+        int randomColumn;
+        if(moreOrLess == 0){
+            randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        }else{
+            randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        }
+        moreOrLess = random.nextInt(1);
+        int randomRow;
+        if(moreOrLess == 0){
+            randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        }else{
+            randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        }
+        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        System.out.println(randomColumn + " ; " + randomRow);
+        return new Coordinate(randomColumn, randomRow);
+    }
+
+    public Coordinate playAISimple() {
+        Random random = new Random();
+        int randomColumn = random.nextInt(maze.getColumns());
+        int randomRow = random.nextInt(maze.getRows());
+        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        return new Coordinate(randomColumn, randomRow);
+    }
+
 
     /**
      * Méthode qui initialise l'interface graphique.
