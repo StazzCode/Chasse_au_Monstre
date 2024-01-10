@@ -43,6 +43,8 @@ public class MainMenu extends Application {
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
+    private static final String DEFAULTCONFIG = "Défaut";
+    private static final String CUSTOMCONFIG = "Personnalisée";
 
     /**
      * La méthode start permet d'initialiser le début du jeu.
@@ -271,7 +273,7 @@ public class MainMenu extends Application {
         confighbox.getChildren().addAll(check, configLabel);
 
         HBox optionsMenu = new HBox();
-        optionsMenu.setDisable(true);
+
         options.getChildren().addAll(optionsMenu);
         optionsMenu.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -305,9 +307,11 @@ public class MainMenu extends Application {
 
         VBox localBox = new VBox();
         localBox.setSpacing(50);
+        localBox.getStyleClass().add("defaultConfigBox");
 
         VBox iaBox = new VBox();
         iaBox.setSpacing(50);
+        iaBox.getStyleClass().add("defaultConfigBox");
 
         HBox onlineBox = new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
 
@@ -323,14 +327,30 @@ public class MainMenu extends Application {
         localBox.getChildren().addAll(playerInput,difficulty);
 
         // Onglet de sélection entre partie par défaut et partie custom
+        Tooltip defaultConfig = new Tooltip("Configure la partie avec des niveaux de difficultés par défaut.");
+        Tooltip customConfig = new Tooltip("Configure la partie avec des options avancées personnalisables");
         ToggleGroup configRadioGroup = new ToggleGroup();
-        RadioButton defaults = new RadioButton("Default");
+        RadioButton defaults = new RadioButton(DEFAULTCONFIG);
         defaults.setToggleGroup(configRadioGroup);
+        defaults.getStyleClass().remove("radio-button");
+        defaults.getStyleClass().add("configRadioButton");
+        defaults.getStyleClass().add("defaultConfigRadioButton");
         defaults.setSelected(true);
-        RadioButton custom = new RadioButton("Custom");
+        RadioButton custom = new RadioButton(CUSTOMCONFIG);
         custom.setToggleGroup(configRadioGroup);
-        HBox selectMode = new HBox();
-        selectMode.getChildren().addAll(defaults,custom);
+        custom.getStyleClass().remove("radio-button");
+        custom.getStyleClass().add("configRadioButton");
+        custom.getStyleClass().add("customConfigRadioButton");
+        HBox radioButtons = new HBox();
+        radioButtons.setSpacing(100);
+        radioButtons.getStyleClass().add("center");
+        VBox selectMode = new VBox();
+        VBox space = new VBox();
+        space.setMaxHeight(10);
+        space.setMinHeight(10);
+        radioButtons.getChildren().addAll(defaults,custom);
+        selectMode.getChildren().addAll(space,radioButtons);
+        selectMode.getStyleClass().add("background");
         //////////////////////////////////////////////////
 
         Button joueurVsJoueurOnglet = new Button("Local 1V1");
@@ -387,23 +407,36 @@ public class MainMenu extends Application {
 
             RadioButton rb = (RadioButton)configRadioGroup.getSelectedToggle();
 
-            if (rb != null && rb.getText().equals("Default")) {
+            String defaultStyle = "defaultConfigBox";
+            String customStyle = "customConfigBox";
+
+            if (rb != null && rb.getText().equals(DEFAULTCONFIG)) {
+                enableCustom = false;
                 if (root.getChildren().get(2) == localBox){
                     localBox.getChildren().clear();
                     localBox.getChildren().addAll(playerInput,difficulty);
+                    localBox.getStyleClass().remove(customStyle);
+                    localBox.getStyleClass().add(defaultStyle);
                 }
                 if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField);
+                    iaBox.getChildren().addAll(gameModeField,difficulty);
+                    iaBox.getStyleClass().remove(customStyle);
+                    iaBox.getStyleClass().add(defaultStyle);
                 }
-            } else if (rb != null && rb.getText().equals("Custom")){
+            } else if (rb != null && rb.getText().equals(CUSTOMCONFIG)){
+                enableCustom = true;
                 if (root.getChildren().get(2) == localBox){
                     localBox.getChildren().clear();
-                    localBox.getChildren().addAll(playerInput,difficulty,options);
+                    localBox.getChildren().addAll(playerInput,options);
+                    localBox.getStyleClass().remove(defaultStyle);
+                    localBox.getStyleClass().add(customStyle);
                 }
                 if (root.getChildren().get(2) == iaBox){
                     iaBox.getChildren().clear();
                     iaBox.getChildren().addAll(gameModeField,options);
+                    iaBox.getStyleClass().remove(defaultStyle);
+                    iaBox.getStyleClass().add(customStyle);
                 }
             }
         });

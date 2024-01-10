@@ -4,6 +4,7 @@ import game.model.Cell;
 import game.model.CellInfo;
 import game.model.Coordinate;
 import game.model.Maze;
+import graphics.ItemsView;
 import graphics.PopUpPane;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
@@ -128,9 +129,16 @@ public class HunterView extends Stage implements IView {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getRows() + j);
-                b.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                CellInfo state = maze.getMaze()[i][j].getState();
+                b.setBackground(ItemsView.getHiddenMazeCellBackground());
                 if (maze.getMaze()[i][j].isDiscovered()) {
                     b.setText(displayCellExceptMonster(maze.getMaze()[i][j]));
+
+                    if(state == CellInfo.EMPTY) b.setBackground(ItemsView.getVisibleMazeCellBackground());
+                    else if(state == CellInfo.WALL) b.setBackground(ItemsView.getWallMazeCellBackground());
+                    else if(state == CellInfo.ENTER)b.setBackground(ItemsView.getEnterMazeCellBackground());
+                    else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
+
                 } else {
                     b.setText(" ");
                 }

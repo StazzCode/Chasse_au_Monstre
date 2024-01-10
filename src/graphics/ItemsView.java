@@ -24,10 +24,10 @@ public class ItemsView {
 
     private ItemsView(){}
 
-    public static Background getVisibleMazeCellBackground(){return new ItemsView().initBackground("grass.png");}
+    public static Background getVisibleMazeCellBackground(){return new ItemsView().initBackground("legobush.png");}
     public static Background getWallMazeCellBackground(){return new ItemsView().initBackground("wall.png");}
-    public static Background getHiddenMazeCellBackground(){return new ItemsView().initBackground("fog.png");}
+    public static Background getHiddenMazeCellBackground(){return new ItemsView().initBackground("fog2.png");}
     public static Background getEnterMazeCellBackground(){return new ItemsView().initBackground("enter.png");}
     public static Background getExitMazeCellBackground(){return new ItemsView().initBackground("exit.png");}
-    public static Background getMonsterImageView(){return new ItemsView().initBackground("monster.png");}
+    public static Background getMonsterImageView(){return new ItemsView().initBackground("legomonster.png");}
 }

@@ -84,12 +84,9 @@ public class IHM extends Application {
     @Override
     public void start(Stage stage) {
 
-        // macOSInputs();
-
         // version de test avec difficultés:
-        difficulty = Difficulty.TRES_FACILE;
-        int columns = 5;
-        int rows = 5;
+        int columns = longueur;
+        int rows = largeur;
         int nbObstacles = difficulty.getNbObstaclesDifficulty();
         this.maze = new Maze(columns, rows);
         boolean pathExist = false;

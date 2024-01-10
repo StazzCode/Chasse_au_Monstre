@@ -133,6 +133,7 @@ public class MonsterView extends Stage implements IView {
                     else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
 
                     if(state == CellInfo.MONSTER) b.setBackground(ItemsView.getMonsterImageView());
+                    b.setText(" ");
                 } else {
                     b.setBackground(ItemsView.getHiddenMazeCellBackground());
                     b.setText(" ");
