@@ -9,7 +9,7 @@ package game.model;
 public class GameParameter {
     private Difficulty difficulty;
     private String firstPlayerName, secondPlayerName;
-    private Integer longueur, largeur, pourcentageObs;
+    private Integer longueur, largeur, pourcentageObs, fogRange;
     private boolean iaHunter = false;
     private boolean iaMonster = false;
 
@@ -166,4 +166,11 @@ public class GameParameter {
         this.iaMonster = iaMonster;
     }
 
+    public Integer getFogRange() {
+        return fogRange;
+    }
+
+    public void setFogRange(Integer fogRange) {
+        this.fogRange = fogRange;
+    }
 }

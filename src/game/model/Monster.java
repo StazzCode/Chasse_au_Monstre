@@ -12,7 +12,8 @@ public class Monster extends Player {
     protected Maze maze;
     ArrayList<Coordinate> deplacementPossible = new ArrayList<Coordinate>();
     Stack<Coordinate> stack = new Stack<>();
-    List<Coordinate> marquer = new ArrayList<>(); 
+    List<Coordinate> marquer = new ArrayList<>();
+    int fogRange;
 
     /**
      * Constructeur de la classe Monster.
@@ -193,13 +194,17 @@ public class Monster extends Player {
         return false;
     }
 
+    public void setFogRange(int i){
+        this.fogRange = i;
+    }
+
     /**
      * Méthode qui retourne si le monstre est à proximité de la coordonnée donnée
      * @return si le monstre est à proximité de la coordonnée donnée
      */
     public boolean near(int i, int j) {
         Coordinate c = this.getCoordinate();
-        if (i<c.getColumn()-2 || i>c.getColumn()+2 || j<c.getRow()-2 || j>c.getRow()+2) return false;
+        if (i<c.getColumn()-fogRange || i>c.getColumn()+fogRange || j<c.getRow()-fogRange || j>c.getRow()+fogRange) return false;
         return true;
     }
 }
