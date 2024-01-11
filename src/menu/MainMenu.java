@@ -437,10 +437,17 @@ public class MainMenu extends Application {
         ToggleGroup group = new ToggleGroup();
         RadioButton rb1 = new RadioButton("IA Chasseur VS Monstre");
         rb1.getStyleClass().remove("radio-button");
+        rb1.setWrapText(true);
+        rb1.setTextAlignment(TextAlignment.CENTER);
         RadioButton rb2 = new RadioButton("IA Monstre VS Chasseur");
         rb2.getStyleClass().remove("radio-button");
+        rb2.setWrapText(true);
+        rb2.setTextAlignment(TextAlignment.CENTER);
         RadioButton rb3 = new RadioButton("IA Chasseur VS IA Monstre");
         rb3.getStyleClass().remove("radio-button");
+        rb3.setWrapText(true);
+        rb3.setTextAlignment(TextAlignment.CENTER);
+
         VBox rb1Container = new VBox();
         rb1Container.getChildren().add(rb1);
         rb1Container.getStyleClass().add("radioButtonContainer");
@@ -450,6 +457,24 @@ public class MainMenu extends Application {
         VBox rb3Container = new VBox();
         rb3Container.getChildren().add(rb3);
         rb3Container.getStyleClass().add("radioButtonContainer");
+
+        group.selectedToggleProperty().addListener((ob, o, n) -> {
+            RadioButton rb = (RadioButton)group.getSelectedToggle();
+
+            if (rb != null && rb.getText().equals("IA Chasseur VS Monstre")){
+                rb1.getStyleClass().add("radioButtonContainerToggle");
+                rb2.getStyleClass().remove("radioButtonContainerToggle");
+                rb3.getStyleClass().remove("radioButtonContainerToggle");
+            } else if (rb != null && rb.getText().equals("IA Monstre VS Chasseur")) {
+                rb1.getStyleClass().remove("radioButtonContainerToggle");
+                rb2.getStyleClass().add("radioButtonContainerToggle");
+                rb3.getStyleClass().remove("radioButtonContainerToggle");
+            } else if (rb != null && rb.getText().equals("IA Chasseur VS IA Monstre")) {
+                rb1.getStyleClass().remove("radioButtonContainerToggle");
+                rb2.getStyleClass().remove("radioButtonContainerToggle");
+                rb3.getStyleClass().add("radioButtonContainerToggle");
+            }
+        });
 
         HBox gameModeField = new HBox(rb1Container, rb2Container, rb3Container);
         gameModeField.setSpacing(50);
