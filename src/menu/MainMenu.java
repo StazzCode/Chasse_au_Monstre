@@ -1,8 +1,6 @@
 package menu;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 
 import graphics.PopUpMazeSize;
@@ -82,17 +80,18 @@ public class MainMenu extends Application {
         howToPlay.setPrefWidth(245);
         howToPlay.setMaxHeight(45);
         howToPlay.setOnAction(e -> { // Ce que le bouton fait quand l'on clique dessus
-            Map<String, String> paragraphes = new HashMap<>(); // Map contenant tritre en clés avec le paragraphe
+            ArrayList<String> titres = new ArrayList<>(); // Liste contenant les titres des paragraphes
+            ArrayList<String> paragraphes = new ArrayList<>(); // Liste contenant les paragraphe
                                                                // d"explication pour chaque règles
-            paragraphes.put("Explications",
-                    "Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
-            paragraphes.put("Commandes du monstre",
-                    "Pour le joueur incarnant le monstre, les seules commandes à utiliser seront les touches du clavier affichées lors de la partie afin de pouvoir se déplacer.");
-            paragraphes.put("Commandes du chasseur",
-                    "En ce qui concerne le chasseur, ce dernier utilisera la souris afin de d'abord sélectionner une case sur laquelle sur souhaite tirer, puis appuyer sur le bouton pour valider le tir.");
-            paragraphes.put("Jouer avec des IA",
-                    "Il est également possible de jouer un des deux rôles et d'affronter une IA ou bien d'observer deux IA s'affronter.");
-            howToPlayMenu(primaryStage, paragraphes, animation); // Passage au menu des règles du jeu affiché dans le
+            titres.add("Explications");
+            paragraphes.add("Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
+            titres.add("Commandes du monstre");
+            paragraphes.add("Pour le joueur incarnant le monstre, les seules commandes à utiliser seront les touches du clavier affichées lors de la partie afin de pouvoir se déplacer.");
+            titres.add("Commandes du chasseur");
+            paragraphes.add("En ce qui concerne le chasseur, ce dernier utilisera la souris afin de d'abord sélectionner une case sur laquelle sur souhaite tirer, puis appuyer sur le bouton pour valider le tir.");
+            titres.add("Jouer avec des IA");
+            paragraphes.add("Il est également possible de jouer un des deux rôles et d'affronter une IA ou bien d'observer deux IA s'affronter.");
+            howToPlayMenu(primaryStage, titres, paragraphes, animation); // Passage au menu des règles du jeu affiché dans le
                                                                  // Stage d'origine et avec la Map des règles
         });
 
@@ -144,7 +143,7 @@ public class MainMenu extends Application {
      * @param baseStage   le stage de base.
      * @param paragraphes les règles du jeu.
      */
-    public void howToPlayMenu(Stage baseStage, Map<String, String> paragraphes, MenuAnimation animation) {
+    public void howToPlayMenu(Stage baseStage, ArrayList<String> titres, ArrayList<String> paragraphes, MenuAnimation animation) {
         Scene oldScene = baseStage.getScene();
         Label titre = new Label("Comment jouer ?");
         titre.getStyleClass().add("mainTitre");
@@ -161,13 +160,13 @@ public class MainMenu extends Application {
         VBox root = new VBox(titre);
         HBox.setMargin(root, new Insets(0, 0, 0, 190));
         root.getStyleClass().add("root");
-        for (Entry<String, String> s : paragraphes.entrySet()) {
-            Label secondTitre = new Label(s.getKey());
+        for (int i=0; i<4; i++) {
+            Label secondTitre = new Label(titres.get(i));
             secondTitre.getStyleClass().add("secondTitre");
             secondTitre.setWrapText(true);
             secondTitre.setMaxWidth(570);
             VBox.setMargin(secondTitre, new Insets(15, 0, 15, 0));
-            Label text = new Label(s.getValue());
+            Label text = new Label(paragraphes.get(i));
             text.setWrapText(true);
             text.setMaxWidth(600);
             VBox.setMargin(text, new Insets(0, 0, 45, 0));
