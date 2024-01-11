@@ -93,6 +93,7 @@ public class HunterView extends Stage implements IView {
     int shootColumn;
     int shootRow;
     boolean iaHunter;
+    boolean hardIA;
 
     /**
      * Constructeur de la classe HunterView.
@@ -101,11 +102,12 @@ public class HunterView extends Stage implements IView {
      * @param mainStage la scène principale
      * @param maze      le labyrinthe
      */
-    public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ia) {
+    public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ia, boolean hardIA) {
         this.ihm = ihm;
         this.mainStage = mainStage;
         this.maze = maze;
         this.iaHunter = ia;
+        this.hardIA = hardIA;
         this.start();
     }
 
@@ -374,7 +376,7 @@ public class HunterView extends Stage implements IView {
         Random random = new Random();
         Coordinate hitCoord = null;
         Coordinate myCell = maze.findShortedLastAppearance();
-        if(myCell == null){
+        if(myCell == null || hardIA == false){
             hitCoord = playAISimple();
         }else{
             hitCoord = playAIHard();
