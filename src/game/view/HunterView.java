@@ -27,6 +27,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import menu.MainMenu;
+import menu.SuperMain;
+
 import java.util.Random;
 
 /**
@@ -377,9 +379,9 @@ public class HunterView extends Stage implements IView {
         }else{
             hitCoord = playAIHard();
         }
-        PauseTransition pause =  new PauseTransition(Duration.seconds(1));
+        PauseTransition pause =  new PauseTransition(Duration.seconds(0.5));
         if(this.iaHunter && ihm.mView.iaMonster) {
-        	pause = new PauseTransition(Duration.seconds(0.5));
+        	pause = new PauseTransition(Duration.seconds(0.2));
         }else {
         	pause = new PauseTransition(Duration.seconds(0));
         }
@@ -406,33 +408,41 @@ public class HunterView extends Stage implements IView {
         Coordinate myCell = maze.findShortedLastAppearance();
         int moreOrLess = 0;
         int randomColumn = 0;
-        boolean end = false;
-        while(!end) {
-        	moreOrLess = random.nextInt(1);
-        	if(moreOrLess == 0){
-                randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-            }else{
-                randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-            }
-        	if(randomColumn > 0 && randomColumn < this.maze.getColumns()) {
-        		end = true;
-        	}
-        }
-        end = false;
         int randomRow = 0;
-        while(!end) {
-        	moreOrLess = random.nextInt(1);
-            if(moreOrLess == 0){
-                randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-            }else{
-                randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+        boolean finish = false;
+        boolean end = false;
+        while(!finish){
+            while(!end) {
+                moreOrLess = random.nextInt(1);
+                if(moreOrLess == 0){
+                    randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }else{
+                    randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }
+                if(randomColumn > 0 && randomColumn < this.maze.getColumns()) {
+                    end = true;
+                }
             }
-            if(randomRow > 0 && randomRow < this.maze.getRows()) {
-        		end = true;
-        	}
+            end = false;
+            while(!end) {
+                moreOrLess = random.nextInt(1);
+                if(moreOrLess == 0){
+                    randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }else{
+                    randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }
+                if(randomRow > 0 && randomRow < this.maze.getRows() ) {
+                    end = true;
+                }
+            }
+            System.out.println(randomColumn + " ; " + randomRow);
+            if(!maze.getMaze()[randomColumn][randomRow].isDiscovered()){
+                finish = true;
+            }
         }
+
         this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
-        System.out.println(randomColumn + " ; " + randomRow);
+        //System.out.println(randomColumn + " ; " + randomRow);
         return new Coordinate(randomColumn, randomRow);
     }
 
