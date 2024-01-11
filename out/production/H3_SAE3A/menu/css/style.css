@@ -101,3 +101,40 @@
 .background {
     -fx-background-color: rgba(201, 154, 154, 0.85);
 }
+
+.optionBox {
+    -fx-min-width: 150;
+    -fx-max-width: 150;
+    -fx-min-height: 200;
+    -fx-max-height: 200;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-border-width: 2;
+    -fx-border-color: rgb(0,0,0,0.2);;
+    -fx-border-radius: 15;
+}
+
+.optionContainerPercent {
+    -fx-spacing: 15;
+}
+
+.optionContainerFog {
+    -fx-spacing: 15;
+}
+
+.optionContainerSize {
+    -fx-spacing: 27.5;
+}
+
+.optionContainer > Label {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+
+.tooltip {
+    -fx-font-size: 15;
+}

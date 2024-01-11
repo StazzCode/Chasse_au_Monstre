@@ -25,8 +25,10 @@ public class IHM extends Application {
     String firstPlayerName;
     String secondPlayerName;
     Difficulty difficulty;
+    Integer pourcentageObs;
     Integer longueur;
     Integer largeur;
+    Integer fogRange;
     boolean iaHunter;
     boolean iaMonster;
 
@@ -37,12 +39,14 @@ public class IHM extends Application {
      */
     public IHM(GameParameter parameter) {
         difficulty = parameter.getDifficulty();
+        pourcentageObs = parameter.getPourcentageObs();
         firstPlayerName = parameter.getFirstPlayerName();
         firstPlayerName = parameter.getSecondPlayerName();
         longueur = parameter.getLongueur();
         largeur = parameter.getLargeur();
         iaHunter = parameter.getIaHunter();
         iaMonster = parameter.getIaMonster();
+        fogRange = parameter.getFogRange();
     }
 
     /**
@@ -87,8 +91,9 @@ public class IHM extends Application {
         // version de test avec difficultés:
         int columns = longueur;
         int rows = largeur;
-        int nbObstacles = difficulty.getNbObstaclesDifficulty();
+        int nbObstacles = pourcentageObs;
         this.maze = new Maze(columns, rows);
+        this.maze.getMonster().setFogRange(fogRange);
         boolean pathExist = false;
         while (!pathExist) {
             maze.resetMaze();
@@ -97,7 +102,7 @@ public class IHM extends Application {
             pathExist = maze.checkPathExists();
         }
         
-        hView = new HunterView(this, stage,  this.maze, this.iaHunter, true);
+        hView = new HunterView(this, stage,  this.maze, this.iaHunter);
         mView = new MonsterView(this, stage, this.maze, this.iaMonster);
         mView.setInteractions(true);
     }

@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import game.model.Difficulty;
 import game.model.GameParameter;
 import game.view.IHM;
+import javafx.util.Duration;
 
 /**
  * La classe MainMenu représente le menu principal du jeu.
@@ -33,11 +34,13 @@ import game.view.IHM;
 public class MainMenu extends Application {
 
     private static final boolean SQUAREONLY = false;
-    private static boolean enableCustom = false;
-    private static final boolean ENABLEIA = true;
+    private boolean enableCustom = false;
+    private boolean enableIA = false;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
+    private static final double DEFAULTOBS = 25.0;
+    private static final int DEFAULTFOG = 2;
     private static final String DEFAULTCONFIG = "Défaut";
     private static final String CUSTOMCONFIG = "Personnalisée";
 
@@ -196,7 +199,8 @@ public class MainMenu extends Application {
 
         //////////////////////////////////////////////////
         // Menu de configuration des options (NE PAS RETIRER LES '/' DE SÉPARATION SVP)
-
+        //////////////////////////////////////////////////
+        // Option Taille Labyrinthe
         UnaryOperator<TextFormatter.Change> integerFilter = change -> {
             String newText = change.getControlNewText();
             /* MAKE NUMERIC ONLY */
@@ -243,9 +247,12 @@ public class MainMenu extends Application {
         Label multiplicationSymbol = new Label(" X "); // Format Taille : 10 X 10
         multiplicationSymbol.setMinHeight(25);
         HBox mazeSizeInputs = new HBox();
+        mazeSizeInputs.getStyleClass().add("center");
         mazeSizeInputs.getChildren().addAll(longueurField, multiplicationSymbol, largeurField);
 
-        Label sizeLabel = new Label("Taille du Labyrinthe (Par Défaut : 7x7)");
+        Label sizeLabel = new Label("Taille du Labyrinthe");
+        sizeLabel.setWrapText(true);
+
         // Bouton pour repasser la taille par défaut
         Button resetSizeButton = new Button("Réinitialiser");
         resetSizeButton.getStyleClass().add("optionMenuButton");
@@ -257,31 +264,75 @@ public class MainMenu extends Application {
         });
 
         VBox optionMazeSize = new VBox(); // Colonne d'option de configuration de la taille du labyrinthe
+        VBox containerSize = new VBox();
+        containerSize.getStyleClass().add("optionContainerSize");
         // Menu regroupant l'ensemble des options configurables de la partie
         VBox options = new VBox();
-        options.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        HBox confighbox = new HBox();
-        Label configLabel = new Label("Activer Configuration Personnalisée");
-        CheckBox check = new CheckBox();
-
-        confighbox.getChildren().addAll(check, configLabel);
-
         HBox optionsMenu = new HBox();
-
         options.getChildren().addAll(optionsMenu);
-        optionsMenu.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
         // Ajout des éléments de la configuration de la taille du labyrinthe à la
         // colonne
-        optionMazeSize.getChildren().addAll(sizeLabel, mazeSizeInputs, resetSizeButton);
+        containerSize.getChildren().addAll(sizeLabel, mazeSizeInputs, resetSizeButton);
+        optionMazeSize.getChildren().add(containerSize);
         optionMazeSize.setSpacing(7.5);
 
-        // Ajout des différents blocs d'options au bloc général
-        optionsMenu.getChildren().add(optionMazeSize);
+        //////////////////////////////////////////////////
+        // Option Pourcentage Labyrinthe
+        VBox optionPercentageObs = new VBox();
+        VBox containerPercent = new VBox();
+        containerPercent.getStyleClass().add("optionContainerPercent");
+        Label percentLabel = new Label("Pourcentage d'obstacles");
+        percentLabel.setWrapText(true);
+        Slider percentSlider = new Slider(25,75,5);
+        percentSlider.setShowTickLabels(true);
+        percentSlider.setShowTickMarks(true);
+        percentSlider.setSnapToTicks(true);
 
+        // Bouton pour repasser le pourcentage par défaut
+        Button resetObsButton = new Button("Réinitialiser");
+        resetObsButton.getStyleClass().add("optionMenuButton");
+        resetObsButton.setMinWidth(115);
+        resetObsButton.setMaxWidth(115);
+        resetObsButton.setOnAction(e -> {
+            percentSlider.setValue(DEFAULTOBS);
+        });
+
+        containerPercent.getChildren().addAll(percentLabel,percentSlider,resetObsButton);
+        optionPercentageObs.getChildren().add(containerPercent);
+        //////////////////////////////////////////////////
+        // Option Rayon du champ de vision du Monstre
+        VBox optionFog = new VBox();
+        VBox containerFog = new VBox();
+        containerFog.getStyleClass().add("optionContainerFog");
+        Label fogLabel = new Label("Champ de vision du monstre");
+        fogLabel.setWrapText(true);
+        Slider fogSlider = new Slider(1,5,1);
+
+        fogSlider.setShowTickLabels(true);
+        fogSlider.setShowTickMarks(true);
+        fogSlider.setSnapToTicks(true);
+        fogSlider.setBlockIncrement(1);
+
+        // Bouton pour repasser le rayon par défaut
+        Button resetFogButton = new Button("Réinitialiser");
+        resetFogButton.getStyleClass().add("optionMenuButton");
+        resetFogButton.setMinWidth(115);
+        resetFogButton.setMaxWidth(115);
+        resetFogButton.setOnAction(e -> {
+            fogSlider.setValue(DEFAULTFOG);
+        });
+
+        containerFog.getChildren().addAll(fogLabel,fogSlider,resetFogButton);
+        optionFog.getChildren().add(containerFog);
+        //////////////////////////////////////////////////
+        optionMazeSize.getStyleClass().add("optionBox");
+        optionPercentageObs.getStyleClass().add("optionBox");
+        optionFog.getStyleClass().add("optionBox");
+        //////////////////////////////////////////////////
+        // Ajout des différents blocs d'options au bloc général
+        optionsMenu.setSpacing(50);
+        optionsMenu.getStyleClass().add("center");
+        optionsMenu.getChildren().addAll(optionMazeSize,optionPercentageObs,optionFog);
         //////////////////////////////////////////////////
 
         DifficultySlider difficulty = new DifficultySlider();
@@ -324,7 +375,13 @@ public class MainMenu extends Application {
 
         // Onglet de sélection entre partie par défaut et partie custom
         Tooltip defaultConfig = new Tooltip("Configure la partie avec des niveaux de difficultés par défaut.");
+        defaultConfig.setShowDelay(Duration.millis(50));
+        defaultConfig.getStyleClass().add("tooltip");
+        defaultConfig.setWrapText(true);
         Tooltip customConfig = new Tooltip("Configure la partie avec des options avancées personnalisables");
+        customConfig.setShowDelay(Duration.millis(50));
+        customConfig.getStyleClass().add("tooltip");
+        customConfig.setWrapText(true);
         ToggleGroup configRadioGroup = new ToggleGroup();
         RadioButton defaults = new RadioButton(DEFAULTCONFIG);
         defaults.setToggleGroup(configRadioGroup);
@@ -332,11 +389,31 @@ public class MainMenu extends Application {
         defaults.getStyleClass().add("configRadioButton");
         defaults.getStyleClass().add("defaultConfigRadioButton");
         defaults.setSelected(true);
+        HBox defaultsContainer = new HBox();
+        Image defaultsTooltipImg = new Image("menu/img/tooltipIcon.png");
+        ImageView defaultsTooltipImgView = new ImageView(defaultsTooltipImg);
+        VBox defaultsTooltipImgViewContainer = new VBox();
+        defaultsTooltipImgViewContainer.getChildren().add(defaultsTooltipImgView);
+        defaultsTooltipImgViewContainer.getStyleClass().add("center");
+        defaultsTooltipImgView.setFitHeight(30);
+        defaultsTooltipImgView.setFitWidth(30);
+        Tooltip.install(defaultsTooltipImgViewContainer,defaultConfig);
+        defaultsContainer.getChildren().addAll(defaultsTooltipImgViewContainer,defaults);
         RadioButton custom = new RadioButton(CUSTOMCONFIG);
         custom.setToggleGroup(configRadioGroup);
         custom.getStyleClass().remove("radio-button");
         custom.getStyleClass().add("configRadioButton");
         custom.getStyleClass().add("customConfigRadioButton");
+        HBox customContainer = new HBox();
+        Image customTooltipImg = new Image("menu/img/tooltipIcon.png");
+        ImageView customTooltipImgView = new ImageView(customTooltipImg);
+        VBox customTooltipImgViewContainer = new VBox();
+        customTooltipImgViewContainer.getChildren().add(customTooltipImgView);
+        customTooltipImgViewContainer.getStyleClass().add("center");
+        customTooltipImgView.setFitHeight(30);
+        customTooltipImgView.setFitWidth(30);
+        Tooltip.install(customTooltipImgViewContainer,customConfig);
+        customContainer.getChildren().addAll(custom, customTooltipImgViewContainer);
         HBox radioButtons = new HBox();
         radioButtons.setSpacing(100);
         radioButtons.getStyleClass().add("center");
@@ -344,13 +421,14 @@ public class MainMenu extends Application {
         VBox space = new VBox();
         space.setMaxHeight(10);
         space.setMinHeight(10);
-        radioButtons.getChildren().addAll(defaults,custom);
+        radioButtons.getChildren().addAll(defaultsContainer,customContainer);
         selectMode.getChildren().addAll(space,radioButtons);
         selectMode.getStyleClass().add("background");
         //////////////////////////////////////////////////
 
         Button joueurVsJoueurOnglet = new Button("Local 1V1");
         joueurVsJoueurOnglet.setOnAction(e -> {
+            enableIA = false;
             defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
             localBox.getChildren().clear();
@@ -368,6 +446,7 @@ public class MainMenu extends Application {
         gameModeField.getStyleClass().add("center");
 
         iaVsIaOnglet.setOnAction(e -> {
+            enableIA = true;
             defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
 
@@ -379,7 +458,7 @@ public class MainMenu extends Application {
             rb3.setToggleGroup(group);
 
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(gameModeField);
+            iaBox.getChildren().addAll(gameModeField,difficulty);
             root.getChildren().addAll(top, selectMode, iaBox, bottom);
 
         });
@@ -448,20 +527,27 @@ public class MainMenu extends Application {
                 if (enableCustom) {
                     parameters.setLongueur(Integer.parseInt(longueurField.getText()));
                     parameters.setLargeur(Integer.parseInt(largeurField.getText()));
+                    parameters.setPourcentageObs((int) percentSlider.getValue());
+                    parameters.setFogRange((int) fogSlider.getValue());
                 } else {
                     parameters.setLongueur(parameters.getDifficulty().getColumnsDifficulty());
                     parameters.setLargeur(parameters.getDifficulty().getRowsDifficulty());
+                    parameters.setPourcentageObs(parameters.getDifficulty().getNbObstaclesDifficulty());
+                    parameters.setFogRange(parameters.getDifficulty().getFogRange());
                 }
-                if (rb1.isSelected()) {
-                    parameters.setIaHunter(true);
-                    parameters.setIaMonster(false);
-                } else if (rb2.isSelected()) {
-                    parameters.setIaHunter(false);
-                    parameters.setIaMonster(true);
-                } else if (rb3.isSelected()) {
-                    parameters.setIaHunter(true);
-                    parameters.setIaMonster(true);
+                if (enableIA){
+                    if (rb1.isSelected()) {
+                        parameters.setIaHunter(true);
+                        parameters.setIaMonster(false);
+                    } else if (rb2.isSelected()) {
+                        parameters.setIaHunter(false);
+                        parameters.setIaMonster(true);
+                    } else if (rb3.isSelected()) {
+                        parameters.setIaHunter(true);
+                        parameters.setIaMonster(true);
+                    }
                 }
+
 
                 IHM ihm = new IHM(parameters);
                 baseStage.close();

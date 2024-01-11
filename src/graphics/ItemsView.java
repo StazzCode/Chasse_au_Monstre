@@ -24,7 +24,7 @@ public class ItemsView {
 
     private ItemsView(){}
 
-    public static Background getVisibleMazeCellBackground(){return new ItemsView().initBackground("legobush.png");}
+    public static Background getVisibleMazeCellBackground(){return new ItemsView().initBackground("grass.png");}
     public static Background getWallMazeCellBackground(){return new ItemsView().initBackground("wall.png");}
     public static Background getHiddenMazeCellBackground(){return new ItemsView().initBackground("fog2.png");}
     public static Background getEnterMazeCellBackground(){return new ItemsView().initBackground("enter.png");}

@@ -132,12 +132,14 @@ public class HunterView extends Stage implements IView {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
                 Button b = (Button) grid.getChildren().get(i * maze.getRows() + j);
-                CellInfo state = maze.getMaze()[i][j].getState();
+                Cell cell = maze.getMaze()[i][j];
+                CellInfo state = cell.getState();
                 b.setBackground(ItemsView.getHiddenMazeCellBackground());
-                if (maze.getMaze()[i][j].isDiscovered()) {
-                    b.setText(displayCellExceptMonster(maze.getMaze()[i][j]));
+                if (cell.isDiscovered()) {
+                    b.setText(displayCellExceptMonster(cell));
 
                     if(state == CellInfo.EMPTY) b.setBackground(ItemsView.getVisibleMazeCellBackground());
+                    else if(state == CellInfo.EMPTY && cell.getLastMonsterAppearance() > 0) b.setBackground((new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY))));
                     else if(state == CellInfo.WALL) b.setBackground(ItemsView.getWallMazeCellBackground());
                     else if(state == CellInfo.ENTER)b.setBackground(ItemsView.getEnterMazeCellBackground());
                     else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
@@ -392,7 +394,7 @@ public class HunterView extends Stage implements IView {
         }
         Coordinate finalHitCoord = hitCoord;
         pauseConfiguration(pause, finalHitCoord);
-        
+
         pause.play();
     }
 
