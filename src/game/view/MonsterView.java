@@ -193,11 +193,10 @@ public class MonsterView extends Stage implements IView {
     private void macOSKeybinding() {
         InputContext context = InputContext.getInstance();
         String loc = context.getLocale().toString();
-        /* 
         if (OS.current() == OS.MAC && (loc.equals("fr"))){
             keyCodeUp = KeyCode.W;
             keyCodeLeft = KeyCode.A;
-        }*/
+        }
     }
 
     /**
