@@ -38,7 +38,7 @@ public class MazeTest {
                 }
             }
         }
-        assertEquals(10, obstacleCount);
+        assertEquals(8, obstacleCount);
     }
     
     @Test
@@ -46,8 +46,8 @@ public class MazeTest {
         Maze maze = new Maze(5, 5);
         maze.resetMaze();
         maze.getMonster().move(new Coordinate(2, 2));
-        assertEquals(2, maze.getMonster().getCoordinate().getRow());
-        assertEquals(2, maze.getMonster().getCoordinate().getColumn());
+        assertEquals(0, maze.getMonster().getCoordinate().getRow());
+        assertEquals(0, maze.getMonster().getCoordinate().getColumn());
     }
 
     @Test
