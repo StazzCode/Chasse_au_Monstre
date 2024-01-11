@@ -148,8 +148,17 @@ public class MonsterView extends Stage implements IView {
      */
     public void setInteractions(boolean active) {
 
-        // Gestion des touches pour Mac.
-        macOSKeybinding();
+        ////////////////////////////////////////////////////////////
+        // Gestion des touches pour Macos.
+        ////////////////////////////////////////////////////////////
+        InputContext context = InputContext.getInstance();
+        String loc = context.getLocale().toString();
+        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+            keyCodeUp = KeyCode.W;
+            keyCodeLeft = KeyCode.A;
+        }
+        ////////////////////////////////////////////////////////////
+
 
         if (active) {
             play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
