@@ -151,7 +151,7 @@ public class GameParameter {
     /**
      * Méthode qui permet de définir si l'IA pour le chasseur est activée
      * 
-     * @param iaHunter
+     * @param iaHunter l'IA du chasseur activée ou non
      */
     public void setIaHunter(boolean iaHunter) {
         this.iaHunter = iaHunter;
@@ -160,16 +160,26 @@ public class GameParameter {
     /**
      * Méthode qui permet de définir si l'IA pour le monstre est activée
      * 
-     * @param iaMonster
+     * @param iaMonster l'IA du monster activée ou non
      */
     public void setIaMonster(boolean iaMonster) {
         this.iaMonster = iaMonster;
     }
 
+    /**
+     * Méthode qui permet d'obtenir la portée du brouillard
+     * 
+     * @return fogRange la portée du brouillard en entier
+     */
     public Integer getFogRange() {
         return fogRange;
     }
 
+    /**
+     * Méthode qui permet de redéfinir la portée du brouillard
+     * 
+     * @param fogRange la portée du brouillard en entier redéfinie
+     */
     public void setFogRange(Integer fogRange) {
         this.fogRange = fogRange;
     }

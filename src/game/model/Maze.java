@@ -112,6 +112,8 @@ public class Maze implements Observer {
     /**
      * Retourne une version booléenne du labyrinthe codant true pour un mur et false
      * pour autre chose.
+     * 
+     * @return le labyrinthe en version booléenne
      */
     public boolean[][] getBooleanMaze() {
         int columns = this.getColumns();
@@ -279,6 +281,7 @@ public class Maze implements Observer {
     /**
      * Méthode qui vérifie si une case a des voisins
      * 
+     * @param coord les coordonnées de la case
      * @return true si la case a des voisins, false sinon
      */
     public boolean hasNeighbors(Coordinate coord) {
@@ -376,7 +379,7 @@ public class Maze implements Observer {
     }
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * Méthode qui affiche le labyrinthe dans la console
      */
     public void displayMaze() {
@@ -390,25 +393,34 @@ public class Maze implements Observer {
         }
     }
 
-    public Coordinate findShortedLastAppearance(){
+    /**
+     * Méthode qui trouve l'apparence du monstre la plus proche
+     * @return les coordonnées de l'apparence du monstre la plus proche
+     
+     */
+    public Coordinate findShortedLastAppearance() {
         Coordinate shorted = new Coordinate(0, 0);
-        for(int i = 0; i < this.getColumns(); i++){
-            for(int j = 0; j  < this.getRows(); j++){
-                if(this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) < this.maze[shorted.getColumn()][shorted.getRow()].getLastMonsterAppearanceReverse(this.compteur) &&
-                        this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) > -1 && this.maze[i][j].isDiscovered()){
-                    shorted =  this.maze[i][j].getCoordinate();
+        for (int i = 0; i < this.getColumns(); i++) {
+            for (int j = 0; j < this.getRows(); j++) {
+                if (this.maze[i][j].getLastMonsterAppearanceReverse(
+                        this.compteur) < this.maze[shorted.getColumn()][shorted.getRow()]
+                                .getLastMonsterAppearanceReverse(this.compteur)
+                        &&
+                        this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) > -1
+                        && this.maze[i][j].isDiscovered()) {
+                    shorted = this.maze[i][j].getCoordinate();
                 }
             }
         }
-        if(shorted.getColumn() == 0 && shorted.getRow() == 0){
+        if (shorted.getColumn() == 0 && shorted.getRow() == 0) {
             return null;
         }
         return shorted;
     }
 
     /**
-=======
->>>>>>> 8d948fb819c270c7b15d479309f32308bea4b736
+     * =======
+     * >>>>>>> 8d948fb819c270c7b15d479309f32308bea4b736
      * Méthode qui met à jour la dernière apparition du monstre
      */
     public void updateLastAppearance() {

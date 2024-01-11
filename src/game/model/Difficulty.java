@@ -75,7 +75,9 @@ public enum Difficulty {
      *
      * @return le rayon de champ de vision du Monstre
      */
-    public int getFogRange(){ return fogRange;}
+    public int getFogRange() {
+        return fogRange;
+    }
 
     /**
      * Retourne le niveau de difficulté du labyrinthe en fonction de l'entier

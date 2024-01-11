@@ -118,12 +118,14 @@ public class HunterView extends Stage implements IView {
      * @param maze      le labyrinthe
      * @param ai        le mode IA
      */
-    /*public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ai) {
-        this.ihm = ihm;
-        this.mainStage = mainStage;
-        this.maze = maze;
-        this.startAI();
-    }*/
+    /*
+     * public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ai) {
+     * this.ihm = ihm;
+     * this.mainStage = mainStage;
+     * this.maze = maze;
+     * this.startAI();
+     * }
+     */
 
     /**
      * Méthode qui affiche le labyrinthe vu par le chasseur.
@@ -138,11 +140,17 @@ public class HunterView extends Stage implements IView {
                 if (cell.isDiscovered()) {
                     b.setText(displayCellExceptMonster(cell));
 
-                    if(state == CellInfo.EMPTY) b.setBackground(ItemsView.getVisibleMazeCellBackground());
-                    else if(state == CellInfo.EMPTY && cell.getLastMonsterAppearance() > 0) b.setBackground((new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY))));
-                    else if(state == CellInfo.WALL) b.setBackground(ItemsView.getWallMazeCellBackground());
-                    else if(state == CellInfo.ENTER)b.setBackground(ItemsView.getEnterMazeCellBackground());
-                    else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
+                    if (state == CellInfo.EMPTY)
+                        b.setBackground(ItemsView.getVisibleMazeCellBackground());
+                    else if (state == CellInfo.EMPTY && cell.getLastMonsterAppearance() > 0)
+                        b.setBackground(
+                                (new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY))));
+                    else if (state == CellInfo.WALL)
+                        b.setBackground(ItemsView.getWallMazeCellBackground());
+                    else if (state == CellInfo.ENTER)
+                        b.setBackground(ItemsView.getEnterMazeCellBackground());
+                    else if (state == CellInfo.EXIT)
+                        b.setBackground(ItemsView.getExitMazeCellBackground());
 
                 } else {
                     b.setText(" ");
@@ -181,10 +189,10 @@ public class HunterView extends Stage implements IView {
      */
     public void setInteractions(boolean active) {
         if (active) {
-        	if(iaHunter) {
-        		System.out.println("no");
-        		playAI();
-        	} else {
+            if (iaHunter) {
+                System.out.println("no");
+                playAI();
+            } else {
                 response.setText("");
                 shoot.setVisible(true);
                 setButtonsInteractions();
@@ -265,6 +273,7 @@ public class HunterView extends Stage implements IView {
 
     /**
      * Méthode qui gère les actions des boutons de fin de jeu.
+     * 
      * @param replay
      * @param backToMenu
      * @param quit
@@ -346,6 +355,7 @@ public class HunterView extends Stage implements IView {
             }
         });
     }
+
     /**
      * Méthode qui configure la StackPane principale.
      */
@@ -381,16 +391,16 @@ public class HunterView extends Stage implements IView {
         Random random = new Random();
         Coordinate hitCoord = null;
         Coordinate myCell = maze.findShortedLastAppearance();
-        if(myCell == null || hardIA == false){
+        if (myCell == null || hardIA == false) {
             hitCoord = playAISimple();
-        }else{
+        } else {
             hitCoord = playAIHard();
         }
-        PauseTransition pause =  new PauseTransition(Duration.seconds(0.5));
-        if(this.iaHunter && ihm.mView.iaMonster) {
-        	pause = new PauseTransition(Duration.seconds(0.2));
-        }else {
-        	pause = new PauseTransition(Duration.seconds(0));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        if (this.iaHunter && ihm.mView.iaMonster) {
+            pause = new PauseTransition(Duration.seconds(0.2));
+        } else {
+            pause = new PauseTransition(Duration.seconds(0));
         }
         Coordinate finalHitCoord = hitCoord;
         pauseConfiguration(pause, finalHitCoord);
@@ -398,11 +408,21 @@ public class HunterView extends Stage implements IView {
         pause.play();
     }
 
+    /**
+     * Méthode qui permet de d'afficher un message sur l'évènement qui vient de se
+     * passer et qui va suivre
+     * 
+     * @param pause         la pause sur l'évènement
+     * 
+     * @param finalHitCoord la coordonnée de la case sur laquelle le chasseur a tiré
+     */
     private void pauseConfiguration(PauseTransition pause, Coordinate finalHitCoord) {
         pause.setOnFinished(event -> {
             if (!maze.getEnd()) {
                 maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].discover();
-                this.response.setText("Vous avez tiré sur " + maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].getState().toString() + "!");
+                this.response.setText("Vous avez tiré sur "
+                        + maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].getState().toString()
+                        + "!");
                 this.display();
                 setInteractions(false);
                 play.setText("Tour " + turn + " : Monstre   |   Patience.");
@@ -414,7 +434,12 @@ public class HunterView extends Stage implements IView {
         });
     }
 
-    public Coordinate  playAIHard() {
+    /**
+     * Méthode qui génère un tour de jeu pour le chasseur en mode IA Compliquée
+     * 
+     * @return les coordonnées du coup joué
+     */
+    public Coordinate playAIHard() {
         Random random = new Random();
         Coordinate myCell = maze.findShortedLastAppearance();
         int moreOrLess = 0;
@@ -422,41 +447,52 @@ public class HunterView extends Stage implements IView {
         int randomRow = 0;
         boolean finish = false;
         boolean end = false;
-        while(!finish){
-            while(!end) {
+        while (!finish) {
+            while (!end) {
                 moreOrLess = random.nextInt(1);
-                if(moreOrLess == 0){
-                    randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-                }else{
-                    randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                if (moreOrLess == 0) {
+                    randomColumn = myCell.getColumn()
+                            + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()]
+                                    .getLastMonsterAppearanceReverse(maze.getCompteur()) + 1);
+                } else {
+                    randomColumn = myCell.getColumn()
+                            - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()]
+                                    .getLastMonsterAppearanceReverse(maze.getCompteur()) + 1);
                 }
-                if(randomColumn > 0 && randomColumn < this.maze.getColumns()) {
+                if (randomColumn > 0 && randomColumn < this.maze.getColumns()) {
                     end = true;
                 }
             }
             end = false;
-            while(!end) {
+            while (!end) {
                 moreOrLess = random.nextInt(1);
-                if(moreOrLess == 0){
-                    randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
-                }else{
-                    randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                if (moreOrLess == 0) {
+                    randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()]
+                            .getLastMonsterAppearanceReverse(maze.getCompteur()) + 1);
+                } else {
+                    randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()]
+                            .getLastMonsterAppearanceReverse(maze.getCompteur()) + 1);
                 }
-                if(randomRow > 0 && randomRow < this.maze.getRows() ) {
+                if (randomRow > 0 && randomRow < this.maze.getRows()) {
                     end = true;
                 }
             }
             System.out.println(randomColumn + " ; " + randomRow);
-            if(!maze.getMaze()[randomColumn][randomRow].isDiscovered()){
+            if (!maze.getMaze()[randomColumn][randomRow].isDiscovered()) {
                 finish = true;
             }
         }
 
         this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
-        //System.out.println(randomColumn + " ; " + randomRow);
+        // System.out.println(randomColumn + " ; " + randomRow);
         return new Coordinate(randomColumn, randomRow);
     }
 
+    /**
+     * Méthode qui génère un tour de jeu pour le chasseur en mode IA Simple
+     * 
+     * @return les coordonnées du coup joué
+     */
     public Coordinate playAISimple() {
         Random random = new Random();
         int randomColumn = random.nextInt(maze.getColumns());
@@ -464,7 +500,6 @@ public class HunterView extends Stage implements IView {
         this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
         return new Coordinate(randomColumn, randomRow);
     }
-
 
     /**
      * Méthode qui initialise l'interface graphique.
@@ -479,7 +514,7 @@ public class HunterView extends Stage implements IView {
 
         this.grid = new GridPane();
         int elementSize = 40;
-        //iaHunter = true;
+        // iaHunter = true;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
 

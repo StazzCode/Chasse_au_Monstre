@@ -179,7 +179,7 @@ public class MenuAnimation {
     /**
      * Méthode qui permet de stopper le menu avec les animations
      * 
-     * @return
+     * @return la pile
      */
     public StackPane getStackPane() {
         return pane;

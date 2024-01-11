@@ -50,7 +50,7 @@ public class Hunter extends Player {
     /**
      * Méthode qui gère un tour de l'IA chasseur.
      * 
-     * @return
+     * @return la liste des coordonnées des coups réussis.
      */
     public Coordinate AIplay() {
         Random rd = new Random();

@@ -49,7 +49,7 @@ public class MainMenu extends Application {
      * La méthode start permet d'initialiser le début du jeu.
      * 
      * @param primaryStage le stage principal du jeu.
-     * @throws Exception
+     * @throws Exception l'exception levée par l'application
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -88,15 +88,20 @@ public class MainMenu extends Application {
             ArrayList<String> paragraphes = new ArrayList<>(); // Liste contenant les paragraphe
                                                                // d"explication pour chaque règles
             titres.add("Explications");
-            paragraphes.add("Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
+            paragraphes.add(
+                    "Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
             titres.add("Commandes du monstre");
-            paragraphes.add("Pour le joueur incarnant le monstre, les seules commandes à utiliser seront les touches du clavier affichées lors de la partie afin de pouvoir se déplacer.");
+            paragraphes.add(
+                    "Pour le joueur incarnant le monstre, les seules commandes à utiliser seront les touches du clavier affichées lors de la partie afin de pouvoir se déplacer.");
             titres.add("Commandes du chasseur");
-            paragraphes.add("En ce qui concerne le chasseur, ce dernier utilisera la souris afin de d'abord sélectionner une case sur laquelle sur souhaite tirer, puis appuyer sur le bouton pour valider le tir.");
+            paragraphes.add(
+                    "En ce qui concerne le chasseur, ce dernier utilisera la souris afin de d'abord sélectionner une case sur laquelle sur souhaite tirer, puis appuyer sur le bouton pour valider le tir.");
             titres.add("Jouer avec des IA");
-            paragraphes.add("Il est également possible de jouer un des deux rôles et d'affronter une IA ou bien d'observer deux IA s'affronter.");
-            howToPlayMenu(primaryStage, titres, paragraphes, animation); // Passage au menu des règles du jeu affiché dans le
-                                                                 // Stage d'origine et avec la Map des règles
+            paragraphes.add(
+                    "Il est également possible de jouer un des deux rôles et d'affronter une IA ou bien d'observer deux IA s'affronter.");
+            howToPlayMenu(primaryStage, titres, paragraphes, animation); // Passage au menu des règles du jeu affiché
+                                                                         // dans le
+            // Stage d'origine et avec la Map des règles
         });
 
         // Definition du bouton pour quitter
@@ -145,9 +150,12 @@ public class MainMenu extends Application {
      * Méthode qui permet d'expliquer comment jouer au jeu de la chasse au monstre.
      * 
      * @param baseStage   le stage de base.
+     * @param titres      les titres des paragraphes
      * @param paragraphes les règles du jeu.
+     * @param animation   l'animation du menu.
      */
-    public void howToPlayMenu(Stage baseStage, ArrayList<String> titres, ArrayList<String> paragraphes, MenuAnimation animation) {
+    public void howToPlayMenu(Stage baseStage, ArrayList<String> titres, ArrayList<String> paragraphes,
+            MenuAnimation animation) {
         Scene oldScene = baseStage.getScene();
         Label titre = new Label("Comment jouer ?");
         titre.getStyleClass().add("mainTitre");
@@ -164,7 +172,7 @@ public class MainMenu extends Application {
         VBox root = new VBox(titre);
         HBox.setMargin(root, new Insets(0, 0, 0, 190));
         root.getStyleClass().add("root");
-        for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             Label secondTitre = new Label(titres.get(i));
             secondTitre.getStyleClass().add("secondTitre");
             secondTitre.setWrapText(true);
@@ -284,7 +292,7 @@ public class MainMenu extends Application {
         containerPercent.getStyleClass().add("optionContainerPercent");
         Label percentLabel = new Label("Pourcentage d'obstacles");
         percentLabel.setWrapText(true);
-        Slider percentSlider = new Slider(25,75,5);
+        Slider percentSlider = new Slider(25, 75, 5);
         percentSlider.setShowTickLabels(true);
         percentSlider.setShowTickMarks(true);
         percentSlider.setSnapToTicks(true);
@@ -298,7 +306,7 @@ public class MainMenu extends Application {
             percentSlider.setValue(DEFAULTOBS);
         });
 
-        containerPercent.getChildren().addAll(percentLabel,percentSlider,resetObsButton);
+        containerPercent.getChildren().addAll(percentLabel, percentSlider, resetObsButton);
         optionPercentageObs.getChildren().add(containerPercent);
         //////////////////////////////////////////////////
         // Option Rayon du champ de vision du Monstre
@@ -307,7 +315,7 @@ public class MainMenu extends Application {
         containerFog.getStyleClass().add("optionContainerFog");
         Label fogLabel = new Label("Champ de vision du monstre");
         fogLabel.setWrapText(true);
-        Slider fogSlider = new Slider(1,5,1);
+        Slider fogSlider = new Slider(1, 5, 1);
 
         fogSlider.setShowTickLabels(true);
         fogSlider.setShowTickMarks(true);
@@ -323,7 +331,7 @@ public class MainMenu extends Application {
             fogSlider.setValue(DEFAULTFOG);
         });
 
-        containerFog.getChildren().addAll(fogLabel,fogSlider,resetFogButton);
+        containerFog.getChildren().addAll(fogLabel, fogSlider, resetFogButton);
         optionFog.getChildren().add(containerFog);
         //////////////////////////////////////////////////
         optionMazeSize.getStyleClass().add("optionBox");
@@ -333,7 +341,7 @@ public class MainMenu extends Application {
         // Ajout des différents blocs d'options au bloc général
         optionsMenu.setSpacing(50);
         optionsMenu.getStyleClass().add("center");
-        optionsMenu.getChildren().addAll(optionMazeSize,optionPercentageObs,optionFog);
+        optionsMenu.getChildren().addAll(optionMazeSize, optionPercentageObs, optionFog);
         //////////////////////////////////////////////////
 
         DifficultySlider difficulty = new DifficultySlider();
@@ -368,7 +376,7 @@ public class MainMenu extends Application {
 
         HBox playerInput = new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel);
         playerInput.getStyleClass().add("center");
-        localBox.getChildren().addAll(playerInput,difficulty);
+        localBox.getChildren().addAll(playerInput, difficulty);
 
         // Onglet de sélection entre partie par défaut et partie custom
         Tooltip defaultConfig = new Tooltip("Configure la partie avec des niveaux de difficultés par défaut.");
@@ -394,8 +402,8 @@ public class MainMenu extends Application {
         defaultsTooltipImgViewContainer.getStyleClass().add("center");
         defaultsTooltipImgView.setFitHeight(30);
         defaultsTooltipImgView.setFitWidth(30);
-        Tooltip.install(defaultsTooltipImgViewContainer,defaultConfig);
-        defaultsContainer.getChildren().addAll(defaultsTooltipImgViewContainer,defaults);
+        Tooltip.install(defaultsTooltipImgViewContainer, defaultConfig);
+        defaultsContainer.getChildren().addAll(defaultsTooltipImgViewContainer, defaults);
         RadioButton custom = new RadioButton(CUSTOMCONFIG);
         custom.setToggleGroup(configRadioGroup);
         custom.getStyleClass().remove("radio-button");
@@ -409,7 +417,7 @@ public class MainMenu extends Application {
         customTooltipImgViewContainer.getStyleClass().add("center");
         customTooltipImgView.setFitHeight(30);
         customTooltipImgView.setFitWidth(30);
-        Tooltip.install(customTooltipImgViewContainer,customConfig);
+        Tooltip.install(customTooltipImgViewContainer, customConfig);
         customContainer.getChildren().addAll(custom, customTooltipImgViewContainer);
         HBox radioButtons = new HBox();
         radioButtons.setSpacing(100);
@@ -418,8 +426,8 @@ public class MainMenu extends Application {
         VBox space = new VBox();
         space.setMaxHeight(10);
         space.setMinHeight(10);
-        radioButtons.getChildren().addAll(defaultsContainer,customContainer);
-        selectMode.getChildren().addAll(space,radioButtons);
+        radioButtons.getChildren().addAll(defaultsContainer, customContainer);
+        selectMode.getChildren().addAll(space, radioButtons);
         selectMode.getStyleClass().add("background");
         //////////////////////////////////////////////////
 
@@ -429,7 +437,7 @@ public class MainMenu extends Application {
             defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
             localBox.getChildren().clear();
-            localBox.getChildren().addAll(playerInput,difficulty);
+            localBox.getChildren().addAll(playerInput, difficulty);
             root.getChildren().addAll(top, selectMode, localBox, bottom);
         });
         Button iaVsIaOnglet = new Button("IA");
@@ -468,7 +476,7 @@ public class MainMenu extends Application {
             rb3.setToggleGroup(group);
 
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(gameModeField,difficulty);
+            iaBox.getChildren().addAll(gameModeField, difficulty);
             root.getChildren().addAll(top, selectMode, iaBox, bottom);
 
         });
@@ -486,36 +494,36 @@ public class MainMenu extends Application {
         // Gestion du Bouton d'activation des options personnalisées de la partie
         configRadioGroup.selectedToggleProperty().addListener((ob, o, n) -> {
 
-            RadioButton rb = (RadioButton)configRadioGroup.getSelectedToggle();
+            RadioButton rb = (RadioButton) configRadioGroup.getSelectedToggle();
 
             String defaultStyle = "defaultConfigBox";
             String customStyle = "customConfigBox";
 
             if (rb != null && rb.getText().equals(DEFAULTCONFIG)) {
                 enableCustom = false;
-                if (root.getChildren().get(2) == localBox){
+                if (root.getChildren().get(2) == localBox) {
                     localBox.getChildren().clear();
-                    localBox.getChildren().addAll(playerInput,difficulty);
+                    localBox.getChildren().addAll(playerInput, difficulty);
                     localBox.getStyleClass().remove(customStyle);
                     localBox.getStyleClass().add(defaultStyle);
                 }
                 if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField,difficulty);
+                    iaBox.getChildren().addAll(gameModeField, difficulty);
                     iaBox.getStyleClass().remove(customStyle);
                     iaBox.getStyleClass().add(defaultStyle);
                 }
-            } else if (rb != null && rb.getText().equals(CUSTOMCONFIG)){
+            } else if (rb != null && rb.getText().equals(CUSTOMCONFIG)) {
                 enableCustom = true;
-                if (root.getChildren().get(2) == localBox){
+                if (root.getChildren().get(2) == localBox) {
                     localBox.getChildren().clear();
-                    localBox.getChildren().addAll(playerInput,options);
+                    localBox.getChildren().addAll(playerInput, options);
                     localBox.getStyleClass().remove(defaultStyle);
                     localBox.getStyleClass().add(customStyle);
                 }
-                if (root.getChildren().get(2) == iaBox){
+                if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField,options);
+                    iaBox.getChildren().addAll(gameModeField, options);
                     iaBox.getStyleClass().remove(defaultStyle);
                     iaBox.getStyleClass().add(customStyle);
                 }
@@ -541,7 +549,7 @@ public class MainMenu extends Application {
                     parameters.setPourcentageObs(parameters.getDifficulty().getNbObstaclesDifficulty());
                     parameters.setFogRange(parameters.getDifficulty().getFogRange());
                 }
-                if (enableIA){
+                if (enableIA) {
                     if (rb1.isSelected()) {
                         parameters.setIaHunter(true);
                         parameters.setIaMonster(false);
@@ -553,7 +561,6 @@ public class MainMenu extends Application {
                         parameters.setIaMonster(true);
                     }
                 }
-
 
                 IHM ihm = new IHM(parameters);
                 baseStage.close();
@@ -601,7 +608,7 @@ public class MainMenu extends Application {
     /**
      * Méthode qui permet de lancer le jeu.
      * 
-     * @param args
+     * @param args les arguments
      */
     public static void main(String[] args) {
         launch(args);
