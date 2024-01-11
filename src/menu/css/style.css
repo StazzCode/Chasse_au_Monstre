@@ -135,6 +135,26 @@
     -fx-text-alignment: center;
 }
 
+.radioButtonContainer {
+    -fx-min-width: 150;
+    -fx-max-width: 150;
+    -fx-min-height: 150;
+    -fx-max-height: 150;
+
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-border-width: 2;
+    -fx-border-color: rgb(0,0,0,0.2);;
+    -fx-border-radius: 15;
+}
+
+.radioButtonContainerToggle {
+    -fx-background-color: #4bf745;
+}
+
 .tooltip {
     -fx-font-size: 15;
 }
