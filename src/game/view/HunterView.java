@@ -391,7 +391,7 @@ public class HunterView extends Stage implements IView {
         Random random = new Random();
         Coordinate hitCoord = null;
         Coordinate myCell = maze.findShortedLastAppearance();
-        if (myCell == null || hardIA == false) {
+        if(myCell == null || hardIA == false || maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur()) > 7){
             hitCoord = playAISimple();
         } else {
             hitCoord = playAIHard();
@@ -445,10 +445,9 @@ public class HunterView extends Stage implements IView {
         int moreOrLess = 0;
         int randomColumn = 0;
         int randomRow = 0;
-        boolean finish = false;
         boolean end = false;
-        while (!finish) {
-            while (!end) {
+        while(!finish){
+            while(!end) {
                 moreOrLess = random.nextInt(1);
                 if (moreOrLess == 0) {
                     randomColumn = myCell.getColumn()
@@ -462,7 +461,7 @@ public class HunterView extends Stage implements IView {
                 if (randomColumn > 0 && randomColumn < this.maze.getColumns()) {
                     end = true;
                 }
-            }
+        }
             end = false;
             while (!end) {
                 moreOrLess = random.nextInt(1);
@@ -478,7 +477,7 @@ public class HunterView extends Stage implements IView {
                 }
             }
             System.out.println(randomColumn + " ; " + randomRow);
-            if (!maze.getMaze()[randomColumn][randomRow].isDiscovered()) {
+            if(!maze.getMaze()[randomColumn][randomRow].isDiscovered()){
                 finish = true;
             }
         }

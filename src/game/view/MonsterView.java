@@ -151,12 +151,13 @@ public class MonsterView extends Stage implements IView {
         ////////////////////////////////////////////////////////////
         // Gestion des touches pour Macos.
         ////////////////////////////////////////////////////////////
+        /*
         InputContext context = InputContext.getInstance();
         String loc = context.getLocale().toString();
-        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+        /*if (OS.current() == OS.MAC && (loc.equals("fr"))){
             keyCodeUp = KeyCode.W;
             keyCodeLeft = KeyCode.A;
-        }
+        }*/
         ////////////////////////////////////////////////////////////
 
 
