@@ -1,5 +1,6 @@
 package menu;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 
@@ -353,11 +354,11 @@ public class MainMenu extends Application {
         top.getStyleClass().add("top");
 
         VBox localBox = new VBox();
-        localBox.setSpacing(50);
+        localBox.setSpacing(80);
         localBox.getStyleClass().add("defaultConfigBox");
 
         VBox iaBox = new VBox();
-        iaBox.setSpacing(50);
+        iaBox.setSpacing(80);
         iaBox.getStyleClass().add("defaultConfigBox");
 
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
@@ -386,7 +387,7 @@ public class MainMenu extends Application {
         defaults.getStyleClass().add("defaultConfigRadioButton");
         defaults.setSelected(true);
         HBox defaultsContainer = new HBox();
-        Image defaultsTooltipImg = new Image("menu/img/tooltipIcon.png");
+        Image defaultsTooltipImg = new Image(getClass().getResource("img/tooltipIcon.png").toExternalForm());
         ImageView defaultsTooltipImgView = new ImageView(defaultsTooltipImg);
         VBox defaultsTooltipImgViewContainer = new VBox();
         defaultsTooltipImgViewContainer.getChildren().add(defaultsTooltipImgView);
