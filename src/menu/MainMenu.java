@@ -37,6 +37,7 @@ public class MainMenu extends Application {
     private static final boolean SQUAREONLY = false;
     private boolean enableCustom = false;
     private boolean enableIA = false;
+    private boolean enableHardIA = false;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
@@ -366,7 +367,7 @@ public class MainMenu extends Application {
         localBox.getStyleClass().add("defaultConfigBox");
 
         VBox iaBox = new VBox();
-        iaBox.setSpacing(80);
+        iaBox.setSpacing(30);
         iaBox.getStyleClass().add("defaultConfigBox");
 
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
@@ -466,21 +467,50 @@ public class MainMenu extends Application {
         rb3Container.getChildren().add(rb3);
         rb3Container.getStyleClass().add("radioButtonContainer");
 
+        HBox iaDifficulty = new HBox();
+        ToggleGroup group2 = new ToggleGroup();
+        RadioButton rbid1 = new RadioButton("IA Facile");
+        RadioButton rbid2 = new RadioButton("IA Difficile");
+        rbid1.getStyleClass().remove("radio-button");
+        rbid1.getStyleClass().add("easy");
+        rbid1.setWrapText(true);
+        rbid1.setTextAlignment(TextAlignment.CENTER);
+        rbid2.getStyleClass().remove("radio-button");
+        rbid2.getStyleClass().add("hard");
+        rbid2.setWrapText(true);
+        rbid2.setTextAlignment(TextAlignment.CENTER);
+        iaDifficulty.getChildren().addAll(rbid1,rbid2);
+        iaDifficulty.getStyleClass().add("iaDifficulty");
+
         group.selectedToggleProperty().addListener((ob, o, n) -> {
             RadioButton rb = (RadioButton)group.getSelectedToggle();
 
             if (rb != null && rb.getText().equals("IA Chasseur VS Monstre")){
-                rb1.getStyleClass().add("radioButtonContainerToggle");
-                rb2.getStyleClass().remove("radioButtonContainerToggle");
-                rb3.getStyleClass().remove("radioButtonContainerToggle");
+                rb1Container.getStyleClass().add("radioButtonContainerToggle");
+                rb2Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb3Container.getStyleClass().remove("radioButtonContainerToggle");
             } else if (rb != null && rb.getText().equals("IA Monstre VS Chasseur")) {
-                rb1.getStyleClass().remove("radioButtonContainerToggle");
-                rb2.getStyleClass().add("radioButtonContainerToggle");
-                rb3.getStyleClass().remove("radioButtonContainerToggle");
+                rb1Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb2Container.getStyleClass().add("radioButtonContainerToggle");
+                rb3Container.getStyleClass().remove("radioButtonContainerToggle");
             } else if (rb != null && rb.getText().equals("IA Chasseur VS IA Monstre")) {
-                rb1.getStyleClass().remove("radioButtonContainerToggle");
-                rb2.getStyleClass().remove("radioButtonContainerToggle");
-                rb3.getStyleClass().add("radioButtonContainerToggle");
+                rb1Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb2Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb3Container.getStyleClass().add("radioButtonContainerToggle");
+            }
+        });
+
+        group2.selectedToggleProperty().addListener((ob, o, n) -> {
+            RadioButton rb = (RadioButton)group.getSelectedToggle();
+
+            if (rb != null && rb.getText().equals("IA Facile")){
+                enableHardIA = false;
+                rbid1.getStyleClass().add("easyToggle");
+                rbid2.getStyleClass().remove("hardToggle");
+            } else if (rb != null && rb.getText().equals("IA Difficile")) {
+                enableHardIA = true;
+                rbid1.getStyleClass().remove("easyToggle");
+                rbid2.getStyleClass().add("hardToggle");
             }
         });
 
@@ -500,8 +530,11 @@ public class MainMenu extends Application {
 
             rb3.setToggleGroup(group);
 
+            rbid1.setToggleGroup(group2);
+            rbid2.setToggleGroup(group2);
+
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(gameModeField, difficulty);
+            iaBox.getChildren().addAll(gameModeField, iaDifficulty, difficulty);
             root.getChildren().addAll(top, selectMode, iaBox, bottom);
 
         });
@@ -534,7 +567,7 @@ public class MainMenu extends Application {
                 }
                 if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField, difficulty);
+                    iaBox.getChildren().addAll(gameModeField, iaDifficulty, difficulty);
                     iaBox.getStyleClass().remove(customStyle);
                     iaBox.getStyleClass().add(defaultStyle);
                 }
@@ -548,7 +581,7 @@ public class MainMenu extends Application {
                 }
                 if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField, options);
+                    iaBox.getChildren().addAll(gameModeField, iaDifficulty,options);
                     iaBox.getStyleClass().remove(defaultStyle);
                     iaBox.getStyleClass().add(customStyle);
                 }
@@ -585,6 +618,9 @@ public class MainMenu extends Application {
                         parameters.setIaHunter(true);
                         parameters.setIaMonster(true);
                     }
+                }
+                if (enableHardIA) {
+                    parameters.setHardIA(true);
                 }
 
                 IHM ihm = new IHM(parameters);
