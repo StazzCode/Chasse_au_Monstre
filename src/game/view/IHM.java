@@ -102,7 +102,7 @@ public class IHM extends Application {
             pathExist = maze.checkPathExists();
         }
         
-        hView = new HunterView(this, stage,  this.maze, true, true);
+        hView = new HunterView(this, stage,  this.maze, this.iaHunter, true);
         mView = new MonsterView(this, stage, this.maze, false);
         mView.setInteractions(true);
     }
