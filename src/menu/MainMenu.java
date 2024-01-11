@@ -71,14 +71,6 @@ public class MainMenu extends Application {
         play.getStyleClass().add("playButton");
         play.setOnAction(e -> playMenu(primaryStage, animation));
 
-        // Definition du bouton pour les Crédits
-        Button credit = new Button("Crédits");
-        VBox.setMargin(credit, new Insets(30, 0, 0, 0));
-        credit.setPrefWidth(245);
-        credit.setMaxHeight(45);
-        credit.setOnAction(e -> {
-        });
-
         // Definition du bouton pour les règles du jeu
         Button howToPlay = new Button("Comment jouer ?");
         VBox.setMargin(howToPlay, new Insets(20, 0, 0, 0));
@@ -115,7 +107,7 @@ public class MainMenu extends Application {
         });
 
         // Definition de la box principale contenant tous les élements
-        VBox root = new VBox(logo, play, howToPlay, credit, quit);
+        VBox root = new VBox(logo, play, howToPlay, quit);
         root.getStyleClass().add("root");
 
         // Definition du fond de menu animé
@@ -468,18 +460,23 @@ public class MainMenu extends Application {
         rb3Container.getStyleClass().add("radioButtonContainer");
 
         HBox iaDifficulty = new HBox();
-        ToggleGroup group2 = new ToggleGroup();
-        RadioButton rbid1 = new RadioButton("IA Facile");
-        RadioButton rbid2 = new RadioButton("IA Difficile");
-        rbid1.getStyleClass().remove("radio-button");
-        rbid1.getStyleClass().add("easy");
-        rbid1.setWrapText(true);
-        rbid1.setTextAlignment(TextAlignment.CENTER);
-        rbid2.getStyleClass().remove("radio-button");
-        rbid2.getStyleClass().add("hard");
-        rbid2.setWrapText(true);
-        rbid2.setTextAlignment(TextAlignment.CENTER);
-        iaDifficulty.getChildren().addAll(rbid1,rbid2);
+        ToggleButton tg = new ToggleButton("IA : Facile");
+        tg.getStyleClass().add("easy");
+
+        // Add an event handler to handle the toggle action
+        tg.setOnAction(event -> {
+            if (tg.isSelected()) {
+                enableHardIA = true;
+                tg.setText("IA : Difficile");
+                tg.getStyleClass().add("hard");
+            } else {
+                enableHardIA = false;
+                tg.setText("IA : Facile");
+                tg.getStyleClass().remove("hard");
+            }
+        });
+
+        iaDifficulty.getChildren().addAll(tg);
         iaDifficulty.getStyleClass().add("iaDifficulty");
 
         group.selectedToggleProperty().addListener((ob, o, n) -> {
@@ -500,20 +497,6 @@ public class MainMenu extends Application {
             }
         });
 
-        group2.selectedToggleProperty().addListener((ob, o, n) -> {
-            RadioButton rb = (RadioButton)group.getSelectedToggle();
-
-            if (rb != null && rb.getText().equals("IA Facile")){
-                enableHardIA = false;
-                rbid1.getStyleClass().add("easyToggle");
-                rbid2.getStyleClass().remove("hardToggle");
-            } else if (rb != null && rb.getText().equals("IA Difficile")) {
-                enableHardIA = true;
-                rbid1.getStyleClass().remove("easyToggle");
-                rbid2.getStyleClass().add("hardToggle");
-            }
-        });
-
         HBox gameModeField = new HBox(rb1Container, rb2Container, rb3Container);
         gameModeField.setSpacing(50);
         gameModeField.getStyleClass().add("center");
@@ -529,9 +512,6 @@ public class MainMenu extends Application {
             rb2.setToggleGroup(group);
 
             rb3.setToggleGroup(group);
-
-            rbid1.setToggleGroup(group2);
-            rbid2.setToggleGroup(group2);
 
             iaBox.getChildren().clear();
             iaBox.getChildren().addAll(gameModeField, iaDifficulty, difficulty);

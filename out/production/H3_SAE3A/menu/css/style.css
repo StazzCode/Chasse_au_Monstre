@@ -164,30 +164,22 @@
 }
 
 .easy {
-    -fx-min-width: 50;
-    -fx-max-width: 50;
+    -fx-min-width: 150;
+    -fx-max-width: 150;
     -fx-min-height: 50;
     -fx-max-height: 50;
 
-    -fx-background-color: #267f23;
-}
-
-.easyToggle {
     -fx-background-color: #4bf745;
 }
 
 .hard {
-    -fx-min-width: 50;
-    -fx-max-width: 50;
+    -fx-min-width: 150;
+    -fx-max-width: 150;
     -fx-min-height: 50;
     -fx-max-height: 50;
 
-    -fx-background-color: #7f2323;
-    -fx-text-fill: white;
-}
-
-.hardToggle {
     -fx-background-color: #f74545;
+    -fx-text-fill: white;
 }
 
 .tooltip {
