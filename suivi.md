@@ -26,7 +26,10 @@
 
 #### Semaine du 09 janvier 2024
 - Ecriture et génération de la Javadoc
-- Correction du mode IA 
+- Correction du mode IA
+- Commencement du mode 1v1 en ligne sur deux ordinateurs mais abandon car manque de temps pour le faire fonctionner à temps
+- update du Readme.md
+
 
 ### Eddy Vantard
 
