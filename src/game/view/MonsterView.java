@@ -16,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -149,16 +148,8 @@ public class MonsterView extends Stage implements IView {
      */
     public void setInteractions(boolean active) {
 
-        ////////////////////////////////////////////////////////////
-        // Gestion des touches pour Macos.
-        ////////////////////////////////////////////////////////////
-        InputContext context = InputContext.getInstance();
-        String loc = context.getLocale().toString();
-        if (OS.current() == OS.MAC && (loc.equals("fr"))){
-            keyCodeUp = KeyCode.W;
-            keyCodeLeft = KeyCode.A;
-        }
-        ////////////////////////////////////////////////////////////
+        // Gestion des touches pour Mac.
+        macOSKeybinding();
 
         if (active) {
             play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
@@ -183,6 +174,19 @@ public class MonsterView extends Stage implements IView {
             });
         } else {
             scene.setOnKeyPressed(null);
+        }
+    }
+
+    /**
+     * Gestion des touches pour MacOS.
+     * 
+     */
+    private void macOSKeybinding() {
+        InputContext context = InputContext.getInstance();
+        String loc = context.getLocale().toString();
+        if (OS.current() == OS.MAC && (loc.equals("fr"))){
+            keyCodeUp = KeyCode.W;
+            keyCodeLeft = KeyCode.A;
         }
     }
 
@@ -298,18 +302,6 @@ public class MonsterView extends Stage implements IView {
                         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 grid.add(b, i, j);
             }
-        }
-    }
-
-    /**
-     * Gestion des touches pour Macos.
-     */
-    private void macOSInputs() {
-        InputContext context = InputContext.getInstance();
-        String loc = context.getLocale().toString();
-        if (OS.current() == OS.MAC && (loc.equals("fr"))) {
-            keyCodeUp = KeyCode.W;
-            keyCodeLeft = KeyCode.A;
         }
     }
 

@@ -27,7 +27,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import menu.MainMenu;
-import menu.SuperMain;
 
 import java.util.Random;
 
@@ -186,21 +185,7 @@ public class HunterView extends Stage implements IView {
         	} else {
                 response.setText("");
                 shoot.setVisible(true);
-                for (int i = 0; i < grid.getChildren().size(); i++) {
-                    Button b = (Button) grid.getChildren().get(i);
-                    b.setOnMouseClicked(e -> {
-                        this.selected.setBackground(
-                                new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                        this.selected = b;
-                        b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-                        Integer col = GridPane.getColumnIndex(b);
-                        Integer row = GridPane.getRowIndex(b);
-                        if (col != null && row != null) {
-                            shootColumn = col.intValue();
-                            shootRow = row.intValue();
-                        }
-                    });
-                }
+                setButtonsInteractions();
             }
         } else {
             shoot.setVisible(false);
@@ -208,6 +193,24 @@ public class HunterView extends Stage implements IView {
                 Button b = (Button) grid.getChildren().get(i);
                 b.setOnMouseClicked(null);
             }
+        }
+    }
+
+    private void setButtonsInteractions() {
+        for (int i = 0; i < grid.getChildren().size(); i++) {
+            Button b = (Button) grid.getChildren().get(i);
+            b.setOnMouseClicked(e -> {
+                this.selected.setBackground(
+                        new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                this.selected = b;
+                b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                Integer col = GridPane.getColumnIndex(b);
+                Integer row = GridPane.getRowIndex(b);
+                if (col != null && row != null) {
+                    shootColumn = col.intValue();
+                    shootRow = row.intValue();
+                }
+            });
         }
     }
 
@@ -388,6 +391,12 @@ public class HunterView extends Stage implements IView {
         	pause = new PauseTransition(Duration.seconds(0));
         }
         Coordinate finalHitCoord = hitCoord;
+        pauseConfiguration(pause, finalHitCoord);
+        
+        pause.play();
+    }
+
+    private void pauseConfiguration(PauseTransition pause, Coordinate finalHitCoord) {
         pause.setOnFinished(event -> {
             if (!maze.getEnd()) {
                 maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].discover();
@@ -401,8 +410,6 @@ public class HunterView extends Stage implements IView {
                 return;
             }
         });
-        
-        pause.play();
     }
 
     public Coordinate  playAIHard() {
