@@ -135,6 +135,10 @@
     -fx-text-alignment: center;
 }
 
+.radioButtonContainer {
+    -fx-background-color: white;
+}
+
 .tooltip {
     -fx-font-size: 15;
 }
