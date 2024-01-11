@@ -4,7 +4,9 @@ import game.model.Cell;
 import game.model.CellInfo;
 import game.model.Coordinate;
 import game.model.Maze;
+import graphics.ItemsView;
 import graphics.PopUpPane;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,8 +25,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import menu.MainMenu;
 
+import java.util.Random;
+
+/**
+ * Classe représentant la vue du chasseur dans le jeu du labyrinthe.
+ */
 public class HunterView extends Stage implements IView {
 
     IHM ihm;
@@ -78,28 +86,62 @@ public class HunterView extends Stage implements IView {
     /**
      * Le Stage principal de l'interface graphique.
      */
+
     Stage mainStage;
 
     int shootColumn;
     int shootRow;
+    boolean iaHunter;
+    boolean hardIA;
 
-    public HunterView(IHM ihm, Stage mainStage, Maze maze) {
+    /**
+     * Constructeur de la classe HunterView.
+     * 
+     * @param ihm       l'interface utilisateur
+     * @param mainStage la scène principale
+     * @param maze      le labyrinthe
+     */
+    public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ia, boolean hardIA) {
         this.ihm = ihm;
         this.mainStage = mainStage;
         this.maze = maze;
+        this.iaHunter = ia;
+        this.hardIA = hardIA;
         this.start();
     }
 
     /**
-     * Méthode qui affiche le labyrinthe vu par le chasseur
+     * Constructeur de la classe HunterView pour le mode IA.
+     * 
+     * @param ihm       l'interface utilisateur
+     * @param mainStage la scène principale
+     * @param maze      le labyrinthe
+     * @param ai        le mode IA
+     */
+    /*public HunterView(IHM ihm, Stage mainStage, Maze maze, boolean ai) {
+        this.ihm = ihm;
+        this.mainStage = mainStage;
+        this.maze = maze;
+        this.startAI();
+    }*/
+
+    /**
+     * Méthode qui affiche le labyrinthe vu par le chasseur.
      */
     public void display() {
         for (int i = 0; i < maze.getColumns(); i++) {
             for (int j = 0; j < maze.getRows(); j++) {
-                Button b = (Button) grid.getChildren().get(i * maze.getColumns() + j);
-                b.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                Button b = (Button) grid.getChildren().get(i * maze.getRows() + j);
+                CellInfo state = maze.getMaze()[i][j].getState();
+                b.setBackground(ItemsView.getHiddenMazeCellBackground());
                 if (maze.getMaze()[i][j].isDiscovered()) {
                     b.setText(displayCellExceptMonster(maze.getMaze()[i][j]));
+
+                    if(state == CellInfo.EMPTY) b.setBackground(ItemsView.getVisibleMazeCellBackground());
+                    else if(state == CellInfo.WALL) b.setBackground(ItemsView.getWallMazeCellBackground());
+                    else if(state == CellInfo.ENTER)b.setBackground(ItemsView.getEnterMazeCellBackground());
+                    else if(state == CellInfo.EXIT) b.setBackground(ItemsView.getExitMazeCellBackground());
+
                 } else {
                     b.setText(" ");
                 }
@@ -109,7 +151,7 @@ public class HunterView extends Stage implements IView {
 
     /**
      * Méthode qui retourne le caractère correspondant au type de cellule sauf si
-     * c'est une cellule vide avec une dernière apparition du monstre
+     * c'est une cellule vide avec une dernière apparition du monstre.
      * 
      * @param c la cellule choisie
      * @return le caractère correspondant au type de cellule sauf si c'est une
@@ -117,7 +159,7 @@ public class HunterView extends Stage implements IView {
      */
     public String displayCellExceptMonster(Cell c) {
         if (c.getState() == CellInfo.EMPTY && c.getLastMonsterAppearance() > 0) {
-            return String.valueOf(c.getLastMonsterAppearance());
+            return String.valueOf(c.getLastMonsterAppearanceReverse(this.maze.getCompteur()));
         } else if (c.getState() != CellInfo.MONSTER) {
             return Character.toString(c.getState().getCar());
         } else if (c.getState() == CellInfo.MONSTER) {
@@ -137,23 +179,13 @@ public class HunterView extends Stage implements IView {
      */
     public void setInteractions(boolean active) {
         if (active) {
-            response.setText("");
-            shoot.setVisible(true);
-            for (int i = 0; i < grid.getChildren().size(); i++) {
-                Button b = (Button) grid.getChildren().get(i);
-                b.setOnMouseClicked(e -> {
-                    this.selected.setBackground(
-                            new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                    this.selected = b;
-                    b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-                    Integer col = GridPane.getColumnIndex(b);
-                    Integer row = GridPane.getRowIndex(b);
-                    if (col != null && row != null) {
-                        shootColumn = col.intValue();
-                        shootRow = row.intValue();
-                    }
-
-                });
+        	if(iaHunter) {
+        		System.out.println("no");
+        		playAI();
+        	} else {
+                response.setText("");
+                shoot.setVisible(true);
+                setButtonsInteractions();
             }
         } else {
             shoot.setVisible(false);
@@ -161,6 +193,24 @@ public class HunterView extends Stage implements IView {
                 Button b = (Button) grid.getChildren().get(i);
                 b.setOnMouseClicked(null);
             }
+        }
+    }
+
+    private void setButtonsInteractions() {
+        for (int i = 0; i < grid.getChildren().size(); i++) {
+            Button b = (Button) grid.getChildren().get(i);
+            b.setOnMouseClicked(e -> {
+                this.selected.setBackground(
+                        new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                this.selected = b;
+                b.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                Integer col = GridPane.getColumnIndex(b);
+                Integer row = GridPane.getRowIndex(b);
+                if (col != null && row != null) {
+                    shootColumn = col.intValue();
+                    shootRow = row.intValue();
+                }
+            });
         }
     }
 
@@ -174,31 +224,35 @@ public class HunterView extends Stage implements IView {
         setInteractions(true);
     }
 
+    /**
+     * Méthode qui affiche la fenêtre de fin de jeu.
+     */
     void gameOverPopUp() {
         PopUpPane gameOverPopUp = PopUpPane.getGameOverPane();
-        stackPane.getChildren().add(stackPane.getChildren().size()-1, gameOverPopUp);
-        gameOverPopUp.setOnFinished(e->{
+        stackPane.getChildren().add(stackPane.getChildren().size() - 1, gameOverPopUp);
+        gameOverPopUp.setOnFinished(e -> {
             stackPane.getChildren().remove(gameOverPopUp);
         });
         gameOverPopUp.play();
     }
 
+    /**
+     * Méthode qui termine le jeu.
+     */
     public void endGame() {
         ihm.mView.gameOverPopUp();
-
 
         play.setText("Partie terminée. Le chasseur a gagné.");
         this.selected.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.selected = new Button("");
         setInteractions(false);
-        
 
         Button replay = new Button("Recommencer");
         Button backToMenu = new Button("Retour au menu");
         Button quit = new Button("Quitter");
 
         endGameButtonsActions(replay, backToMenu, quit);
-        
+
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.TOP_CENTER);
         hbox.getChildren().addAll(replay, backToMenu, quit);
@@ -207,6 +261,12 @@ public class HunterView extends Stage implements IView {
         ihm.mView.play.setText("Partie terminée. Le chasseur a gagné.");
     }
 
+    /**
+     * Méthode qui gère les actions des boutons de fin de jeu.
+     * @param replay
+     * @param backToMenu
+     * @param quit
+     */
     private void endGameButtonsActions(Button replay, Button backToMenu, Button quit) {
         replay.setOnMouseClicked(e -> {
             ihm.mView.close();
@@ -254,7 +314,7 @@ public class HunterView extends Stage implements IView {
 
     /**
      * Méthode qui permet d'initialiser le bouton shoot pour que le chasseur puisse
-     * tirer dans le labyrinthe
+     * tirer dans le labyrinthe.
      */
     private void initializeShootButton() {
         shoot = new Button("Shoot !");
@@ -284,7 +344,9 @@ public class HunterView extends Stage implements IView {
             }
         });
     }
-
+    /**
+     * Méthode qui configure la StackPane principale.
+     */
     private void stackPaneConfiguration() {
         stackPane = new StackPane(grid);
         play = new Label("Tour " + turn + " : Monstre   |   Patience.");
@@ -302,9 +364,105 @@ public class HunterView extends Stage implements IView {
         StackPane.setAlignment(shoot, Pos.TOP_CENTER);
     }
 
+    /**
+     * Méthode qui ferme la fenêtre.
+     */
     public void close() {
         super.close();
     }
+
+    /**
+     * Méthode qui génère un tour de jeu pour le chasseur de façon aléatoire : il
+     * tire sur une case au hasard.
+     */
+    public void playAI() {
+        Random random = new Random();
+        Coordinate hitCoord = null;
+        Coordinate myCell = maze.findShortedLastAppearance();
+        if(myCell == null || hardIA == false){
+            hitCoord = playAISimple();
+        }else{
+            hitCoord = playAIHard();
+        }
+        PauseTransition pause =  new PauseTransition(Duration.seconds(0.5));
+        if(this.iaHunter && ihm.mView.iaMonster) {
+        	pause = new PauseTransition(Duration.seconds(0.2));
+        }else {
+        	pause = new PauseTransition(Duration.seconds(0));
+        }
+        Coordinate finalHitCoord = hitCoord;
+        pauseConfiguration(pause, finalHitCoord);
+        
+        pause.play();
+    }
+
+    private void pauseConfiguration(PauseTransition pause, Coordinate finalHitCoord) {
+        pause.setOnFinished(event -> {
+            if (!maze.getEnd()) {
+                maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].discover();
+                this.response.setText("Vous avez tiré sur " + maze.getMaze()[finalHitCoord.getColumn()][finalHitCoord.getRow()].getState().toString() + "!");
+                this.display();
+                setInteractions(false);
+                play.setText("Tour " + turn + " : Monstre   |   Patience.");
+                ihm.mView.play();
+            } else {
+                endGame();
+                return;
+            }
+        });
+    }
+
+    public Coordinate  playAIHard() {
+        Random random = new Random();
+        Coordinate myCell = maze.findShortedLastAppearance();
+        int moreOrLess = 0;
+        int randomColumn = 0;
+        int randomRow = 0;
+        boolean finish = false;
+        boolean end = false;
+        while(!finish){
+            while(!end) {
+                moreOrLess = random.nextInt(1);
+                if(moreOrLess == 0){
+                    randomColumn = myCell.getColumn() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }else{
+                    randomColumn = myCell.getColumn() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }
+                if(randomColumn > 0 && randomColumn < this.maze.getColumns()) {
+                    end = true;
+                }
+            }
+            end = false;
+            while(!end) {
+                moreOrLess = random.nextInt(1);
+                if(moreOrLess == 0){
+                    randomRow = myCell.getRow() + random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }else{
+                    randomRow = myCell.getRow() - random.nextInt(maze.getMaze()[myCell.getColumn()][myCell.getRow()].getLastMonsterAppearanceReverse(maze.getCompteur())+1);
+                }
+                if(randomRow > 0 && randomRow < this.maze.getRows() ) {
+                    end = true;
+                }
+            }
+            System.out.println(randomColumn + " ; " + randomRow);
+            if(!maze.getMaze()[randomColumn][randomRow].isDiscovered()){
+                finish = true;
+            }
+        }
+
+        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        //System.out.println(randomColumn + " ; " + randomRow);
+        return new Coordinate(randomColumn, randomRow);
+    }
+
+    public Coordinate playAISimple() {
+        Random random = new Random();
+        int randomColumn = random.nextInt(maze.getColumns());
+        int randomRow = random.nextInt(maze.getRows());
+        this.maze.getHunter().hit(new Coordinate(randomColumn, randomRow));
+        return new Coordinate(randomColumn, randomRow);
+    }
+
 
     /**
      * Méthode qui initialise l'interface graphique.
@@ -313,20 +471,20 @@ public class HunterView extends Stage implements IView {
      */
     private void start() {
 
-        //macOSInputs();
+        // macOSInputs();
 
         turn = 0;
-        
+
         this.grid = new GridPane();
         int elementSize = 40;
+        //iaHunter = true;
         initializeGrid(maze.getColumns(), maze.getRows(), elementSize);
         grid.setAlignment(Pos.CENTER);
 
         initializeShootButton();
-        
+
         stackPaneConfiguration();
         scene = new Scene(stackPane, 550, 550);
-        
         setInteractions(false);
         display();
 

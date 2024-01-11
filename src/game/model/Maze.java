@@ -51,7 +51,7 @@ public class Maze implements Observer {
      * 
      * @return the maze
      */
-    public Cell[][] getMaze() { 
+    public Cell[][] getMaze() {
         return maze;
     }
 
@@ -110,14 +110,15 @@ public class Maze implements Observer {
     }
 
     /**
-     * Retourne une version booléenne du labyrinthe codant true pour un mur et false pour autre chose.
+     * Retourne une version booléenne du labyrinthe codant true pour un mur et false
+     * pour autre chose.
      */
     public boolean[][] getBooleanMaze() {
         int columns = this.getColumns();
         int rows = this.getRows();
         boolean[][] bMaze = new boolean[columns][rows];
-        for (int i=0; i<columns; i++) {
-            for (int j=0; j<rows; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 if (this.getMaze()[i][j].getState().equals(CellInfo.WALL)) {
                     bMaze[i][j] = true;
                 } else {
@@ -158,23 +159,13 @@ public class Maze implements Observer {
     /**
      * Méthode qui génère un nombre d'obstacles spécifié
      * 
-     * @param nbObstacles nombre d'obstacles à générer.
+     * @param obstaclePercentage nombre d'obstacles à générer.
      */
-    public void generateObstacles(/*int nbObstacles*/ int obstaclePercentage) {
-        /*Random random = new Random();
-        int countObstacles = 0;
-        while (countObstacles != nbObstacles) {
-            int x = random.nextInt(columns);
-            int y = random.nextInt(rows);
-            if (this.maze[x][y].getState() == CellInfo.EMPTY) {
-                this.maze[x][y].setState(CellInfo.WALL);
-                countObstacles++;
-            }
-        }*/
-    	if (obstaclePercentage < 0 || obstaclePercentage > 100) {
+    public void generateObstacles(int obstaclePercentage) {
+        if (obstaclePercentage < 0 || obstaclePercentage > 100) {
             throw new IllegalArgumentException("Le pourcentage d'obstacles doit être compris entre 0 et 100.");
         }
-    	
+
         int nbObstacles = (int) Math.round((obstaclePercentage / 100.0) * this.getMaxObstaclePossible());
 
         Random random = new Random();
@@ -204,7 +195,6 @@ public class Maze implements Observer {
      * 
      * @param columns le nombre de colonnes du labyrinthe
      * @param rows    le nombre de lignes du labyrinthe
-     * @return nbObstacles le nombre d'obstacles générés
      */
     public void generateMazeObstacles(int columns, int rows) {
         int nbObstacles = (columns * rows) / 4;
@@ -212,11 +202,17 @@ public class Maze implements Observer {
         generateObstacles(nbObstacles);
 
     }
-    
+
+    /**
+     * Méthode qui retourne le nombre d'obstacles maximum possible dans le
+     * labyrinthe
+     * 
+     * @return le nombre d'obstacles maximum possible dans le labyrinthe
+     */
     public int getMaxObstaclePossible() {
-    	int size = this.getColumns() * this.getRows() - 2;
-    	int manathan = (this.getColumns()-1) + (this.getRows()-1) -1;
-    	return size - manathan;
+        int size = this.getColumns() * this.getRows() - 2;
+        int manathan = (this.getColumns() - 1) + (this.getRows() - 1) - 1;
+        return size - manathan;
     }
 
     /**
@@ -234,7 +230,7 @@ public class Maze implements Observer {
     /**
      * Méthode qui génère l'entrée et la sortie du labyrinthe.
      */
-    public void generateEnterExit(){
+    public void generateEnterExit() {
         Random random = new Random();
         int rand = random.nextInt(4);
 
@@ -266,16 +262,25 @@ public class Maze implements Observer {
 
     }
 
+    /**
+     * Méthode qui place l'entrée et la sortie du labyrinthe.
+     * 
+     * @param colEntrance
+     * @param rowEntrance
+     * @param colExit
+     * @param rowExit
+     */
     private void placeEntranceExit(int colEntrance, int rowEntrance, int colExit, int rowExit) {
-    	this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
+        this.monster.setMonsterPosition(new Coordinate(colEntrance, rowEntrance));
         this.maze[colEntrance][rowEntrance] = new Cell(new Coordinate(colEntrance, rowEntrance), CellInfo.ENTER);
         this.maze[colExit][rowExit] = new Cell(new Coordinate(colExit, rowExit), CellInfo.EXIT);
     }
-    
-    /*public boolean checkPath() {
-    	
-    }*/
 
+    /**
+     * Méthode qui vérifie si une case a des voisins
+     * 
+     * @return true si la case a des voisins, false sinon
+     */
     public boolean hasNeighbors(Coordinate coord) {
         int x = coord.getColumn();
         int y = coord.getRow();
@@ -287,7 +292,7 @@ public class Maze implements Observer {
 
         return rightNeighbor || downNeighbor || leftNeighbor || upNeighbor;
     }
-    
+
     /**
      * Méthode qui retourne les coordonnées de l'entrée du labyrinthe
      * 
@@ -327,10 +332,8 @@ public class Maze implements Observer {
      * sortie
      */
     public boolean checkPathExists() {
-    	Coordinate enter = getEnter();
+        Coordinate enter = getEnter();
         Coordinate exit = getExit();
-        
-        System.out.println(enter.getColumn());
 
         if (enter == null || exit == null) {
             return false;
@@ -352,9 +355,8 @@ public class Maze implements Observer {
 
         while (!queue.isEmpty()) {
             Coordinate current = queue.poll();
-            System.out.println(current.getColumn() + " , " + current.getRow());
             if (this.maze[current.getColumn()][current.getRow()].getState().getCar() == CellInfo.EXIT.getCar()) {
-                return true;  // Chemin trouvé
+                return true; // Chemin trouvé
             }
 
             for (int i = 0; i < 4; i++) {
@@ -370,10 +372,11 @@ public class Maze implements Observer {
                 }
             }
         }
-        return false;  // Aucun chemin trouvé
+        return false; // Aucun chemin trouvé
     }
 
     /**
+<<<<<<< HEAD
      * Méthode qui affiche le labyrinthe dans la console
      */
     public void displayMaze() {
@@ -387,7 +390,25 @@ public class Maze implements Observer {
         }
     }
 
+    public Coordinate findShortedLastAppearance(){
+        Coordinate shorted = new Coordinate(0, 0);
+        for(int i = 0; i < this.getColumns(); i++){
+            for(int j = 0; j  < this.getRows(); j++){
+                if(this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) < this.maze[shorted.getColumn()][shorted.getRow()].getLastMonsterAppearanceReverse(this.compteur) &&
+                        this.maze[i][j].getLastMonsterAppearanceReverse(this.compteur) > -1 && this.maze[i][j].isDiscovered()){
+                    shorted =  this.maze[i][j].getCoordinate();
+                }
+            }
+        }
+        if(shorted.getColumn() == 0 && shorted.getRow() == 0){
+            return null;
+        }
+        return shorted;
+    }
+
     /**
+=======
+>>>>>>> 8d948fb819c270c7b15d479309f32308bea4b736
      * Méthode qui met à jour la dernière apparition du monstre
      */
     public void updateLastAppearance() {

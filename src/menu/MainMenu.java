@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.UnaryOperator;
 
+import graphics.PopUpMazeSize;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
@@ -16,32 +16,36 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import game.*;
-import javafx.util.converter.IntegerStringConverter;
 
 import game.model.Difficulty;
 import game.model.GameParameter;
 import game.view.IHM;
+
 /**
  * La classe MainMenu représente le menu principal du jeu.
  * Il hérite de la classe Application de JavaFX.
- * Il contient les boutons pour jouer, accéder aux options, aux règles du jeu et pour quitter le jeu.
+ * Il contient les boutons pour jouer, accéder aux options, aux règles du jeu et
+ * pour quitter le jeu.
  * Il contient également le logo du jeu et un fond animé.
  */
-public class MainMenu extends Application{
+public class MainMenu extends Application {
 
-    private static final boolean SQUAREONLY = true;
+    private static final boolean SQUAREONLY = false;
+    private static boolean enableCustom = false;
+    private static final boolean ENABLEIA = true;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
+    private static final String DEFAULTCONFIG = "Défaut";
+    private static final String CUSTOMCONFIG = "Personnalisée";
 
     /**
      * La méthode start permet d'initialiser le début du jeu.
+     * 
      * @param primaryStage le stage principal du jeu.
      * @throws Exception
      */
@@ -55,34 +59,41 @@ public class MainMenu extends Application{
 
         // Definition de l'animation avec les brique lego et les figurines
         MenuAnimation animation = new MenuAnimation();
-        primaryStage.setOnShown(e->animation.play());
+        primaryStage.setOnShown(e -> animation.play());
 
         // Definition du bouton pour jouer
         Button play = new Button("Jouer");
         VBox.setMargin(play, new Insets(60, 0, 20, 0));
         play.setPrefSize(380, 60);
         play.getStyleClass().add("playButton");
-        play.setOnAction(e-> playMenu(primaryStage,animation));
-        
+        play.setOnAction(e -> playMenu(primaryStage, animation));
+
         // Definition du bouton pour les Crédits
         Button credit = new Button("Crédits");
         VBox.setMargin(credit, new Insets(30, 0, 0, 0));
         credit.setPrefWidth(245);
         credit.setMaxHeight(45);
-        credit.setOnAction(e->{});
+        credit.setOnAction(e -> {
+        });
 
         // Definition du bouton pour les règles du jeu
-        Button howToPlay = new  Button("Comment jouer ?");
+        Button howToPlay = new Button("Comment jouer ?");
         VBox.setMargin(howToPlay, new Insets(20, 0, 0, 0));
         howToPlay.setPrefWidth(245);
         howToPlay.setMaxHeight(45);
-        howToPlay.setOnAction(e->{  // Ce que le bouton fait quand l'on clique dessus
-            Map<String,String> paragraphes = new HashMap<>();   // Map contenant tritre en clés avec le paragraphe d"explication pour chaque règles
-            paragraphes.put("Explications", "Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
-            paragraphes.put("Titre2", "Integer semper semper egestas. Aenean congue enim lacus, eget pretium magna ultrices vel. Fusce at nunc facilisis, feugiat est et, aliquet urna. Donec suscipit elit arcu, eget mattis neque suscipit ac. Nunc egestas leo non rhoncus ornare. Vestibulum semper arcu id pharetra consectetur. Vestibulum ut posuere sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam purus ligula, maximus eget mauris id, consequat feugiat risus. Vestibulum laoreet arcu vitae enim tincidunt vulputate. ");
-            paragraphes.put("Titre3", "Integer semper semper egestas. Aenean congue enim lacus, eget pretium magna ultrices vel. Fusce at nunc facilisis, feugiat est et, aliquet urna. Donec suscipit elit arcu, eget mattis neque suscipit ac. Nunc egestas leo non rhoncus ornare. Vestibulum semper arcu id pharetra consectetur. Vestibulum ut posuere sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam purus ligula, maximus eget mauris id, consequat feugiat risus. Vestibulum laoreet arcu vitae enim tincidunt vulputate. ");
-            paragraphes.put("Titre4", "Integer semper semper egestas. Aenean congue enim lacus, eget pretium magna ultrices vel. Fusce at nunc facilisis, feugiat est et, aliquet urna. Donec suscipit elit arcu, eget mattis neque suscipit ac. Nunc egestas leo non rhoncus ornare. Vestibulum semper arcu id pharetra consectetur. Vestibulum ut posuere sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam purus ligula, maximus eget mauris id, consequat feugiat risus. Vestibulum laoreet arcu vitae enim tincidunt vulputate. ");
-            howToPlayMenu(primaryStage, paragraphes, animation);   // Passage au menu des règles du jeu affiché dans le Stage d'origine et avec la Map des règles
+        howToPlay.setOnAction(e -> { // Ce que le bouton fait quand l'on clique dessus
+            Map<String, String> paragraphes = new HashMap<>(); // Map contenant tritre en clés avec le paragraphe
+                                                               // d"explication pour chaque règles
+            paragraphes.put("Explications",
+                    "Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
+            paragraphes.put("Commandes du monstre",
+                    "Pour le joueur incarnant le monstre, les seules commandes à utiliser seront les touches du clavier affichées lors de la partie afin de pouvoir se déplacer.");
+            paragraphes.put("Commandes du chasseur",
+                    "En ce qui concerne le chasseur, ce dernier utilisera la souris afin de d'abord sélectionner une case sur laquelle sur souhaite tirer, puis appuyer sur le bouton pour valider le tir.");
+            paragraphes.put("Jouer avec des IA",
+                    "Il est également possible de jouer un des deux rôles et d'affronter une IA ou bien d'observer deux IA s'affronter.");
+            howToPlayMenu(primaryStage, paragraphes, animation); // Passage au menu des règles du jeu affiché dans le
+                                                                 // Stage d'origine et avec la Map des règles
         });
 
         // Definition du bouton pour quitter
@@ -90,12 +101,12 @@ public class MainMenu extends Application{
         VBox.setMargin(quit, new Insets(20, 0, 0, 0));
         quit.setPrefWidth(245);
         quit.setMaxHeight(45);
-        quit.setOnAction(e->{   // Ce que le bouton fait quand l'on clique dessus
-            System.exit(0);     // ici, le bouton ferme le processus
+        quit.setOnAction(e -> { // Ce que le bouton fait quand l'on clique dessus
+            System.exit(0); // ici, le bouton ferme le processus
         });
 
         // Definition de la box principale contenant tous les élements
-        VBox root = new VBox(logo,play,howToPlay,credit,quit);
+        VBox root = new VBox(logo, play, howToPlay, credit, quit);
         root.getStyleClass().add("root");
 
         // Definition du fond de menu animé
@@ -103,17 +114,20 @@ public class MainMenu extends Application{
         background.setFitHeight(624);
         background.setPreserveRatio(true);
 
-        StackPane stackPane = new StackPane(background,animation.getStackPane(), root);
+        StackPane stackPane = new StackPane(background, animation.getStackPane(), root);
 
         Scene scene = new Scene(stackPane, 984, 624);
-        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm()); // Feuille de style contenant toutes les indications pour les élements du menu
-        Image cursorImage = new Image(getClass().getResource("img/cursor.png").toExternalForm());  
+        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm()); // Feuille de style
+                                                                                              // contenant toutes les
+                                                                                              // indications pour les
+                                                                                              // élements du menu
+        Image cursorImage = new Image(getClass().getResource("img/cursor.png").toExternalForm());
         scene.setCursor(new ImageCursor(cursorImage));
-        for(Node n : root.getChildren().subList(1, root.getChildren().size())){
-            n.setOnMouseEntered(e->{
+        for (Node n : root.getChildren().subList(1, root.getChildren().size())) {
+            n.setOnMouseEntered(e -> {
                 scene.setCursor(new ImageCursor(new Image(getClass().getResource("img/hand.png").toExternalForm())));
             });
-            n.setOnMouseExited(e->{
+            n.setOnMouseExited(e -> {
                 scene.setCursor(new ImageCursor(new Image(getClass().getResource("img/cursor.png").toExternalForm())));
             });
         }
@@ -124,29 +138,30 @@ public class MainMenu extends Application{
         primaryStage.show();
     }
 
-
     /**
      * Méthode qui permet d'expliquer comment jouer au jeu de la chasse au monstre.
-     * @param baseStage le stage de base.
+     * 
+     * @param baseStage   le stage de base.
      * @param paragraphes les règles du jeu.
      */
-    public void howToPlayMenu(Stage baseStage, Map<String,String> paragraphes, MenuAnimation animation){
+    public void howToPlayMenu(Stage baseStage, Map<String, String> paragraphes, MenuAnimation animation) {
         Scene oldScene = baseStage.getScene();
         Label titre = new Label("Comment jouer ?");
         titre.getStyleClass().add("mainTitre");
-        VBox.setMargin(titre, new Insets(20, 0, 10,0));
+        VBox.setMargin(titre, new Insets(20, 0, 10, 0));
         Button back = new Button("Retour au menu");
         back.getStyleClass().add("playButton");
-        back.setOnAction(e->{
+        back.setOnAction(e -> {
             baseStage.setScene(oldScene);
             animation.play();
-        ;});
+            ;
+        });
 
         VBox.setMargin(back, new Insets(20, 0, 20, 0));
         VBox root = new VBox(titre);
         HBox.setMargin(root, new Insets(0, 0, 0, 190));
         root.getStyleClass().add("root");
-        for(Entry<String,String> s : paragraphes.entrySet()){
+        for (Entry<String, String> s : paragraphes.entrySet()) {
             Label secondTitre = new Label(s.getKey());
             secondTitre.getStyleClass().add("secondTitre");
             secondTitre.setWrapText(true);
@@ -157,8 +172,8 @@ public class MainMenu extends Application{
             text.setMaxWidth(600);
             VBox.setMargin(text, new Insets(0, 0, 45, 0));
             text.setTextAlignment(TextAlignment.JUSTIFY);
-            root.getChildren().add( root.getChildren().size(),secondTitre);
-            root.getChildren().add( root.getChildren().size(),text);
+            root.getChildren().add(root.getChildren().size(), secondTitre);
+            root.getChildren().add(root.getChildren().size(), text);
         }
         HBox container = new HBox(root);
         container.minWidth(980);
@@ -166,7 +181,7 @@ public class MainMenu extends Application{
         container.setAlignment(Pos.CENTER);
         ScrollPane pane = new ScrollPane(container);
         pane.setVvalue(0);
-        VBox tot = new VBox(pane,back);
+        VBox tot = new VBox(pane, back);
         Scene newScene = new Scene(tot, oldScene.getWidth(), oldScene.getHeight());
         newScene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         baseStage.setScene(newScene);
@@ -174,10 +189,14 @@ public class MainMenu extends Application{
 
     /**
      * Méthode qui permet de lancer le menu de jeu.
+     * 
      * @param baseStage le stage de base.
      */
-    public void playMenu(Stage baseStage, MenuAnimation menuAnimation){
+    public void playMenu(Stage baseStage, MenuAnimation menuAnimation) {
         Scene oldScene = baseStage.getScene();
+
+        //////////////////////////////////////////////////
+        // Menu de configuration des options (NE PAS RETIRER LES '/' DE SÉPARATION SVP)
 
         UnaryOperator<TextFormatter.Change> integerFilter = change -> {
             String newText = change.getControlNewText();
@@ -192,23 +211,23 @@ public class MainMenu extends Application{
             return null;
         };
 
-        TextField largeurField = new TextField(); // TextField contenant uniquement des chiffres pour définir la taille du labyrinthe
+        TextField largeurField = new TextField(); // TextField contenant uniquement des chiffres pour définir la taille
+                                                  // du labyrinthe
         largeurField.setTextFormatter(
-                new TextFormatter<>(integerFilter)
-        );
+                new TextFormatter<>(integerFilter));
         largeurField.setText(String.valueOf(DEFAULTSIZE));
         largeurField.setMaxWidth(50);
         largeurField.setMinWidth(50);
 
-        TextField longueurField = new TextField(); // TextField contenant uniquement des chiffres pour définir la taille du labyrinthe
+        TextField longueurField = new TextField(); // TextField contenant uniquement des chiffres pour définir la taille
+                                                   // du labyrinthe
         longueurField.setTextFormatter(
-                new TextFormatter<>(integerFilter)
-        );
+                new TextFormatter<>(integerFilter));
         longueurField.setText(String.valueOf(DEFAULTSIZE));
         longueurField.setMaxWidth(50);
         longueurField.setMinWidth(50);
 
-        if (SQUAREONLY){
+        if (SQUAREONLY) {
             // Ajout d'un écouteur de changement à longueurField
             longueurField.textProperty().addListener((ChangeListener<String>) (observable, oldValue, newValue) -> {
                 // Met à jour la valeur du largeurField avec la nouvelle valeur du longueurField
@@ -225,8 +244,7 @@ public class MainMenu extends Application{
         Label multiplicationSymbol = new Label(" X "); // Format Taille : 10 X 10
         multiplicationSymbol.setMinHeight(25);
         HBox mazeSizeInputs = new HBox();
-        mazeSizeInputs.getChildren().addAll(longueurField,multiplicationSymbol,largeurField);
-
+        mazeSizeInputs.getChildren().addAll(longueurField, multiplicationSymbol, largeurField);
 
         Label sizeLabel = new Label("Taille du Labyrinthe (Par Défaut : 7x7)");
         // Bouton pour repasser la taille par défaut
@@ -241,101 +259,257 @@ public class MainMenu extends Application{
 
         VBox optionMazeSize = new VBox(); // Colonne d'option de configuration de la taille du labyrinthe
         // Menu regroupant l'ensemble des options configurables de la partie
+        VBox options = new VBox();
+        options.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        HBox confighbox = new HBox();
+        Label configLabel = new Label("Activer Configuration Personnalisée");
+        CheckBox check = new CheckBox();
+
+        confighbox.getChildren().addAll(check, configLabel);
+
         HBox optionsMenu = new HBox();
-        // Ajout des éléments de la configuration de la taille du labyrinthe à la colonne
-        optionMazeSize.getChildren().addAll(sizeLabel,mazeSizeInputs,resetSizeButton);
+
+        options.getChildren().addAll(optionsMenu);
+        optionsMenu.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        // Ajout des éléments de la configuration de la taille du labyrinthe à la
+        // colonne
+        optionMazeSize.getChildren().addAll(sizeLabel, mazeSizeInputs, resetSizeButton);
         optionMazeSize.setSpacing(7.5);
 
         // Ajout des différents blocs d'options au bloc général
         optionsMenu.getChildren().add(optionMazeSize);
+
+        //////////////////////////////////////////////////
 
         DifficultySlider difficulty = new DifficultySlider();
         difficulty.setPrefWidth(350);
         difficulty.setMaxWidth(350);
         difficulty.getStyleClass().add("center");
 
-        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus tard
-        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus tard
+        TextField firstPlayerLabel = new TextField("Joueur 1");// Faire les fonctionnalitées de changement de nom plus
+                                                               // tard
+        TextField secondPlayerLabel = new TextField("Joueur 2");// Faire les fonctionnalitées de changement de nom plus
+                                                                // tard
 
         VBox root = new VBox();
-        HBox bottom=new HBox();
+        HBox bottom = new HBox();
 
-        HBox top=new HBox(50);
-        top.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
+        HBox top = new HBox(50);
+        top.setPrefSize(oldScene.getWidth(), oldScene.getHeight() / 8);
         top.getStyleClass().add("top");
 
-        VBox localBox=new VBox();
+        VBox localBox = new VBox();
+        localBox.setSpacing(50);
+        localBox.getStyleClass().add("defaultConfigBox");
 
-        HBox iaBox=new HBox(new Label("A VENIR !")); // A FAIRE PLUS TARD
+        VBox iaBox = new VBox();
+        iaBox.setSpacing(50);
+        iaBox.getStyleClass().add("defaultConfigBox");
 
-        HBox onlineBox=new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
+        HBox onlineBox = new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
+
+        localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
+        localBox.getStyleClass().add("center");
+        iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
+        iaBox.getStyleClass().add("center");
+        onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
+        onlineBox.getStyleClass().add("center");
+
+        HBox playerInput = new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel);
+        playerInput.getStyleClass().add("center");
+        localBox.getChildren().addAll(playerInput,difficulty);
+
+        // Onglet de sélection entre partie par défaut et partie custom
+        Tooltip defaultConfig = new Tooltip("Configure la partie avec des niveaux de difficultés par défaut.");
+        Tooltip customConfig = new Tooltip("Configure la partie avec des options avancées personnalisables");
+        ToggleGroup configRadioGroup = new ToggleGroup();
+        RadioButton defaults = new RadioButton(DEFAULTCONFIG);
+        defaults.setToggleGroup(configRadioGroup);
+        defaults.getStyleClass().remove("radio-button");
+        defaults.getStyleClass().add("configRadioButton");
+        defaults.getStyleClass().add("defaultConfigRadioButton");
+        defaults.setSelected(true);
+        RadioButton custom = new RadioButton(CUSTOMCONFIG);
+        custom.setToggleGroup(configRadioGroup);
+        custom.getStyleClass().remove("radio-button");
+        custom.getStyleClass().add("configRadioButton");
+        custom.getStyleClass().add("customConfigRadioButton");
+        HBox radioButtons = new HBox();
+        radioButtons.setSpacing(100);
+        radioButtons.getStyleClass().add("center");
+        VBox selectMode = new VBox();
+        VBox space = new VBox();
+        space.setMaxHeight(10);
+        space.setMinHeight(10);
+        radioButtons.getChildren().addAll(defaults,custom);
+        selectMode.getChildren().addAll(space,radioButtons);
+        selectMode.getStyleClass().add("background");
+        //////////////////////////////////////////////////
 
         Button joueurVsJoueurOnglet = new Button("Local 1V1");
-        localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
-        localBox.getStyleClass().add("center");
-        iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
-        iaBox.getStyleClass().add("center");
-        onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight()/8)*6);
-        onlineBox.getStyleClass().add("center");
-        joueurVsJoueurOnglet.setOnAction(e->{
+        joueurVsJoueurOnglet.setOnAction(e -> {
+            defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
-            root.getChildren().addAll(top,localBox,bottom);
+            localBox.getChildren().clear();
+            localBox.getChildren().addAll(playerInput,difficulty);
+            root.getChildren().addAll(top, selectMode, localBox, bottom);
         });
         Button iaVsIaOnglet = new Button("IA");
-        iaVsIaOnglet.setOnAction(e->{
+
+        ToggleGroup group = new ToggleGroup();
+        RadioButton rb1 = new RadioButton("IA Chasseur VS Monstre");
+        RadioButton rb2 = new RadioButton("IA Monstre VS Chasseur");
+        RadioButton rb3 = new RadioButton("IA Chasseur VS IA Monstre");
+
+        HBox gameModeField = new HBox(rb1, rb2, rb3);
+        gameModeField.getStyleClass().add("center");
+
+        iaVsIaOnglet.setOnAction(e -> {
+            defaults.setSelected(true); // Repasse le radio button en par défaut
             root.getChildren().clear();
-            root.getChildren().addAll(top,iaBox,bottom);
+
+            rb1.setToggleGroup(group);
+            rb1.setSelected(true);
+
+            rb2.setToggleGroup(group);
+
+            rb3.setToggleGroup(group);
+
+            iaBox.getChildren().clear();
+            iaBox.getChildren().addAll(gameModeField);
+            root.getChildren().addAll(top, selectMode, iaBox, bottom);
+
         });
         Button joueurVsIaOnglet = new Button("En ligne");
-        joueurVsIaOnglet.setOnAction(e->{
+        joueurVsIaOnglet.setOnAction(e -> {
             root.getChildren().clear();
-            root.getChildren().addAll(top,onlineBox,bottom);
+            root.getChildren().addAll(top, onlineBox, bottom);
         });
-        top.getChildren().addAll(joueurVsJoueurOnglet,joueurVsIaOnglet,iaVsIaOnglet);
-        for(Node n : top.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(top.getChildren().size()+1));
+        top.getChildren().addAll(joueurVsJoueurOnglet, joueurVsIaOnglet, iaVsIaOnglet);
+        for (Node n : top.getChildren())
+            ((Button) n).setPrefWidth(oldScene.getWidth() / (top.getChildren().size() + 1));
 
         Button back = new Button("Menu");
-        back.setOnAction(e->{
+        back.setOnAction(e -> {
             baseStage.setScene(oldScene);
             menuAnimation.play();
         });
 
+        // Gestion du Bouton d'activation des options personnalisées de la partie
+        configRadioGroup.selectedToggleProperty().addListener((ob, o, n) -> {
+
+            RadioButton rb = (RadioButton)configRadioGroup.getSelectedToggle();
+
+            String defaultStyle = "defaultConfigBox";
+            String customStyle = "customConfigBox";
+
+            if (rb != null && rb.getText().equals(DEFAULTCONFIG)) {
+                enableCustom = false;
+                if (root.getChildren().get(2) == localBox){
+                    localBox.getChildren().clear();
+                    localBox.getChildren().addAll(playerInput,difficulty);
+                    localBox.getStyleClass().remove(customStyle);
+                    localBox.getStyleClass().add(defaultStyle);
+                }
+                if (root.getChildren().get(2) == iaBox) {
+                    iaBox.getChildren().clear();
+                    iaBox.getChildren().addAll(gameModeField,difficulty);
+                    iaBox.getStyleClass().remove(customStyle);
+                    iaBox.getStyleClass().add(defaultStyle);
+                }
+            } else if (rb != null && rb.getText().equals(CUSTOMCONFIG)){
+                enableCustom = true;
+                if (root.getChildren().get(2) == localBox){
+                    localBox.getChildren().clear();
+                    localBox.getChildren().addAll(playerInput,options);
+                    localBox.getStyleClass().remove(defaultStyle);
+                    localBox.getStyleClass().add(customStyle);
+                }
+                if (root.getChildren().get(2) == iaBox){
+                    iaBox.getChildren().clear();
+                    iaBox.getChildren().addAll(gameModeField,options);
+                    iaBox.getStyleClass().remove(defaultStyle);
+                    iaBox.getStyleClass().add(customStyle);
+                }
+            }
+        });
+
         Button play = new Button("Lancer");
-        play.setOnAction(e->{
-            GameParameter parameters = new GameParameter();
-            parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
-            parameters.setFirstPlayerName(firstPlayerLabel.getText());
-            parameters.setSecondPlayerName(secondPlayerLabel.getText());
-            parameters.setLongueur(Integer.parseInt(longueurField.getText()));
-            parameters.setLargeur(Integer.parseInt(largeurField.getText()));
-            IHM ihm = new IHM(parameters);
-            baseStage.close();
-            ihm.start(baseStage);
+        play.setOnAction(e -> {
+            if (!belowMinSize(longueurField)) {
+                GameParameter parameters = new GameParameter();
+                parameters.setDifficulty(Difficulty.fromInt((int) difficulty.getValue()));
+                parameters.setFirstPlayerName(firstPlayerLabel.getText());
+                parameters.setSecondPlayerName(secondPlayerLabel.getText());
+
+                if (enableCustom) {
+                    parameters.setLongueur(Integer.parseInt(longueurField.getText()));
+                    parameters.setLargeur(Integer.parseInt(largeurField.getText()));
+                } else {
+                    parameters.setLongueur(parameters.getDifficulty().getColumnsDifficulty());
+                    parameters.setLargeur(parameters.getDifficulty().getRowsDifficulty());
+                }
+                if (rb1.isSelected()) {
+                    parameters.setIaHunter(true);
+                    parameters.setIaMonster(false);
+                } else if (rb2.isSelected()) {
+                    parameters.setIaHunter(false);
+                    parameters.setIaMonster(true);
+                } else if (rb3.isSelected()) {
+                    parameters.setIaHunter(true);
+                    parameters.setIaMonster(true);
+                }
+
+                IHM ihm = new IHM(parameters);
+                baseStage.close();
+                ihm.start(baseStage);
+            } else {
+                PopUpMazeSize p = new PopUpMazeSize();
+                p.setMINSIZE(MINSIZE);
+                try {
+                    p.start(baseStage);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
         });
 
         bottom.getChildren().addAll(back, play);
-        bottom.setPrefSize(oldScene.getWidth(), oldScene.getHeight()/8);
+        bottom.setPrefSize(oldScene.getWidth(), oldScene.getHeight() / 8);
         bottom.getStyleClass().add("bottom");
-        for(Node n : bottom.getChildren()) ((Button)n).setPrefWidth(oldScene.getWidth()/(bottom.getChildren().size()+2));
-        HBox.setMargin(back, new Insets(0, oldScene.getWidth()-2*200-140, 0, 0));
-
-        localBox.getChildren().add(new HBox(firstPlayerLabel,new Label("VS"),secondPlayerLabel));
-        localBox.getChildren().get(0).getStyleClass().add("center");
-        localBox.getChildren().add(difficulty);
-
-        localBox.getChildren().add(optionsMenu);
+        for (Node n : bottom.getChildren())
+            ((Button) n).setPrefWidth(oldScene.getWidth() / (bottom.getChildren().size() + 2));
+        HBox.setMargin(back, new Insets(0, oldScene.getWidth() - 2 * 200 - 140, 0, 0));
 
         HBox.setMargin(firstPlayerLabel, new Insets(0, 30, 0, 0));
         HBox.setMargin(secondPlayerLabel, new Insets(0, 0, 0, 30));
 
-        root.getChildren().addAll(top,localBox,bottom);
+        root.getChildren().addAll(top, selectMode, localBox, bottom);
         Scene newScene = new Scene(root, oldScene.getWidth(), oldScene.getHeight());
         newScene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         baseStage.setScene(newScene);
     }
-    
+
+    /**
+     * Méthode qui permet de vérifier si la taille du labyrinthe saisie est
+     * inférieure à la taille du labyrinthe minimale.
+     *
+     * @param tf le champ de saisie personnalisé pour la taille du labyrinthe
+     * @return true si la taille du labyrinthe saisie est inférieure à la taille du
+     *         labyrinthe minimale, false sinon
+     */
+    boolean belowMinSize(TextField tf) {
+        return Integer.parseInt(tf.getText()) < MINSIZE;
+    }
+
     /**
      * Méthode qui permet de lancer le jeu.
+     * 
      * @param args
      */
     public static void main(String[] args) {
