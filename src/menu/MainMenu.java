@@ -360,14 +360,10 @@ public class MainMenu extends Application {
         iaBox.setSpacing(50);
         iaBox.getStyleClass().add("defaultConfigBox");
 
-        HBox onlineBox = new HBox(new Label("A VENIR !"));// A FAIRE PLUS TARD
-
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
         localBox.getStyleClass().add("center");
         iaBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
         iaBox.getStyleClass().add("center");
-        onlineBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
-        onlineBox.getStyleClass().add("center");
 
         HBox playerInput = new HBox(firstPlayerLabel, new Label("VS"), secondPlayerLabel);
         playerInput.getStyleClass().add("center");
@@ -462,12 +458,8 @@ public class MainMenu extends Application {
             root.getChildren().addAll(top, selectMode, iaBox, bottom);
 
         });
-        Button joueurVsIaOnglet = new Button("En ligne");
-        joueurVsIaOnglet.setOnAction(e -> {
-            root.getChildren().clear();
-            root.getChildren().addAll(top, onlineBox, bottom);
-        });
-        top.getChildren().addAll(joueurVsJoueurOnglet, joueurVsIaOnglet, iaVsIaOnglet);
+
+        top.getChildren().addAll(joueurVsJoueurOnglet, iaVsIaOnglet);
         for (Node n : top.getChildren())
             ((Button) n).setPrefWidth(oldScene.getWidth() / (top.getChildren().size() + 1));
 
