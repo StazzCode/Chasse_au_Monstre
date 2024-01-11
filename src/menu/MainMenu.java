@@ -8,11 +8,8 @@ import java.util.function.UnaryOperator;
 import graphics.PopUpMazeSize;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -89,12 +86,12 @@ public class MainMenu extends Application {
                                                                // d"explication pour chaque règles
             paragraphes.put("Explications",
                     "Le déroulement se passe au tour par tour alternativement le monstre puis le chasseur et ainsi de suite. Le monstre apparaît à l’entrée d’un labyrinthe et va pouvoir à chacun de ses tours se déplacer d’une case, découvrant ainsi les obstacles s’offrant à lui tout en étant à la recherche de la sortie qui représente sa condition de victoire. Parallèlement, entre chacun des tours du monstre, le chasseur possède une vision d’ensemble du labyrinthe et va pouvoir tirer sur une case à chaque tour. Tirer sur une case sera source d’informations, cela révélera si la case visée était vide, un mur du labyrinthe ou une case par laquelle le monstre est déjà passé révélant au passage le numéro du tour durant lequel le monstre est passé par là. Enfin, tirer sur la case où le monstre est présent est la condition de victoire du chasseur.");
-            paragraphes.put("Titre2",
-                    "Integer semper semper egestas. Aenean congue enim lacus, eget pretium magna ultrices vel. Fusce at nunc facilisis, feugiat est et, aliquet urna. Donec suscipit elit arcu, eget mattis neque suscipit ac. Nunc egestas leo non rhoncus ornare. Vestibulum semper arcu id pharetra consectetur. Vestibulum ut posuere sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam purus ligula, maximus eget mauris id, consequat feugiat risus. Vestibulum laoreet arcu vitae enim tincidunt vulputate. ");
-            paragraphes.put("Titre3",
-                    "Integer semper semper egestas. Aenean congue enim lacus, eget pretium magna ultrices vel. Fusce at nunc facilisis, feugiat est et, aliquet urna. Donec suscipit elit arcu, eget mattis neque suscipit ac. Nunc egestas leo non rhoncus ornare. Vestibulum semper arcu id pharetra consectetur. Vestibulum ut posuere sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam purus ligula, maximus eget mauris id, consequat feugiat risus. Vestibulum laoreet arcu vitae enim tincidunt vulputate. ");
-            paragraphes.put("Titre4",
-                    "Integer semper semper egestas. Aenean congue enim lacus, eget pretium magna ultrices vel. Fusce at nunc facilisis, feugiat est et, aliquet urna. Donec suscipit elit arcu, eget mattis neque suscipit ac. Nunc egestas leo non rhoncus ornare. Vestibulum semper arcu id pharetra consectetur. Vestibulum ut posuere sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam purus ligula, maximus eget mauris id, consequat feugiat risus. Vestibulum laoreet arcu vitae enim tincidunt vulputate. ");
+            paragraphes.put("Commandes du monstre",
+                    "Pour le joueur incarnant le monstre, les seules commandes à utiliser seront les touches du clavier affichées lors de la partie afin de pouvoir se déplacer.");
+            paragraphes.put("Commandes du chasseur",
+                    "En ce qui concerne le chasseur, ce dernier utilisera la souris afin de d'abord sélectionner une case sur laquelle sur souhaite tirer, puis appuyer sur le bouton pour valider le tir.");
+            paragraphes.put("Jouer avec des IA",
+                    "Il est également possible de jouer un des deux rôles et d'affronter une IA ou bien d'observer deux IA s'affronter.");
             howToPlayMenu(primaryStage, paragraphes, animation); // Passage au menu des règles du jeu affiché dans le
                                                                  // Stage d'origine et avec la Map des règles
         });
