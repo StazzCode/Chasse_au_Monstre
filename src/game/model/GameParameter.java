@@ -12,6 +12,7 @@ public class GameParameter {
     private Integer longueur, largeur, pourcentageObs, fogRange;
     private boolean iaHunter = false;
     private boolean iaMonster = false;
+    private boolean hardIA = false;
 
     /**
      * Obtient la difficulté du jeu.
@@ -182,5 +183,13 @@ public class GameParameter {
      */
     public void setFogRange(Integer fogRange) {
         this.fogRange = fogRange;
+    }
+
+    public boolean getHardIA() {
+        return hardIA;
+    }
+
+    public void setHardIA(boolean b){
+        this.hardIA = b;
     }
 }

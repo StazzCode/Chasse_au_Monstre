@@ -31,6 +31,7 @@ public class IHM extends Application {
     Integer fogRange;
     boolean iaHunter;
     boolean iaMonster;
+    boolean hardIA;
 
     /**
      * Constructeur de la classe IHM avec un paramètre.
@@ -47,6 +48,7 @@ public class IHM extends Application {
         iaHunter = parameter.getIaHunter();
         iaMonster = parameter.getIaMonster();
         fogRange = parameter.getFogRange();
+        hardIA = parameter.getHardIA();
     }
 
     /**
@@ -101,8 +103,7 @@ public class IHM extends Application {
             maze.generateObstacles(nbObstacles);
             pathExist = maze.checkPathExists();
         }
-        
-        hView = new HunterView(this, stage,  this.maze, this.iaHunter, true);
+        hView = new HunterView(this, stage,  this.maze, this.iaHunter, hardIA);
         mView = new MonsterView(this, stage, this.maze, this.iaMonster);
         mView.setInteractions(true);
     }

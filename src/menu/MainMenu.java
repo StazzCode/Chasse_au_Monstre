@@ -37,6 +37,7 @@ public class MainMenu extends Application {
     private static final boolean SQUAREONLY = false;
     private boolean enableCustom = false;
     private boolean enableIA = false;
+    private boolean enableHardIA = false;
     private static final int MINSIZE = 4;
     private static final int MAXSIZE = 10;
     private static final int DEFAULTSIZE = 7;
@@ -69,14 +70,6 @@ public class MainMenu extends Application {
         play.setPrefSize(380, 60);
         play.getStyleClass().add("playButton");
         play.setOnAction(e -> playMenu(primaryStage, animation));
-
-        // Definition du bouton pour les Crédits
-        Button credit = new Button("Crédits");
-        VBox.setMargin(credit, new Insets(30, 0, 0, 0));
-        credit.setPrefWidth(245);
-        credit.setMaxHeight(45);
-        credit.setOnAction(e -> {
-        });
 
         // Definition du bouton pour les règles du jeu
         Button howToPlay = new Button("Comment jouer ?");
@@ -114,7 +107,7 @@ public class MainMenu extends Application {
         });
 
         // Definition de la box principale contenant tous les élements
-        VBox root = new VBox(logo, play, howToPlay, credit, quit);
+        VBox root = new VBox(logo, play, howToPlay, quit);
         root.getStyleClass().add("root");
 
         // Definition du fond de menu animé
@@ -366,7 +359,7 @@ public class MainMenu extends Application {
         localBox.getStyleClass().add("defaultConfigBox");
 
         VBox iaBox = new VBox();
-        iaBox.setSpacing(80);
+        iaBox.setSpacing(30);
         iaBox.getStyleClass().add("defaultConfigBox");
 
         localBox.setPrefSize(oldScene.getWidth(), (oldScene.getHeight() / 8) * 6);
@@ -466,21 +459,41 @@ public class MainMenu extends Application {
         rb3Container.getChildren().add(rb3);
         rb3Container.getStyleClass().add("radioButtonContainer");
 
+        HBox iaDifficulty = new HBox();
+        ToggleButton tg = new ToggleButton("IA : Facile");
+        tg.getStyleClass().add("easy");
+
+        // Add an event handler to handle the toggle action
+        tg.setOnAction(event -> {
+            if (tg.isSelected()) {
+                enableHardIA = true;
+                tg.setText("IA : Difficile");
+                tg.getStyleClass().add("hard");
+            } else {
+                enableHardIA = false;
+                tg.setText("IA : Facile");
+                tg.getStyleClass().remove("hard");
+            }
+        });
+
+        iaDifficulty.getChildren().addAll(tg);
+        iaDifficulty.getStyleClass().add("iaDifficulty");
+
         group.selectedToggleProperty().addListener((ob, o, n) -> {
             RadioButton rb = (RadioButton)group.getSelectedToggle();
 
             if (rb != null && rb.getText().equals("IA Chasseur VS Monstre")){
-                rb1.getStyleClass().add("radioButtonContainerToggle");
-                rb2.getStyleClass().remove("radioButtonContainerToggle");
-                rb3.getStyleClass().remove("radioButtonContainerToggle");
+                rb1Container.getStyleClass().add("radioButtonContainerToggle");
+                rb2Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb3Container.getStyleClass().remove("radioButtonContainerToggle");
             } else if (rb != null && rb.getText().equals("IA Monstre VS Chasseur")) {
-                rb1.getStyleClass().remove("radioButtonContainerToggle");
-                rb2.getStyleClass().add("radioButtonContainerToggle");
-                rb3.getStyleClass().remove("radioButtonContainerToggle");
+                rb1Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb2Container.getStyleClass().add("radioButtonContainerToggle");
+                rb3Container.getStyleClass().remove("radioButtonContainerToggle");
             } else if (rb != null && rb.getText().equals("IA Chasseur VS IA Monstre")) {
-                rb1.getStyleClass().remove("radioButtonContainerToggle");
-                rb2.getStyleClass().remove("radioButtonContainerToggle");
-                rb3.getStyleClass().add("radioButtonContainerToggle");
+                rb1Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb2Container.getStyleClass().remove("radioButtonContainerToggle");
+                rb3Container.getStyleClass().add("radioButtonContainerToggle");
             }
         });
 
@@ -501,7 +514,7 @@ public class MainMenu extends Application {
             rb3.setToggleGroup(group);
 
             iaBox.getChildren().clear();
-            iaBox.getChildren().addAll(gameModeField, difficulty);
+            iaBox.getChildren().addAll(gameModeField, iaDifficulty, difficulty);
             root.getChildren().addAll(top, selectMode, iaBox, bottom);
 
         });
@@ -534,7 +547,7 @@ public class MainMenu extends Application {
                 }
                 if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField, difficulty);
+                    iaBox.getChildren().addAll(gameModeField, iaDifficulty, difficulty);
                     iaBox.getStyleClass().remove(customStyle);
                     iaBox.getStyleClass().add(defaultStyle);
                 }
@@ -548,7 +561,7 @@ public class MainMenu extends Application {
                 }
                 if (root.getChildren().get(2) == iaBox) {
                     iaBox.getChildren().clear();
-                    iaBox.getChildren().addAll(gameModeField, options);
+                    iaBox.getChildren().addAll(gameModeField, iaDifficulty,options);
                     iaBox.getStyleClass().remove(defaultStyle);
                     iaBox.getStyleClass().add(customStyle);
                 }
@@ -585,6 +598,9 @@ public class MainMenu extends Application {
                         parameters.setIaHunter(true);
                         parameters.setIaMonster(true);
                     }
+                }
+                if (enableHardIA) {
+                    parameters.setHardIA(true);
                 }
 
                 IHM ihm = new IHM(parameters);

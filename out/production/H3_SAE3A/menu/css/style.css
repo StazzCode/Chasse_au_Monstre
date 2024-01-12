@@ -149,10 +149,37 @@
     -fx-border-width: 2;
     -fx-border-color: rgb(0,0,0,0.2);;
     -fx-border-radius: 15;
+    -fx-alignment: center;
 }
 
 .radioButtonContainerToggle {
     -fx-background-color: #4bf745;
+}
+
+.iaDifficulty {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-spacing: 5;
+    -fx-alignment: center;
+}
+
+.easy {
+    -fx-min-width: 150;
+    -fx-max-width: 150;
+    -fx-min-height: 50;
+    -fx-max-height: 50;
+
+    -fx-background-color: #4bf745;
+}
+
+.hard {
+    -fx-min-width: 150;
+    -fx-max-width: 150;
+    -fx-min-height: 50;
+    -fx-max-height: 50;
+
+    -fx-background-color: #f74545;
+    -fx-text-fill: white;
 }
 
 .tooltip {
