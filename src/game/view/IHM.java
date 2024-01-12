@@ -90,7 +90,7 @@ public class IHM extends Application {
 
         // version de test avec difficultés:
         int columns = largeur;
-        int rows = longueur;
+        int rows = longueur ;
         int nbObstacles = pourcentageObs;
         this.maze = new Maze(columns, rows);
         this.maze.getMonster().setFogRange(fogRange);
@@ -103,7 +103,7 @@ public class IHM extends Application {
         }
         
         hView = new HunterView(this, stage,  this.maze, this.iaHunter, true);
-        mView = new MonsterView(this, stage, this.maze, false);
+        mView = new MonsterView(this, stage, this.maze, this.iaMonster);
         mView.setInteractions(true);
     }
 
