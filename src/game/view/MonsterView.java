@@ -164,7 +164,7 @@ public class MonsterView extends Stage implements IView {
         if (active) {
             play.setText("Tour " + turn + " : Monstre   |   Utilisez ZQSD pour vous déplacer.");
             if (iaMonster) {
-                Coordinate coord = this.maze.getMonster().iaMove();
+                Coordinate coord = this.maze.getMonster().iaMoveImproved();
                 setMonsterMovementKeybind(coord.getColumn(), coord.getRow());
                 return;
             }

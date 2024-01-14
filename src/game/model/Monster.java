@@ -1,6 +1,9 @@
 package game.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
@@ -181,10 +184,79 @@ public class Monster extends Player {
                 }
             }
         }
-
         return null;
     }
+    
+    public Coordinate iaMoveImproved() {
+        if (stack.isEmpty()) {
+            initializeStack();
+        }
 
+        while (!stack.isEmpty()) {
+            Coordinate currentCoordinate = stack.peek();
+
+            if (this.maze.getMaze()[currentCoordinate.getColumn()][currentCoordinate.getRow()].getState().getCar() == CellInfo.EXIT.getCar()) {
+                return new Coordinate(0, 0); // La sortie est atteinte
+            } else {
+                int minDistance = Integer.MAX_VALUE;
+                Coordinate nextMove = null;
+
+                for (int xOffset = -1; xOffset <= 1; xOffset++) {
+                    for (int yOffset = -1; yOffset <= 1; yOffset++) {
+                        if ((xOffset == 0 || yOffset == 0) && isValidMove(currentCoordinate.getColumn() + xOffset, currentCoordinate.getRow() + yOffset)) {
+                            Coordinate neighbor = new Coordinate(currentCoordinate.getColumn() + xOffset, currentCoordinate.getRow() + yOffset);
+                            System.out.println(neighbor.getColumn() + " ; " + neighbor.getRow());
+                            // Ajoutez une vérification pour éviter de revenir en arrière dans un cul-de-sac
+                            if (isValidMove(neighbor.getColumn(), neighbor.getRow())) {
+                                int distance = calculateManhattanDistance(neighbor, this.maze.getExit());
+
+                                if (distance < minDistance) {
+                                    minDistance = distance;
+                                    nextMove = neighbor;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (nextMove != null) {
+                    marquer.add(this.maze.getMaze()[nextMove.getColumn()][nextMove.getRow()].getCoordinate());
+                    stack.add(this.maze.getMaze()[nextMove.getColumn()][nextMove.getRow()].getCoordinate());
+                    return new Coordinate(nextMove.getColumn() - currentCoordinate.getColumn(), nextMove.getRow() - currentCoordinate.getRow());
+                } else {
+                	int colonne = currentCoordinate.getColumn();
+                    int row = currentCoordinate.getRow();
+                    stack.pop();
+                    if (!stack.isEmpty()) {
+                    	currentCoordinate = stack.peek();
+                        return new Coordinate(currentCoordinate.getColumn() - colonne, currentCoordinate.getRow() - row);
+                    }
+                }
+            }
+        }
+
+        return null; // Aucun mouvement possible
+    }
+
+    private List<Coordinate> getValidNeighbors(Coordinate current) {
+        List<Coordinate> neighbors = new ArrayList<>();
+
+        for (int xOffset = -1; xOffset <= 1; xOffset++) {
+            for (int yOffset = -1; yOffset <= 1; yOffset++) {
+                if ((xOffset == 0 || yOffset == 0)
+                        && isValidMove(current.getColumn() + xOffset, current.getRow() + yOffset)) {
+                    neighbors.add(new Coordinate(current.getColumn() + xOffset, current.getRow() + yOffset));
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
+    private int calculateManhattanDistance(Coordinate c1, Coordinate c2) {
+        return Math.abs(c1.getColumn() - c2.getColumn()) + Math.abs(c1.getRow() - c2.getRow());
+    }
+    
     /**
      * Méthode qui initialise la pile de coordonnées.
      */
@@ -204,7 +276,8 @@ public class Monster extends Player {
         return newColumn >= 0 && newColumn < this.maze.getColumns()
                 && newRow >= 0 && newRow < this.maze.getRows()
                 && this.maze.getMaze()[newColumn][newRow].getState().getCar() != CellInfo.WALL.getCar()
-                && !this.marquer.contains(this.maze.getMaze()[newColumn][newRow].getCoordinate());
+                && !this.marquer.contains(this.maze.getMaze()[newColumn][newRow].getCoordinate())
+                && this.maze.getMaze()[newColumn][newRow].getState().getCar() != CellInfo.MONSTER.getCar();
     }
 
     /**
